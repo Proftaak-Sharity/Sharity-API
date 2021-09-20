@@ -10,9 +10,11 @@ public class SharityApplication {
     public static void main(String[] args) {
         SpringApplication.run(SharityApplication.class, args);
 
-        Car myCar = new Car(4);
+        Car myCar = new Car("AA-01-AA", "Audi", "A8", 4, 5);
 
-        System.out.println("My car has " + myCar.amountWheels() + " wheels!");
+        System.out.println(myCar.toString());
+
+
 
 
     }

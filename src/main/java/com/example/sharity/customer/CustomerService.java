@@ -31,7 +31,6 @@ public class CustomerService {
             throw new IllegalStateException("Email already taken");
         }
         customerRepository.save(customer);
-
     }
 
     public void deleteCustomer(Long customerNumber) {

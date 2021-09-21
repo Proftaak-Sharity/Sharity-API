@@ -1,98 +1,65 @@
 package com.example.sharity.customer;
 
+
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Table
+@SecondaryTable(name = "BankAccount", pkJoinColumns = @PrimaryKeyJoinColumn(name = "customerNumber"))
 public class Customer {
     @Id
-    @SequenceGenerator(
-            name = "customer_sequence",
-            sequenceName = "customer_sequence",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long customerNumber;
+
+    @Column
     private String lastName;
-    private String insertion;
+
+    @Column
     private String firstName;
+
+    @Column
     private LocalDate dateOfBirth;
-    private String address;
-    private String houseNumber;
-    private String postalCode;
-    private String city;
-    private String country;
-    private String phoneNumber;
+
+    @Column
     private String email;
-    private String password;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private BankAccount bankAccount;
 
 
-    public Customer(Long customerNumber,
-                    String lastName,
-                    String insertion,
-                    String firstName,
-                    LocalDate dateOfBirth,
-                    String address,
-                    String houseNumber,
-                    String postalCode,
-                    String city,
-                    String country,
-                    String phoneNumber,
-                    String email,
-                    String password) {
+
+
+
+
+
+
+
+
+
+    public Customer(Long customerNumber, String lastName, String firstName, LocalDate dateOfBirth, String email, BankAccount bankAccount) {
         this.customerNumber = customerNumber;
         this.lastName = lastName;
-        this.insertion = insertion;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.houseNumber = houseNumber;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
-        this.phoneNumber = phoneNumber;
         this.email = email;
-        this.password = password;
+        this.bankAccount = bankAccount;
     }
 
-    public Customer(String lastName,
-                    String insertion,
-                    String firstName,
-                    LocalDate dateOfBirth,
-                    String address,
-                    String houseNumber,
-                    String postalCode,
-                    String city,
-                    String country,
-                    String phoneNumber,
-                    String email,
-                    String password) {
+    public Customer(String lastName, String firstName, LocalDate dateOfBirth, String email, BankAccount bankAccount) {
         this.lastName = lastName;
-        this.insertion = insertion;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.houseNumber = houseNumber;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
-        this.phoneNumber = phoneNumber;
         this.email = email;
-        this.password = password;
+        this.bankAccount = bankAccount;
     }
 
     public Customer() {
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public Long getCustomerNumber() {
         return customerNumber;
@@ -108,14 +75,6 @@ public class Customer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getInsertion() {
-        return insertion;
-    }
-
-    public void setInsertion(String insertion) {
-        this.insertion = insertion;
     }
 
     public String getFirstName() {
@@ -134,60 +93,20 @@ public class Customer {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getAddress() {
-        return address;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getHouseNumber() {
-        return houseNumber;
+    public BankAccount getBankAccount() {
+        return bankAccount;
     }
 
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Override
@@ -195,17 +114,10 @@ public class Customer {
         return "Customer{" +
                 "customerNumber=" + customerNumber +
                 ", lastName='" + lastName + '\'' +
-                ", insertion='" + insertion + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", address='" + address + '\'' +
-                ", houseNumber='" + houseNumber + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", bankAccount=" + bankAccount +
                 '}';
     }
 }

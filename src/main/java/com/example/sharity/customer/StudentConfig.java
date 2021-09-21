@@ -15,46 +15,27 @@ public class StudentConfig {
     CommandLineRunner commandLineRunner(CustomerRepository repository) {
         return args -> {
             Customer Rob = new Customer(
-                    "Horst",
-                    "van der",
+                    "van der Horst",
                     "Rob",
                      LocalDate.of(1983, Month.AUGUST, 29),
-                    "Moye Keene",
-                    "63",
-                    "4791BB",
-                    "Klundert",
-                    "Nederland",
-                    "+31639663976",
                     "rpl.vanderhorst@student.avans.nl",
-                    "welkom01"
+                     new BankAccount("NL71INGB087123542", "RPL VAN DER HORST")
             );
+
             Customer Bart = new Customer(
                     "Grootoonk",
-                    "",
                     "Bart",
                     LocalDate.of(1982, Month.APRIL, 3),
-                    "Vogelaar",
-                    "23",
-                    "4872AH",
-                    "Etten-Leur",
-                    "Nederland",
-                    "+31622578964",
                     "b.grootoonk@student.avans.nl",
-                    "welkom02"
+                    new BankAccount("NL26RABO126024369", "B GROOTOONK")
             );
+
             Customer Daniel = new Customer(
                     "Jansen",
-                    "",
                     "Daniël",
-                    LocalDate.of(1979, Month.JANUARY, 27),
-                    "Oosterhoutseweg",
-                    "157",
-                    "4922XC",
-                    "Made",
-                    "Nederland",
-                    "+31678565123",
+                     LocalDate.of(1979, Month.JANUARY, 27),
                     "d.jansen@student.avans.nl",
-                    "welkom03"
+                    new BankAccount("NL12ABNA633256854", "D JANSEN")
             );
 
             repository.saveAll(

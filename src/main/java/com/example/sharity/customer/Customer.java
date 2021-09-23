@@ -1,9 +1,9 @@
 package com.example.sharity.customer;
 
-
-
 import javax.persistence.*;
 import java.time.LocalDate;
+
+
 
 
 @Entity
@@ -29,13 +29,6 @@ public class Customer {
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private BankAccount bankAccount;
-
-
-
-
-
-
-
 
 
 

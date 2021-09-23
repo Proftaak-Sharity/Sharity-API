@@ -8,8 +8,7 @@ public class SharityApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SharityApplication.class, args);
+
+
     }
-
-
-
 }

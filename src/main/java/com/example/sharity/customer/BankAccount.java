@@ -1,26 +1,28 @@
 package com.example.sharity.customer;
 
+import com.example.sharity.models.BaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "bankaccount")
-public class BankAccount {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customerNumber")
-    private long customerNumber;
+public class BankAccount extends BaseModel {
+
 
     @JsonIgnore
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "customerNumber")
-    private Customer customer;
+    @OneToMany(mappedBy = "bankaccount", cascade = CascadeType.ALL)
+    public Set<Customer> customer;
 
-    @Column(name = "iban")
+    @Column(name = "iban", unique = true)
+    @NotEmpty
     private String iban;
 
     @Column(name = "accountHolder")
+    @NotEmpty
     private String accountHolder;
 
 
@@ -37,19 +39,12 @@ public class BankAccount {
 
 
     //   GETTERS & SETTERS
-    public long getCustomerNumber() {
-        return customerNumber;
-    }
 
-    public void setCustomerNumber(long customerNumber) {
-        this.customerNumber = customerNumber;
-    }
-
-    public Customer getCustomer() {
+    public Set<Customer> getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Set<Customer> customer) {
         this.customer = customer;
     }
 
@@ -67,5 +62,14 @@ public class BankAccount {
 
     public void setAccountHolder(String accountHolder) {
         this.accountHolder = accountHolder;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "customer=" + customer +
+                ", iban='" + iban + '\'' +
+                ", accountHolder='" + accountHolder + '\'' +
+                '}';
     }
 }

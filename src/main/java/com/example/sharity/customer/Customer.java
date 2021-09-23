@@ -1,81 +1,66 @@
 package com.example.sharity.customer;
 
-import javax.persistence.*;
+import com.example.sharity.car.Car;
+import com.example.sharity.models.PersonModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 import java.time.LocalDate;
-
-
-
+import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table
-@SecondaryTable(name = "BankAccount", pkJoinColumns = @PrimaryKeyJoinColumn(name = "customerNumber"))
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long customerNumber;
+@Table(name = "customers")
+
+public class Customer extends PersonModel {
+
+    @Column(name = "address")
+    @NotEmpty
+    private String address;
 
     @Column
-    private String lastName;
-
-    @Column
-    private String firstName;
-
-    @Column
+    @NotEmpty
     private LocalDate dateOfBirth;
 
-    @Column
-    private String email;
+    @Column(name = "city")
+    @NotEmpty
+    private String city;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
-    private BankAccount bankAccount;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Car> cars;
 
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bankaccount_id")
+    private BankAccount bankaccount;
 
-
-
-    public Customer(Long customerNumber, String lastName, String firstName, LocalDate dateOfBirth, String email, BankAccount bankAccount) {
-        this.customerNumber = customerNumber;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.bankAccount = bankAccount;
+    public BankAccount getBankaccount() {
+        return bankaccount;
     }
 
-    public Customer(String lastName, String firstName, LocalDate dateOfBirth, String email, BankAccount bankAccount) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.bankAccount = bankAccount;
+    public void setBankaccount(BankAccount bankaccount) {
+        this.bankaccount = bankaccount;
     }
+
 
     public Customer() {
+        super();
+    }
+
+    public Customer(String lastName, String firstName, LocalDate dateOfBirth,  String email, BankAccount bankAccount) {
+        super (lastName, firstName, email);
+        this.dateOfBirth = dateOfBirth;
+        this.bankaccount = bankAccount;
     }
 
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public String getAddress() {
+        return address;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public LocalDate getDateOfBirth() {
@@ -86,31 +71,39 @@ public class Customer {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCity() {
+        return city;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Set<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
     }
 
     public BankAccount getBankAccount() {
-        return bankAccount;
+        return bankaccount;
     }
 
     public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
+        this.bankaccount = bankAccount;
     }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "customerNumber=" + customerNumber +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
+                "address='" + address + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", email='" + email + '\'' +
-                ", bankAccount=" + bankAccount +
+                ", city='" + city + '\'' +
+                ", cars=" + cars +
+                ", bankAccount=" + bankaccount +
                 '}';
     }
 }
+

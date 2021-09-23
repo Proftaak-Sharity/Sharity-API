@@ -1,63 +1,105 @@
 package com.example.sharity.admin;
 
+
+import com.example.sharity.customer.BankAccount;
+import com.example.sharity.customer.Customer;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+@Table
+@SecondaryTable(name = "Customer", pkJoinColumns = @PrimaryKeyJoinColumn(name = "customerNumber"))
+
 public class ContactForm {
-    // This is a class to construct a contact form for customers to cotact admins
+    // This is a class to construct a contact form for customers to contact admins
 
-    String username;
-    int customerNumber;
-    String email;
-    String Message;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long formNumber;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @Column
+    private Customer customerNumber;
 
-    public ContactForm(String username, int customerNumber, String email, String Message) {
-        this.username = username;
+    @Column
+    private LocalDate timeSent;
+
+    @Column
+    private String message;
+
+    // Here we create the form
+    public ContactForm(Long formNumber, Customer customerNumber, LocalDate timeSent, String message) {
+        this.formNumber = formNumber;
         this.customerNumber = customerNumber;
-        this.email = email;
-        this.Message = Message;
+        this.timeSent = timeSent;
+        this.message = message;
     }
 
-    public String getUsername() {
-        return username;
+
+    public ContactForm() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+
+    public Long getFormNumber() {
+        return formNumber;
     }
 
-    public int getCustomerNumber() {
-        return customerNumber;
+    public void setFormNumber(Long formNumber) {
+        this.formNumber = formNumber;
     }
 
-    public void setCustomerNumber(int customerNumber) {
-        this.customerNumber = customerNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMessage() {
-        return Message;
-    }
-
-    public void setMessage(String message) {
-        Message = message;
-    }
-
-    //    TEST
-
-    @Override
-    public String toString() {
-        return "ContactForm{" +
-                "username='" + username + '\'' +
-                ", customerNumber=" + customerNumber +
-                ", email='" + email + '\'' +
-                ", Menssage='" + Message + '\'' +
-                '}';
-    }
+//    public String getCustomerNumber() {
+//        return customerNumber;
+//    }
+//
+//    public void setLastName(String customerNumber) {
+//        this.customerNumber = customerNumber;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public LocalDate getDateOfBirth() {
+//        return dateOfBirth;
+//    }
+//
+//    public void setDateOfBirth(LocalDate dateOfBirth) {
+//        this.dateOfBirth = dateOfBirth;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public BankAccount getBankAccount() {
+//        return bankAccount;
+//    }
+//
+//    public void setBankAccount(BankAccount bankAccount) {
+//        this.bankAccount = bankAccount;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Customer{" +
+//                "customerNumber=" + customerNumber +
+//                ", lastName='" + lastName + '\'' +
+//                ", firstName='" + firstName + '\'' +
+//                ", dateOfBirth=" + dateOfBirth +
+//                ", email='" + email + '\'' +
+//                ", bankAccount=" + bankAccount +
+//                '}';
+//    }
 }
 

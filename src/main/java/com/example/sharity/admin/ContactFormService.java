@@ -15,16 +15,16 @@ import java.util.Optional;
 @Service
 public class ContactFormService {
 
-    private final CustomerRepository customerRepository;
+    private final ContactFormRepository customerRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public ContactFormService(ContactFormRepository contactFormRepository) {
+        this.contactFormRepository = contactFormRepository;
     }
 
     @GetMapping
     public List<Customer> getCustomers() {
-        return customerRepository.findAll();
+        return contactFormRepository.findAll();
     }
 
     public void addNewCustomer(Customer customer) {

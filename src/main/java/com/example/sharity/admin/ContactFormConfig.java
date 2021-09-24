@@ -18,31 +18,15 @@ public class ContactFormConfig {
     @Bean
     CommandLineRunner commandLineRunner(ContactFormRepository repository) {
         return args -> {
-            Optional<Customer> rob = CustomerRepository.findCustomerByEmail();
+            Customer rob = customerRepository.findCustomerByEmail("b.grootoonk@student.avans.nl");
             ContactForm MailError = new ContactForm(
                     rob,
                     LocalDate.of(2021, Month.SEPTEMBER, 24),
                     "Could not cancel my reservations\nHow can i contact the owner of the vehicle",
             );
 
-            Customer Bart = new Customer(
-                    "Grootoonk",
-                    "Bart",
-                    LocalDate.of(1982, Month.APRIL, 3),
-                    "b.grootoonk@student.avans.nl",
-                    new BankAccount("NL26RABO126024369", "B GROOTOONK")
-            );
-
-            Customer Daniel = new Customer(
-                    "Jansen",
-                    "Daniël",
-                    LocalDate.of(1979, Month.JANUARY, 27),
-                    "d.jansen@student.avans.nl",
-                    new BankAccount("NL12ABNA633256854", "D JANSEN")
-            );
-
             repository.saveAll(
-                    List.of(Rob, Bart, Daniel)
+                    List.of(MailError)
             );
         };
     }

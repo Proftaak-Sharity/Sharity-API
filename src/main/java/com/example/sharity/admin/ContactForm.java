@@ -8,31 +8,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name="contactForm")
-@SecondaryTable(name = "Customer", pkJoinColumns = @PrimaryKeyJoinColumn(name = "customerNumber"))
+@Entity(name="contactForm")
+@Table(name = "contactForm")
+//@SecondaryTable(name = "Customer", pkJoinColumns = @PrimaryKeyJoinColumn(name = "customerNumber"))
 
 public class ContactForm {
     // This is a class to construct a contact form for customers to contact admins
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(updatable = false )
     private Long formNumber;
 
     @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn (name = "customer")
     private Customer customer;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate timeSent;
 
-    @Column
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
 
     // Here we create the form
-    public ContactForm(Long formNumber, Customer customer, LocalDate timeSent, String message) {
-        this.formNumber = formNumber;
+    public ContactForm(Customer customer, LocalDate timeSent, String message) {
         this.customer = customer;
         this.timeSent = timeSent;
         this.message = message;

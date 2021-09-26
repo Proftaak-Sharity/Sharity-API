@@ -9,12 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface ContactFormRepository
-        extends JpaRepository<ContactForm, Long> {
+    extends JpaRepository<ContactForm, Long> {
 
-        //    SELECT * FROM contactForm WHERE id = :id
-        @Query
-        Optional<ContactForm> findContactFormById(Long id);
-    }
-
-
+    //    SELECT * FROM contactForm WHERE id = :id
+    @Query
+    Optional<ContactForm> findContactFormById(Long formNumber);
 }
+
+
+

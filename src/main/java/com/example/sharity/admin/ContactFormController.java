@@ -1,47 +1,45 @@
 package com.example.sharity.admin;
 
-import com.example.sharity.customer.Customer;
-import com.example.sharity.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 //Requestmapping says that the api has to display the data in de path as noted
 @RequestMapping(path = "api/contactform")
 public class ContactFormController {
 
-    private final CustomerService customerService;
+    private final ContactFormService contactFormService;
 
     //  Autowired automagically connects this customerController to the @Service in customerService
     @Autowired
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    public ContactFormController(ContactFormService customerService, ContactFormService contactFormService) {
+        this.contactFormService = contactFormService;
     }
 
     //    Everything in GetMapping is shown in the browser
     @GetMapping
-    public List<Customer> getCustomers() {
-        return customerService.getCustomers();
+    public Optional<ContactForm> getContactForms(@RequestBody Long formNumber) {
+        return contactFormService.getContactForms(formNumber);
     }
 
     @PostMapping
-    public void registerNewCustomer(@RequestBody Customer customer){
-        customerService.addNewCustomer(customer);
+    public void registerNewCustomer(@RequestBody ContactForm contactForm){
+        contactFormService.addNewContactForm(contactForm);
     }
 
-    @DeleteMapping(path = "{customerNumber}")
-    public void deleteCustomer(@PathVariable("customerNumber") Long customerNumber) {
-        customerService.deleteCustomer(customerNumber);
+    @DeleteMapping(path = "{formNumber}")
+    public void deleteContactForm(@PathVariable("formNumber") Long formNumber) {
+        contactFormService.deleteContactForm(formNumber);
     }
 
-    @PutMapping(path = "{customerNumber}")
-    public void updateCustomer(
-            @PathVariable("customerNumber") Long customerNumber,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String email) {
-        customerService.updateCustomer(customerNumber, firstName, email);
-    }
+//    @PutMapping(path = "{formNumber}")
+//    public void updateCustomer(
+//            @PathVariable("formNumber") Long formNumber,
+//            @RequestParam(required = false) String firstName,
+//            @RequestParam(required = false) String email) {
+//        contactFormService.updateContactForm(formNumber, firstName, email);
+//    }
 
 }

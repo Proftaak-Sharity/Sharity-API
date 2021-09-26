@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -27,7 +28,7 @@ public class Customer extends PersonModel {
     private String city;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    public Set<Car> cars;
+    public Set<Car> cars = new HashSet<>();
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -51,6 +52,7 @@ public class Customer extends PersonModel {
         super (lastName, firstName, email);
         this.dateOfBirth = dateOfBirth;
         this.bankaccount = bankAccount;
+        this.cars.add(car);
     }
 
 

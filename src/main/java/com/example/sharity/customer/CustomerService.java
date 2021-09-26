@@ -1,6 +1,7 @@
 // The service creates the service layer of our application. It connects the Controller with the Data Access layer
 package com.example.sharity.customer;
 
+import com.example.sharity.car.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,20 +34,22 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public void deleteCustomer(Long customerNumber) {
-        customerRepository.findById(customerNumber);
-            boolean exists = customerRepository.existsById(customerNumber);
+
+
+    public void deleteCustomer(Long id) {
+        customerRepository.findById(id);
+            boolean exists = customerRepository.existsById(id);
             if (!exists) {
-                throw new IllegalStateException("Customer with customer number " + customerNumber + " does not exists.");
+                throw new IllegalStateException("Customer with customer number " + id + " does not exists.");
             }
-            customerRepository.deleteById(customerNumber);
+            customerRepository.deleteById(id);
     }
 
 
     @Transactional
-    public void updateCustomer(Long customerNumber, String firstName, String email) {
-        Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new IllegalStateException("Customer with customer number " + customerNumber + " does not exists"));
+    public void updateCustomer(Long id, String firstName, String email) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Customer with customer number " + id + " does not exists"));
         if (firstName != null &&
                 firstName.length() > 0 &&
                 !Objects.equals(customer.getFirstName(), firstName)){

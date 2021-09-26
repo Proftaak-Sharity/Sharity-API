@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "customers")
-
 public class Customer extends PersonModel {
 
     @Column(name = "address")
@@ -28,7 +27,7 @@ public class Customer extends PersonModel {
     private String city;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Car> cars;
+    public Set<Car> cars;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -48,7 +47,7 @@ public class Customer extends PersonModel {
         super();
     }
 
-    public Customer(String lastName, String firstName, LocalDate dateOfBirth,  String email, BankAccount bankAccount) {
+    public Customer(String lastName, String firstName, LocalDate dateOfBirth, String email, BankAccount bankAccount, Car car) {
         super (lastName, firstName, email);
         this.dateOfBirth = dateOfBirth;
         this.bankaccount = bankAccount;
@@ -86,7 +85,6 @@ public class Customer extends PersonModel {
     public void setCars(Set<Car> cars) {
         this.cars = cars;
     }
-
     public BankAccount getBankAccount() {
         return bankaccount;
     }
@@ -95,14 +93,15 @@ public class Customer extends PersonModel {
         this.bankaccount = bankAccount;
     }
 
+
     @Override
     public String toString() {
         return "Customer{" +
                 "address='" + address + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", city='" + city + '\'' +
+                ", bankaccount=" + bankaccount +
                 ", cars=" + cars +
-                ", bankAccount=" + bankaccount +
                 '}';
     }
 }

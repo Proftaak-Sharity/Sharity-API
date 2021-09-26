@@ -9,18 +9,23 @@ import javax.validation.constraints.NotNull;
 @MappedSuperclass
 public class CarModel extends BaseModel {
 
-    @Column(unique = true)
-    @NotEmpty
+    @Column(unique = true, nullable = true)
     private String licensePlate;
 
     @Column
-    @NotEmpty
-    private MakeEnum make;
+    private String make;
 
     @Column
-    @NotEmpty
     private String model;
 
+    public CarModel(String licensePlate, String make, String model) {
+        this.licensePlate = licensePlate;
+        this.make = make;
+        this.model = model;
+    }
+
+    public CarModel() {
+    }
 
     public String getLicensePlate() {
         return licensePlate;
@@ -30,11 +35,11 @@ public class CarModel extends BaseModel {
         this.licensePlate = licensePlate;
     }
 
-    public MakeEnum getMake() {
+    public String getMake() {
         return make;
     }
 
-    public void setMake(MakeEnum make) {
+    public void setMake(String make) {
         this.make = make;
     }
 
@@ -46,6 +51,12 @@ public class CarModel extends BaseModel {
         this.model = model;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "CarModel{" +
+                "licensePlate='" + licensePlate + '\'' +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                '}';
+    }
 }

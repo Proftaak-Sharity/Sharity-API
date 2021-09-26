@@ -1,21 +1,17 @@
 package com.example.sharity.admin;
 
-import com.example.sharity.customer.Customer;
-import com.example.sharity.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
 @Service
 public class ContactFormService {
 
-    private final ContactFormRepository customerRepository;
+    private final ContactFormRepository contactFormRepository;
 
     @Autowired
     public ContactFormService(ContactFormRepository contactFormRepository) {
@@ -23,46 +19,58 @@ public class ContactFormService {
     }
 
     @GetMapping
-    public List<Customer> getCustomers() {
+    public List<ContactForm> getContactForm() {
         return contactFormRepository.findAll();
     }
 
-    public void addNewCustomer(Customer customer) {
-        Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
-        if (customerOptional.isPresent()) {
-            throw new IllegalStateException("Email already taken");
+    public void addNewContactForm(ContactForm contactForm) {
+        Optional<ContactForm> contactFormOptional = contactFormRepository.findContactFormById(contactForm.getFormNumber());
+        if (contactFormOptional.isPresent()) {
+            throw new IllegalStateException("ID already taken");
         }
-        customerRepository.save(customer);
+        contactFormRepository.save(contactForm);
     }
 
-    public void deleteCustomer(Long customerNumber) {
-        customerRepository.findById(customerNumber);
-        boolean exists = customerRepository.existsById(customerNumber);
+    public void deleteContactForm(Long formNumber) {
+        contactFormRepository.findById(formNumber);
+        boolean exists = contactFormRepository.existsById(formNumber);
         if (!exists) {
-            throw new IllegalStateException("Customer with customer number " + customerNumber + " does not exists.");
+            throw new IllegalStateException("Form with form number " + formNumber + " does not exists.");
         }
-        customerRepository.deleteById(customerNumber);
+        contactFormRepository.deleteById(formNumber);
     }
 
-
-    @Transactional
-    public void updateCustomer(Long customerNumber, String firstName, String email) {
-        Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new IllegalStateException("Customer with customer number " + customerNumber + " does not exists"));
-        if (firstName != null &&
-                firstName.length() > 0 &&
-                !Objects.equals(customer.getFirstName(), firstName)){
-            customer.setFirstName(firstName);
+    public Optional<ContactForm> getContactForms(Long formNumber) {
+        contactFormRepository.findById(formNumber);
+        boolean exists = contactFormRepository.existsById(formNumber);
+        if (!exists) {
+            throw new IllegalStateException("Form with form number " + formNumber + " does not exists.");
         }
-
-        if (email != null &&
-                email.length() > 0 &&
-                !Objects.equals(customer.getEmail(), email)) {
-            Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(email);
-            if (customerOptional.isPresent()) {
-                throw new IllegalStateException("Email already taken");
-            }
-            customer.setEmail(email);
-        }
+        return contactFormRepository.findById(formNumber);
     }
-}
+
+    public void updateContactForm(Long formNumber, String firstName, String email) {
+
+    }
+
+//
+//    @Transactional
+//    public void updateCustomer(Long formNumber, String firstName, String email) {
+//        Customer customer = customerRepository.findById(customerNumber)
+//                .orElseThrow(() -> new IllegalStateException("Customer with customer number " + customerNumber + " does not exists"));
+//        if (firstName != null &&
+//                firstName.length() > 0 &&
+//                !Objects.equals(customer.getFirstName(), firstName)){
+//            customer.setFirstName(firstName);
+//        }
+//
+//        if (email != null &&
+//                email.length() > 0 &&
+//                !Objects.equals(customer.getEmail(), email)) {
+//            Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(email);
+//            if (customerOptional.isPresent()) {
+//                throw new IllegalStateException("Email already taken");
+//            }
+//            customer.setEmail(email);
+//        }
+    }

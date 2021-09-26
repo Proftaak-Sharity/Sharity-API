@@ -15,4 +15,7 @@ public interface CustomerRepository
     //    SELECT * FROM customer WHERE email = :email
     @Query
     Optional<Customer> findCustomerByEmail(String email);
+
+    @Query
+    Optional<Customer> findCustomerByCustomerNumber(Long customerNumber);
 }

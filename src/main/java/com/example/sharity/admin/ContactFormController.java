@@ -14,7 +14,7 @@ public class ContactFormController {
 
     //  Autowired automagically connects this customerController to the @Service in customerService
     @Autowired
-    public ContactFormController(ContactFormService customerService, ContactFormService contactFormService) {
+    public ContactFormController( ContactFormService contactFormService) {
         this.contactFormService = contactFormService;
     }
 

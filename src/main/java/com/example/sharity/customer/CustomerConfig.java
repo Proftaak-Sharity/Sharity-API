@@ -2,7 +2,6 @@ package com.example.sharity.customer;
 
 import com.example.sharity.Enum.FuelTypeEnum;
 import com.example.sharity.car.Car;
-import com.example.sharity.car.CarRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

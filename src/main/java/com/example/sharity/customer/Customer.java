@@ -3,8 +3,6 @@ package com.example.sharity.customer;
 import com.example.sharity.car.Car;
 import com.example.sharity.models.PersonModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

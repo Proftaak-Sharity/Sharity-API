@@ -1,7 +1,6 @@
 // The service creates the service layer of our application. It connects the Controller with the Data Access layer
 package com.example.sharity.customer;
 
-import com.example.sharity.car.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;

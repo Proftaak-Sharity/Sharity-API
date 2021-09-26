@@ -1,10 +1,7 @@
 package com.example.sharity.models;
 
-import com.example.sharity.Enum.MakeEnum;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 public class CarModel extends BaseModel {

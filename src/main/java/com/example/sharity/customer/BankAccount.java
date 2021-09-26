@@ -2,7 +2,6 @@ package com.example.sharity.customer;
 
 import com.example.sharity.models.BaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;

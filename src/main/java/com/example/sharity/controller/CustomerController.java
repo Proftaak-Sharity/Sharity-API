@@ -9,7 +9,9 @@ import com.example.sharity.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -23,7 +25,11 @@ public class CustomerController {
     private BankaccountRepository bankaccountRepository;
 
     @PostMapping(value = "/api/addCustomer")
-    public Customer addCustomer(@RequestBody CustomerRequest request){
+    public Customer addCustomer(@RequestBody CustomerRequest request, Customer customer){
+        Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(request.getCustomer().getEmail());
+        if (((Optional<?>) customerOptional).isPresent()) {
+            throw new IllegalStateException("email allready taken");
+        }
         return customerRepository.save(request.getCustomer());
     }
 

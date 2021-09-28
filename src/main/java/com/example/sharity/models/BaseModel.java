@@ -1,8 +1,15 @@
 package com.example.sharity.models;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @MappedSuperclass
 public class BaseModel implements Serializable {
 
@@ -11,17 +18,5 @@ public class BaseModel implements Serializable {
     private Long id;
 
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public boolean isNew() {
-        return this.id == null;
-    }
 
 }

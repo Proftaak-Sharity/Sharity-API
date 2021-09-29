@@ -6,13 +6,13 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+@Data
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString
 @MappedSuperclass
-public class PersonModel extends BaseModel {
+public class PersonModel {
 
 	private String firstName;
 
@@ -21,7 +21,6 @@ public class PersonModel extends BaseModel {
 	@Column(unique = true)
 	private String email;
 
-	@Column
 	private String password;
 
 

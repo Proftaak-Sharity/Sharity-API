@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-public class Bankaccount {
+public class BankAccount {
 
     @Id
     @Column(length = 20)

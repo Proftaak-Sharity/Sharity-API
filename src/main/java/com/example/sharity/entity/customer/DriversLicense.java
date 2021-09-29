@@ -1,4 +1,4 @@
-package com.example.sharity.customer;
+package com.example.sharity.entity.customer;
 
 public class DriversLicense {
 
@@ -7,9 +7,6 @@ public class DriversLicense {
     String country;
     String validUntil;
     String licenseCopy;
-
-
-
 
 
 

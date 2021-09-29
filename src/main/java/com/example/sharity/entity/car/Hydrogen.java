@@ -1,4 +1,4 @@
-package com.example.sharity.car;
+package com.example.sharity.entity.car;
 
 public class Hydrogen {
 

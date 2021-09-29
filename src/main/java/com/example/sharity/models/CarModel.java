@@ -1,59 +1,27 @@
 package com.example.sharity.models;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import com.example.sharity.entity.car.makeEnum;
+import lombok.*;
 
+import javax.persistence.*;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @MappedSuperclass
-public class CarModel extends BaseModel {
+public class CarModel {
 
-    @Column(unique = true, nullable = true)
+    @Id
+    @Column(unique = true, length = 20)
     private String licensePlate;
 
-    @Column
-    private String make;
+    @Enumerated(EnumType.STRING)
+    private makeEnum make;
 
-    @Column
     private String model;
 
-    public CarModel(String licensePlate, String make, String model) {
-        this.licensePlate = licensePlate;
-        this.make = make;
-        this.model = model;
-    }
 
-    public CarModel() {
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
-    public String getMake() {
-        return make;
-    }
-
-    public void setMake(String make) {
-        this.make = make;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    @Override
-    public String toString() {
-        return "CarModel{" +
-                "licensePlate='" + licensePlate + '\'' +
-                ", make='" + make + '\'' +
-                ", model='" + model + '\'' +
-                '}';
-    }
 }

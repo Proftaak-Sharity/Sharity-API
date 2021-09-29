@@ -1,16 +1,12 @@
 package com.example.sharity.entity.customer;
 
-import com.example.sharity.models.BaseModel;
 import lombok.*;
 
 import javax.persistence.*;
 
-
-
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString
 @Entity
 public class Bankaccount {

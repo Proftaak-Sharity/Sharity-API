@@ -12,7 +12,7 @@ import javax.persistence.MappedSuperclass;
 @NoArgsConstructor
 @ToString
 @MappedSuperclass
-public class PersonModel extends BaseModel {
+public class PersonModel {
 
 	private String firstName;
 

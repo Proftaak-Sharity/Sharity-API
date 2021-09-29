@@ -16,6 +16,10 @@ import javax.persistence.*;
 @Entity
 public class Customer extends PersonModel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long CustomerNumber;
+
     private String address;
 
     private LocalDate dateOfBirth;
@@ -23,12 +27,12 @@ public class Customer extends PersonModel {
     private String city;
 
     @OneToMany(targetEntity = Car.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
     public List<Car> cars;
 
-    @OneToMany(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private List<BankAccount> bankaccounts;
+    @OneToMany(targetEntity = Bankaccount.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
+    private List<Bankaccount> bankaccounts;
 
 }
 

@@ -1,9 +1,10 @@
 package com.example.sharity.models;
 
+import com.example.sharity.entity.car.makeEnum;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+
 
 @Getter
 @Setter
@@ -11,15 +12,15 @@ import javax.persistence.MappedSuperclass;
 @NoArgsConstructor
 @ToString
 @MappedSuperclass
-public class CarModel extends BaseModel {
+public class CarModel {
 
-    @Column(unique = true)
+    @Id
+    @Column(unique = true, length = 20)
     private String licensePlate;
 
-    @Column
-    private String make;
+    @Enumerated(EnumType.STRING)
+    private makeEnum make;
 
-    @Column
     private String model;
 
 

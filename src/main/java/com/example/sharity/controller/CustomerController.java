@@ -9,7 +9,6 @@ import com.example.sharity.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +27,12 @@ public class CustomerController {
     public Customer addCustomer(@RequestBody CustomerRequest request, Customer customer){
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(request.getCustomer().getEmail());
         if (((Optional<?>) customerOptional).isPresent()) {
-            throw new IllegalStateException("email allready taken");
+            throw new IllegalStateException("email already taken");
         }
         return customerRepository.save(request.getCustomer());
     }
 
-    @GetMapping(value = "/api/getAllCustomers")
+    @GetMapping(value = "/api/customers")
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }

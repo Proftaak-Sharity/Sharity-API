@@ -13,9 +13,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Entity
-public class BankAccount extends BaseModel {
+public class Bankaccount {
 
-    @Column(unique = true)
+    @Id
+    @Column(length = 20)
     private String iban;
 
     private String accountHolder;

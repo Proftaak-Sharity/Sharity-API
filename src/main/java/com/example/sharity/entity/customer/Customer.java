@@ -2,46 +2,38 @@ package com.example.sharity.entity.customer;
 
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.models.PersonModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.sharity.reservation.Reservation;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.*;
 
-@Data
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 public class Customer extends PersonModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerNumber;
+    private String address;
 
     private LocalDate dateOfBirth;
-    private String address;
-    private String houseNumber;
+
     private String city;
 
-    @Enumerated(EnumType.STRING)
-    private CountryEnum country;
-
-    @JsonIgnore
     @OneToMany(targetEntity = Car.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     public List<Car> cars;
 
-    @JsonIgnore
-    @OneToMany(targetEntity = Bankaccount.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
-    private List<Bankaccount> bankaccounts;
+    @OneToMany(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private List<BankAccount> bankaccounts;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "customerNumber")
-    public DriversLicense driversLicense;
+    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private List<Reservation> reservations;
 
 }
 

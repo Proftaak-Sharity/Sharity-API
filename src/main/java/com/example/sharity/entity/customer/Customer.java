@@ -35,9 +35,9 @@ public class Customer extends PersonModel {
     public List<Car> cars;
 
     @JsonIgnore
-    @OneToMany(targetEntity = Bankaccount.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
-    private List<Bankaccount> bankaccounts;
+    private List<BankAccount> bankaccounts;
 
     @JsonIgnore
     @OneToOne(mappedBy = "customerNumber")

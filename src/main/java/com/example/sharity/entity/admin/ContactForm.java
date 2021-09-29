@@ -1,8 +1,8 @@
-package com.example.sharity.admin;
+package com.example.sharity.entity.admin;
 
 
-import com.example.sharity.customer.BankAccount;
-import com.example.sharity.customer.Customer;
+import com.example.sharity.entity.customer.BankAccount;
+import com.example.sharity.entity.customer.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

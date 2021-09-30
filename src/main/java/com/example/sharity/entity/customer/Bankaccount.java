@@ -9,7 +9,7 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @ToString
 @Entity
-public class BankAccount {
+public class Bankaccount {
 
     @Id
     @Column(length = 20)

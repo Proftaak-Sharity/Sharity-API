@@ -31,3 +31,8 @@ INSERT INTO `drivers_license` (`license_number`, `country`, `valid_until`, licen
 ('POGN65897N', 'NETHERLANDS', '2024-05-19', '../img/driverslicense/JANSJ870331.PNG', 4),
 ('GDBL63820B', 'LUXEMBOURG', '2023-06-09', '../img/driverslicense/JANSD780320.PNG', 2),
 ('DTYM94623F', 'BELGIUM', '2022-04-12', '../img/driverslicense/HANEL850604.PNG', 5);
+
+INSERT INTO `contact_form` (`form_number`, `message`, `time_sent`, `customer_number`) VALUES
+(1, 'test', '2021-08-29', '1'),
+(2, 'test 2', '2021-09-30', '2'),
+(3, 'groetjes van customer 2', '2021-09-30', '2');

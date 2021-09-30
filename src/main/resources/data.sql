@@ -11,7 +11,7 @@ INSERT INTO `bankaccount` (`iban`, `account_holder`, `customer_number`) VALUES
 INSERT INTO `car` (`license_plate`, `make`, `model`, `fuel_type`, `customer_number`) VALUES
 ('KNTK01', 'Volvo', 'XC90', 'DIESEL', 1),
 ('XVDR09', 'Mitsubishi', 'Carisma', 'LPG', 2),
-('5NBV12', 'RolceRoyce', 'Space', 'DIESEL', 5),
+('5NBV12', 'RollsRoyce', 'Space', 'DIESEL', 5),
 ('XX567R', 'LandRover', 'Defender', 'PETROL', 4),
 ('NR45HB', 'BMW', '318i', 'HYDROGEN', 2),
 ('RGBB54', 'MercedesBenz', 'ALG318 (AMG)', 'PETROL', 3),
@@ -31,3 +31,8 @@ INSERT INTO `drivers_license` (`license_number`, `country`, `valid_until`, licen
 ('POGN65897N', 'NETHERLANDS', '2024-05-19', '../img/driverslicense/JANSJ870331.PNG', 4),
 ('GDBL63820B', 'LUXEMBOURG', '2023-06-09', '../img/driverslicense/JANSD780320.PNG', 2),
 ('DTYM94623F', 'BELGIUM', '2022-04-12', '../img/driverslicense/HANEL850604.PNG', 5);
+
+INSERT INTO `reservation` (`customer_number`,`license_plate`,`rent`, `start_date`, `end_date`) VALUES
+(1, 'KNTK01', 135.50, '2021-05-10', '2021-05-15'),
+(2,'XVDR09', 175.75,' 2021-09-11', '2021-10-15'),
+(3, 'NR45HB', 165.95, '2021-07-07', '2021-08-09');

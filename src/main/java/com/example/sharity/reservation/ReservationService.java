@@ -1,42 +1,58 @@
 package com.example.sharity.reservation;
 
+import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.reservation.Reservation;
+import com.example.sharity.repository.ReservationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
-
 
 @Service
 public class ReservationService {
 
-     private List<Reservation> reservations = new ArrayList<>(Arrays.asList(
-                new Reservation(200.0 )
-        ));
+    private final ReservationRepository reservationRepository;
 
-    public List<Reservation> getAllReservations() {
-        return reservations;
+    @Autowired
+    public ReservationService(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
     }
-
-    public Reservation getReservation(int reservationNumber){
-        return reservations.stream().filter(r -> r.getId() == (reservationNumber)).findFirst().get();
+    public List<Reservation> getReservations() {
+        return reservationRepository.findAll();
     }
 
     public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
+        reservationRepository.save(reservation);
     }
 
-    public void updateReservation(int reservationNumber, Reservation reservation) {
-        for (int i = 0; i < reservations.size(); i++){
-            Reservation r = reservations.get(i);
-            if(r.getId() == (reservationNumber)){
-                reservations.set(i, reservation);
-                return;
-            }
-        }
+    @Transactional
+    public void updateReservation(int reservationNumber, LocalDate startDate, LocalDate endDate) {
+       Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation with " + reservationNumber + " does not exist"));
+
     }
 
-    public void deleteReservation(int reservationNumber) {
-        reservations.removeIf(r -> r.getId() == (reservationNumber));
-    }
+
 }
+
+
+//    public Reservation getReservations(int reservationNumber){
+//        return reservationRepository.stream().filter(r -> r.getId() == (reservationNumber)).findFirst().get();
+//    }
+//
+//
+//    public void updateReservation(int reservationNumber, Reservation reservation) {
+//        for (int i = 0; i < reservations.size(); i++){
+//            Reservation r = reservations.get(i);
+//            if(r.getId() == (reservationNumber)){
+//                reservations.set(i, reservation);
+//                return;
+//            }
+//        }
+//    }
+//
+//    public void deleteReservation(int reservationNumber) {
+//        reservations.removeIf(r -> r.getId() == (reservationNumber));
+//    }
+//}

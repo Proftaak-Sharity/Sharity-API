@@ -3,6 +3,7 @@ package com.example.sharity.entity.car;
 
 import com.example.sharity.models.CarModel;
 import com.example.sharity.reservation.Reservation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,10 +20,5 @@ public class Car extends CarModel {
 
     @Enumerated(EnumType.STRING)
     private FuelTypeEnum fuelType;
-
-    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private List<Reservation> reservations;
-
 
 }

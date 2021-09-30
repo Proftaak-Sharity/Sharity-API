@@ -1,5 +1,5 @@
 
-package com.example.sharity.models;
+package com.example.sharity.entity.customer;
 
 import lombok.*;
 
@@ -9,7 +9,6 @@ import javax.persistence.MappedSuperclass;
 @Data
 @Getter
 @Setter
-@RequiredArgsConstructor
 @ToString
 @MappedSuperclass
 public class PersonModel {
@@ -23,5 +22,8 @@ public class PersonModel {
 
 	private String password;
 
-
+	public PersonModel(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 }

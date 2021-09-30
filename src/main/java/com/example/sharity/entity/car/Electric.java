@@ -1,6 +1,6 @@
 package com.example.sharity.entity.car;
 
-public class Electric {
+public class Electric extends Car{
 
     int batteryRange;
     double batteryCapacity;

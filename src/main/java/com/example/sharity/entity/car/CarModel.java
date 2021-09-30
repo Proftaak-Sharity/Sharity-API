@@ -1,4 +1,4 @@
-package com.example.sharity.models;
+package com.example.sharity.entity.car;
 
 import com.example.sharity.entity.car.makeEnum;
 import lombok.*;
@@ -8,8 +8,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString
 @MappedSuperclass
 public class CarModel {

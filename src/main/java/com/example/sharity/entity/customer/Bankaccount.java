@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @ToString
 @Entity
 public class Bankaccount {
@@ -17,4 +16,11 @@ public class Bankaccount {
 
     private String accountHolder;
 
+    public Bankaccount(String iban, String accountHolder) {
+        this.iban = iban;
+        this.accountHolder = accountHolder;
+    }
+
+    public Bankaccount() {
+    }
 }

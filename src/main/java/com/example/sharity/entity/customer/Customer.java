@@ -41,6 +41,15 @@ public class Customer extends PersonModel {
     public DriversLicense driversLicense;
 
 
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country) {
+        super(firstName, lastName);
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.country = country;
+    }
+
     public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country, Bankaccount bankaccount) {
         super(firstName, lastName);
         this.dateOfBirth = dateOfBirth;
@@ -51,6 +60,23 @@ public class Customer extends PersonModel {
         this.bankaccounts = Collections.singletonList(bankaccount);
     }
 
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country, Bankaccount bankaccount, Car car) {
+        super(firstName, lastName);
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.country = country;
+        this.bankaccounts = Collections.singletonList(bankaccount);
+        this.cars = Collections.singletonList(car);
+    }
+
+    public Customer() {
+            super();
+        }
+
 }
+
+
 
 

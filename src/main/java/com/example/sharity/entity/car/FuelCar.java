@@ -20,11 +20,13 @@ public class FuelCar extends Car {
     @Enumerated(EnumType.STRING)
     private FuelTypeEnum fuelType;
 
+    private int sizeFueltank;
     private int kmPerLiterFuel;
     private double pricePerDay = 200;
 
-    public FuelCar(String licensePlate, makeEnum make, String model, FuelTypeEnum fuelType, int kmPerLiterFuel) {
+    public FuelCar(String licensePlate, makeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel) {
         super(licensePlate, make, model);
+        this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
         this.fuelType = fuelType;
     }

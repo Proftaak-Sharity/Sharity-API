@@ -14,23 +14,18 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value = "ELECTRIC")
 public class ElectricCar extends Car {
 
-    private int batteryRange;
+    private int batteryCapacity;
     private int kmPerKw;
     private int fastChargingTime;
     private double pricePerDay =  500;
 
-    public ElectricCar(String licensePlate, makeEnum make, String model, int batteryRange, int kmPerKw, int fastChargingTime) {
+    public ElectricCar(String licensePlate, makeEnum make, String model,int batteryCapacity, int kmPerKw, int fastChargingTime) {
         super(licensePlate, make, model);
-        this.batteryRange = batteryRange;
+        this.batteryCapacity = batteryCapacity;
         this.kmPerKw = kmPerKw;
         this.fastChargingTime = fastChargingTime;
     }
 
-    public ElectricCar(int batteryRange, int kmPerKw, int fastChargingTime) {
-        this.batteryRange = batteryRange;
-        this.kmPerKw = kmPerKw;
-        this.fastChargingTime = fastChargingTime;
-    }
 
     public ElectricCar() {
     }

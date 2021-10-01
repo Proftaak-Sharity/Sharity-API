@@ -15,14 +15,13 @@ import javax.persistence.Entity;
 public class HydrogenCar extends Car {
 
     private int sizeFueltank;
-    private int batteryRange;
     private int kmPerLiter;
     private double pricePerDay = 400;
 
-    public HydrogenCar(String licensePlate, makeEnum make, String model, int sizeFueltank, int batteryRange, int kmPerLiter) {
+
+    public HydrogenCar(String licensePlate, makeEnum make, String model, int sizeFueltank, int kmPerLiter) {
         super(licensePlate, make, model);
         this.sizeFueltank = sizeFueltank;
-        this.batteryRange = batteryRange;
         this.kmPerLiter = kmPerLiter;
     }
 
@@ -30,4 +29,5 @@ public class HydrogenCar extends Car {
     public HydrogenCar() {
         super();
     }
+
 }

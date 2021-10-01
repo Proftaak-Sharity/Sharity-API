@@ -1,20 +1,16 @@
 package com.example.sharity.entity.admin;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public abstract class Tax {
 
     // this will be the abstract class for taxes
     // we wont be spawning instances of this class so we can make it abstract
 
     private double tax = 21;
-
-
-    public void transferMoney(double amount){
-        //here we will get the amount the customer asks and add the taxed we get by running calculateTax
-
-    }
 
     public double getRealPrice(double amount) {
         //here we will create the amount the customer will pay

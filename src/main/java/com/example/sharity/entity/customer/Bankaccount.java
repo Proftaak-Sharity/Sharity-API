@@ -16,6 +16,10 @@ public class Bankaccount {
 
     private String accountHolder;
 
+    @ManyToOne
+    @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
+    private Customer customerNumber;
+
     public Bankaccount(String iban, String accountHolder) {
         this.iban = iban;
         this.accountHolder = accountHolder;
@@ -23,4 +27,5 @@ public class Bankaccount {
 
     public Bankaccount() {
     }
+
 }

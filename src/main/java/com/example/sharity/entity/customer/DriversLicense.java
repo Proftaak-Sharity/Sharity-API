@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity
-@RequiredArgsConstructor
 public class DriversLicense {
 
     @Id
@@ -27,9 +26,13 @@ public class DriversLicense {
     @Column(name = "license_copy_url", nullable = false)
     private String licenseCopyURL;
 
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
-    public Customer customerNumber;
+    public DriversLicense() {
+    }
 
+    public DriversLicense(String licenseNumber, CountryEnum country, LocalDate validUntil, String licenseCopyURL) {
+        this.licenseNumber = licenseNumber;
+        this.country = country;
+        this.validUntil = validUntil;
+        this.licenseCopyURL = licenseCopyURL;
+    }
 }

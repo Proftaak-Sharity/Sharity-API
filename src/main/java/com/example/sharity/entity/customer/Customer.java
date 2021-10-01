@@ -30,18 +30,26 @@ public class Customer extends PersonModel {
 
     @OneToMany(targetEntity = Car.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
-    public List<Car> cars;
+    private List<Car> cars;
 
     @OneToMany(targetEntity = Bankaccount.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
     private List<Bankaccount> bankaccounts;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "customerNumber")
-    public DriversLicense driversLicense;
+    @OneToOne(cascade = CascadeType.ALL)
+    private DriversLicense driversLicense;
 
 
-    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country, Bankaccount bankaccount) {
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country) {
+        super(firstName, lastName);
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.country = country;
+    }
+
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country, Bankaccount bankaccount, DriversLicense driversLicense) {
         super(firstName, lastName);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -49,8 +57,38 @@ public class Customer extends PersonModel {
         this.city = city;
         this.country = country;
         this.bankaccounts = Collections.singletonList(bankaccount);
+        this.driversLicense = driversLicense;
     }
 
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country, Bankaccount bankaccount, Car car) {
+        super(firstName, lastName);
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.country = country;
+        this.bankaccounts = Collections.singletonList(bankaccount);
+        this.cars = Collections.singletonList(car);
+    }
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, CountryEnum country, Bankaccount bankaccount, Car car, DriversLicense driversLicense) {
+        super(firstName, lastName);
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.country = country;
+        this.bankaccounts = Collections.singletonList(bankaccount);
+        this.cars = Collections.singletonList(car);
+        this.driversLicense = driversLicense;
+    }
+
+
+    public Customer() {
+            super();
+        }
+
 }
+
+
 
 

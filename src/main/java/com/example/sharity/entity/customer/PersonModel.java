@@ -26,4 +26,7 @@ public class PersonModel {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+
+	public PersonModel() {
+	}
 }

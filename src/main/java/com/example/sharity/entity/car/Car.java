@@ -8,13 +8,29 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @ToString
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "car", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public class Car extends CarModel {
+public class Car {
+
+    @Id
+    @Column(unique = true, length = 20)
+    private String licensePlate;
 
     @Enumerated(EnumType.STRING)
-    private FuelTypeEnum fuelType;
+    private makeEnum make;
 
+    private String model;
+
+
+    public Car(String licensePlate, makeEnum make, String model) {
+        this.licensePlate = licensePlate;
+        this.make = make;
+        this.model = model;
+    }
+
+    public Car() {
+    }
 
 }

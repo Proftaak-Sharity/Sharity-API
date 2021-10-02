@@ -16,10 +16,13 @@ public class Bankaccount {
 
     private String accountHolder;
 
+    private Double credit;
 
-    public Bankaccount(String iban, String accountHolder) {
+
+    public Bankaccount(String iban, String accountHolder, Double credit ){
         this.iban = iban;
         this.accountHolder = accountHolder;
+        this.credit = credit;
     }
 
     public Bankaccount() {

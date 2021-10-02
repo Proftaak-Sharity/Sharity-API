@@ -23,11 +23,14 @@ public class Car {
 
     private String model;
 
+    private double rent = 100;
+
 
     public Car(String licensePlate, makeEnum make, String model) {
         this.licensePlate = licensePlate;
         this.make = make;
         this.model = model;
+        this.rent = rent;
     }
 
     public Car() {

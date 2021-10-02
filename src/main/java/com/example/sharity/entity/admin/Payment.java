@@ -1,20 +1,40 @@
 package com.example.sharity.entity.admin;
 
+import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.customer.Bankaccount;
 import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.repository.BankaccountRepository;
 
-public abstract class Payment {
+import java.util.Collections;
+
+
+public class Payment {
 
 
     //this function will be used to check if the credit is enough to rent a car
-    public boolean checkCredit( ){
+    public double checkCredit(Customer customer, long days, Car car ){
         /*
         TODO:   get bankaccount and read credit field
                 get the rent amount with taxes
                 compare
         */
 
-
-        return true;
+//        BankaccountRepository bankaccountRepository;
+//
+//
+//        Bankaccount bankaccount = bankaccount.getCredit(customer);
+//        double credits = bankaccount.getCredit();
+//        double rent = car.getRent();
+//        double amountToPay = rent * days;
+//
+//        if (credits >= amountToPay){
+//
+//            return rent;
+//        }
+//        else {
+//            return 0;
+//        }
+        return 30;
     }
 
     // this function will be used to buy more credits

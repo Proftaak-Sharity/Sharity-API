@@ -36,6 +36,7 @@ public class CustomerConfig {
                 new Bankaccount("NL12INGB122365432", "RPL VAN DER HORST"),
                 new FuelCar("KNTK01", makeEnum.Volvo, "XC90", FuelTypeEnum.DIESEL, 52, 12),
                 new DriversLicense("DFAP51056F", CountryEnum.NETHERLANDS, LocalDate.of(2031, Month.APRIL, 22), "../img/driverslicense/HORSR830829.PNG")
+
         );
         Customer Daniel = new Customer(
                 "Daniël",

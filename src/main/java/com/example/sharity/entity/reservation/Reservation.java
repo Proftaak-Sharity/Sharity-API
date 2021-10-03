@@ -1,12 +1,16 @@
 package com.example.sharity.entity.reservation;
 
+import com.example.sharity.entity.admin.Payment;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.repository.CustomerRepository;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
 @Getter
@@ -33,12 +37,28 @@ public class Reservation {
     private LocalDate endDate;
 
     public Reservation(Customer customerNumber, Car licensePlate, LocalDate reservationDate, double rent, LocalDate startDate, LocalDate endDate) {
-        this.customer = (Customer) Collections.singletonList(customerNumber);
-        this.rentalcar = (Car) Collections.singletonList(licensePlate);
-        this.reservationDate = reservationDate;
-        this.rent = rent;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        // inject the payment methods in reservation
+        Payment payment = new Payment();
+        CustomerRepository customerRepository ;
+
+        // lets calculate the days we will rent the car
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
+
+        customer = customerNumber;
+
+        Car car = licensePlate;
+        rent = payment.checkCredit(customer, days, car);
+        if (rent >= 0){
+            this.customer = customer;
+            this.rentalcar = car;
+            this.reservationDate = reservationDate;
+            this.rent = rent;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        } else {
+            System.out.println("We should buy credits first");
+
+        }
     }
 
     public Reservation() {

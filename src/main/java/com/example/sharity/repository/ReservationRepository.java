@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ReservationRepository  extends JpaRepository<Reservation, Integer > {
+public interface ReservationRepository
+        extends JpaRepository<Reservation, Integer > {
+
     }

@@ -24,6 +24,7 @@ public class FuelCar extends Car {
     private int kmPerLiterFuel;
     private double pricePerDay = 200;
 
+
     public FuelCar(String licensePlate, makeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel) {
         super(licensePlate, make, model);
         this.sizeFueltank = sizeFueltank;

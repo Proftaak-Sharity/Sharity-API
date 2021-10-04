@@ -8,8 +8,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@Getter
-@Setter
+//@Getter
+//@Setter
 @ToString
 @DiscriminatorValue(value = "ELECTRIC")
 public class ElectricCar extends Car {
@@ -29,5 +29,10 @@ public class ElectricCar extends Car {
 
     public ElectricCar() {
     }
+
+    public double getPricePerDay(Car licensePlate){
+        return pricePerDay;
+    }
+
 }
 

@@ -3,6 +3,7 @@ package com.example.sharity.entity.reservation;
 import com.example.sharity.entity.admin.Payment;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,9 +41,15 @@ public class Reservation {
         // inject the payment methods in reservation
         Payment payment = new Payment();
         CustomerRepository customerRepository ;
+        CarRepository carRepository;
 
         // lets calculate the days we will rent the car
         long days = ChronoUnit.DAYS.between(startDate, endDate);
+
+        //calculate rent = days x car/fueltype/pricePerDay
+       //  double rent = days * getPricePerDay();
+
+
 
         customer = customerNumber;
 
@@ -59,14 +66,11 @@ public class Reservation {
             System.out.println("We should buy credits first");
 
         }
+
     }
 
     public Reservation() {
 
     }
 
-//    public double getRent(LocalDate startDate, LocalDate endDate, Car licensePlate) {
-//        Stream<LocalDate> rentalDays = startDate.datesUntil(endDate);
-//        return rentalDays * pricePerDay;
-//    }
 }

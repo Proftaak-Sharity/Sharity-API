@@ -34,7 +34,7 @@ public class ReservationController {
             @PathVariable("reservationNumber") int reservationNumber,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate){
-        reservationService.updateReservation(reservationNumber, startDate, endDate );
+        reservationService.updateReservation(reservationNumber, startDate, endDate);
     }
     @DeleteMapping(path = "{reservationNumber}")
     public void deleteReservation(

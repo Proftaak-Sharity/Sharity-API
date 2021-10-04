@@ -1,7 +1,7 @@
-package com.example.sharity.reservation;
+package com.example.sharity.controller;
 
-import com.example.sharity.reservation.Reservation;
-import com.example.sharity.reservation.ReservationService;
+import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

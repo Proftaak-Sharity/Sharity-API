@@ -1,7 +1,7 @@
-package com.example.sharity.reservation;
+package com.example.sharity.service;
 
-import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.reservation.Reservation;
+
+import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 @Service
 public class ReservationService {

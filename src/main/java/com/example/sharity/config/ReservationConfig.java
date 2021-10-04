@@ -28,7 +28,6 @@ public class ReservationConfig {
                     LocalDate.of(2021, Month.DECEMBER, 5)
 
             );
-
             reservationRepository.save(Rob);
         };
     }

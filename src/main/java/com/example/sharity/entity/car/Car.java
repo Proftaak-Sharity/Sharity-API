@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "car", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
 public class Car {
 
@@ -23,6 +23,11 @@ public class Car {
 
     private String model;
 
+<<<<<<< Updated upstream
+=======
+    private double rent;
+
+>>>>>>> Stashed changes
 
     public Car(String licensePlate, makeEnum make, String model) {
         this.licensePlate = licensePlate;

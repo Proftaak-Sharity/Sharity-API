@@ -17,7 +17,7 @@ public class ElectricCar extends Car {
     private int batteryCapacity;
     private int kmPerKw;
     private int fastChargingTime;
-    private double pricePerDay =  500;
+    private double rent =  500;
 
     public ElectricCar(String licensePlate, makeEnum make, String model,int batteryCapacity, int kmPerKw, int fastChargingTime) {
         super(licensePlate, make, model);

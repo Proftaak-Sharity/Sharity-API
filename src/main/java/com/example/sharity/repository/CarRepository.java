@@ -11,5 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, String> {
+<<<<<<< Updated upstream
+=======
+
+
+   // List<Car> findAllById(Car licensePlate);
+>>>>>>> Stashed changes
 }
 

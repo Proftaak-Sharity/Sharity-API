@@ -16,7 +16,7 @@ public class HydrogenCar extends Car {
 
     private int sizeFueltank;
     private int kmPerLiter;
-    private double pricePerDay = 400;
+    private double rent = 400;
 
 
     public HydrogenCar(String licensePlate, makeEnum make, String model, int sizeFueltank, int kmPerLiter) {

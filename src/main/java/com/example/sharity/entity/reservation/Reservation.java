@@ -1,18 +1,12 @@
 package com.example.sharity.entity.reservation;
 
-import com.example.sharity.entity.admin.Payment;
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.repository.CustomerRepository;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.util.Collections;
+
 
 @Getter
 @Setter
@@ -44,7 +38,6 @@ public class Reservation {
     }
 
     public Reservation() {
-
     }
 
 }

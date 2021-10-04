@@ -1,18 +1,15 @@
 package com.example.sharity.service;
 
+import com.example.sharity.entity.car.Car;
 import com.example.sharity.repository.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CarService {
 
-<<<<<<< Updated upstream
-//    private final CarRepository carRepository;
-//
-//    public CarService carService(CarRepository carRepository){
-//        this.carRepository = carRepository;
-//    }
-=======
     private final CarRepository carRepository;
 
     @Autowired
@@ -20,13 +17,12 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public double getRentfromCar(String licensePlate) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new IllegalStateException("test"));
+    public double getRentFromCar(String licensePlate) {
+        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new IllegalStateException("Car with licenseplate " + licensePlate + " not known"));
         return car.getRent();
     }
 
     public List<Car> getCarById(Car licensePlate){
         return carRepository.findAllById((Iterable<String>) licensePlate);
     }
->>>>>>> Stashed changes
 }

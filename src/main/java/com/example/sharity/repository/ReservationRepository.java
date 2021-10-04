@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository  extends JpaRepository<Reservation,String> {
+public interface ReservationRepository  extends JpaRepository<Reservation, String> {
 
     @Query("SELECT r.reservationNumber FROM Reservation r WHERE r.reservationNumber =?1")
     Optional<Reservation> findReservationByReservationNumber(int reservationNumber);

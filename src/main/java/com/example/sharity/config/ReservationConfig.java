@@ -13,7 +13,6 @@ import java.time.Month;
 @Component
 public class ReservationConfig {
 
-
     @Bean
     CommandLineRunner commandLineRunner (ReservationRepository reservationRepository,
                                          CarRepository carRepository,
@@ -24,9 +23,10 @@ public class ReservationConfig {
             Reservation Rob = new Reservation(
                     3L,
                     "KNTK01",
-                    carService.getRentfromCar("KNTK01"),
+                    carService.getRentFromCar("KNTK01"),
                     LocalDate.of(2021, Month.DECEMBER, 1),
                     LocalDate.of(2021, Month.DECEMBER, 5)
+
             );
 
             reservationRepository.save(Rob);

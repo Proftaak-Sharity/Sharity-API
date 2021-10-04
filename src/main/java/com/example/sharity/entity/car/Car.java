@@ -22,12 +22,7 @@ public class Car {
     private makeEnum make;
 
     private String model;
-
-<<<<<<< Updated upstream
-=======
     private double rent;
-
->>>>>>> Stashed changes
 
     public Car(String licensePlate, makeEnum make, String model) {
         this.licensePlate = licensePlate;

@@ -17,6 +17,11 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
+    public double getRentFromCar(String licensePlate) {
+        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new IllegalStateException("Car with licenseplate " + licensePlate + " not known"));
+        return car.getRent();
+    }
+
     public List<Car> getCarById(Car licensePlate){
         return carRepository.findAllById((Iterable<String>) licensePlate);
     }

@@ -1,6 +1,5 @@
 package com.example.sharity.entity.customer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

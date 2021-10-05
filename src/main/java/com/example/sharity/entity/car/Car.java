@@ -18,6 +18,8 @@ public class Car {
     @Column(unique = true, length = 20)
     private String licensePlate;
 
+    private Long customerNumber;
+
     @Enumerated(EnumType.STRING)
     private makeEnum make;
 

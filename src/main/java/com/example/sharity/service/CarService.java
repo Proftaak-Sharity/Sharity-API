@@ -1,9 +1,8 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Enums.Availability;
+import com.example.sharity.entity.car.enums.Availability;
 import com.example.sharity.repository.CarRepository;
-import net.bytebuddy.dynamic.NexusAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

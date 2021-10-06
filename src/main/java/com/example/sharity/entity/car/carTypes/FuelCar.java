@@ -1,9 +1,10 @@
-package com.example.sharity.entity.car.CarTypes;
+package com.example.sharity.entity.car.carTypes;
 
 import com.example.sharity.abstracts.NumberRounder;
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Enums.FuelType;
-import com.example.sharity.entity.car.Enums.Make;
+import com.example.sharity.entity.car.enums.FuelType;
+import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.entity.car.Insurance;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,16 +29,16 @@ public class FuelCar extends Car {
     private int kmPerLiterFuel;
     private double rent;
 
-    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double rent) {
-        super(licensePlate, make, model);
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double rent, Insurance insurance) {
+        super(licensePlate, make, model, insurance);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
         this.fuelType = fuelType;
         this.rent = NumberRounder.roundDouble(rent, 2);
     }
 
-    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double rent) {
-        super(licensePlate, make, model, customerNumber);
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double rent, Insurance insurance) {
+        super(licensePlate, make, model, customerNumber, insurance);
         this.fuelType = fuelType;
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;

@@ -1,7 +1,8 @@
-package com.example.sharity.entity.car.CarTypes;
+package com.example.sharity.entity.car.carTypes;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Enums.Make;
+import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.entity.car.Insurance;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,15 +22,15 @@ public class HydrogenCar extends Car {
     private double rent;
 
 
-    public HydrogenCar(String licensePlate, Make make, String model, int sizeFueltank, int kmPerLiter, double rent) {
-        super(licensePlate, make, model);
+    public HydrogenCar(String licensePlate, Make make, String model, int sizeFueltank, int kmPerLiter, double rent, Insurance insurance) {
+        super(licensePlate, make, model, insurance);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiter = kmPerLiter;
         this.rent = rent;
     }
 
-    public HydrogenCar(String licensePlate, Make make, String model, Long customerNumber, int sizeFueltank, int kmPerLiter, double rent) {
-        super(licensePlate, make, model, customerNumber);
+    public HydrogenCar(String licensePlate, Make make, String model, Long customerNumber, int sizeFueltank, int kmPerLiter, double rent, Insurance insurance) {
+        super(licensePlate, make, model, customerNumber, insurance);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiter = kmPerLiter;
         this.rent = rent;

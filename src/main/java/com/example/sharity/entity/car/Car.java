@@ -1,8 +1,8 @@
 package com.example.sharity.entity.car;
 
 
-import com.example.sharity.entity.car.Enums.Availability;
-import com.example.sharity.entity.car.Enums.Make;
+import com.example.sharity.entity.car.enums.Availability;
+import com.example.sharity.entity.car.enums.Make;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,17 +31,23 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Availability available = Availability.YES;
 
-    public Car(String licensePlate, Make make, String model) {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private Insurance insurance;
+
+    public Car(String licensePlate, Make make, String model, Insurance insurance) {
         this.licensePlate = licensePlate;
         this.make = make;
         this.model = model;
+        this.insurance = insurance;
     }
 
-    public Car(String licensePlate, Make make, String model, Long customerNumber) {
+    public Car(String licensePlate, Make make, String model, Long customerNumber, Insurance insurance) {
         this.licensePlate = licensePlate;
         this.customerNumber = customerNumber;
         this.make = make;
         this.model = model;
+        this.insurance = insurance;
     }
 
     public Car() {

@@ -43,7 +43,7 @@ public class ReservationService {
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
         Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
-        if (((Optional<?>) reservationOptional).isPresent()) {
+        if ((reservationOptional).isPresent()) {
             throw new IllegalStateException("Payment had already been completed");
         } else {
 

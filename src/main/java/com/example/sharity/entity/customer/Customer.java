@@ -2,7 +2,6 @@ package com.example.sharity.entity.customer;
 
 import com.example.sharity.entity.car.Car;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -52,6 +51,7 @@ public class Customer extends PersonModel{
     private List<Bankaccount> bankaccounts;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
     private DriversLicense driversLicense;
 
 

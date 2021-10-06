@@ -2,11 +2,12 @@ package com.example.sharity.config;
 
 import com.example.sharity.controller.ReservationController;
 import com.example.sharity.entity.car.*;
-import com.example.sharity.entity.car.CarTypes.ElectricCar;
-import com.example.sharity.entity.car.CarTypes.FuelCar;
-import com.example.sharity.entity.car.CarTypes.HydrogenCar;
-import com.example.sharity.entity.car.Enums.FuelType;
-import com.example.sharity.entity.car.Enums.Make;
+import com.example.sharity.entity.car.carTypes.ElectricCar;
+import com.example.sharity.entity.car.carTypes.FuelCar;
+import com.example.sharity.entity.car.carTypes.HydrogenCar;
+import com.example.sharity.entity.car.enums.Coverage;
+import com.example.sharity.entity.car.enums.FuelType;
+import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.entity.customer.Bankaccount;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
@@ -48,7 +49,8 @@ public class PreDataConfig {
                     "Klundert",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL12INGB122365432", "RPL VAN DER HORST"),
-                    new FuelCar("KNTK01", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 99.33),
+                    new FuelCar("KNTK01", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 99.33,
+                            new Insurance("AHX0987R", "KNTK01", "AXA UK", Coverage.ALLRISK, LocalDate.of(2022, Month.JANUARY, 18))),
                     new DriversLicense("DFAP51056F", CountryEnum.NETHERLANDS, LocalDate.of(2031, Month.APRIL, 22), "../img/driverslicense/HORSR830829.PNG")
             );
             Customer customerTwo = new Customer(
@@ -63,7 +65,8 @@ public class PreDataConfig {
                     "Made",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78RABO698745632", "D JANSEN"),
-                    new HydrogenCar("XX567R", Make.LandRover, "Defender", 75, 10, 245.75),
+                    new HydrogenCar("XX567R", Make.LandRover, "Defender", 75, 10, 245.75,
+                            new Insurance("JKP3698741PLX", "XX567R", "Lloyds", Coverage.WAPLUS, LocalDate.of(2022, Month.MAY, 9))),
                     new DriversLicense("LKSR78191N", CountryEnum.NETHERLANDS, LocalDate.of(2022, Month.AUGUST, 29), "../img/driverslicense/JANSD780320.PNG")
             );
             Customer customerThree = new Customer(
@@ -78,7 +81,8 @@ public class PreDataConfig {
                     "Etten-Leur",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78RABO126874325", "B GROOTOONK"),
-                    new ElectricCar("BG012X", Make.Tesla, "Model Y", 75, 10, 45, 199.99),
+                    new ElectricCar("BG012X", Make.Tesla, "Model Y", 75, 10, 45, 199.99,
+                            new Insurance("JHST718920PO", "BG012X", "MRL Insurance", Coverage.ALLRISK, LocalDate.of(2022, Month.JUNE, 14))),
                     new DriversLicense("HTJL65214U", CountryEnum.NETHERLANDS, LocalDate.of(2027, Month.FEBRUARY, 8), "../img/driverslicense/GROOB821109.PNG")
             );
             Customer customerFour = new Customer(
@@ -93,7 +97,8 @@ public class PreDataConfig {
                     "Breda",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78SNSB098765428", "L HANEGRAAF"),
-                    new FuelCar("LH099X", Make.Ford, "Mustang Convertible", FuelType.PETROL, 70, 8, 75.50),
+                    new FuelCar("LH099X", Make.Ford, "Mustang Convertible", FuelType.PETROL, 70, 8, 75.50,
+                            new Insurance("HDRA6192PO8", "LH099X", "Sainsbury’s Bank", Coverage.WA, LocalDate.of(2021, Month.NOVEMBER, 30))),
                     new DriversLicense("HSWT82645B", CountryEnum.NETHERLANDS, LocalDate.of(2025, Month.JANUARY, 31), "../img/driverslicense/HANEL840418.PNG")
             );
             Customer customerFive = new Customer(
@@ -108,7 +113,8 @@ public class PreDataConfig {
                     "Antwerpen",
                     CountryEnum.BELGIUM,
                     new Bankaccount("NL78RABO985471239", "J JANSEN"),
-                    new ElectricCar("JJ001J", Make.Cupra, "Leon", 55, 13, 25, 121.47),
+                    new ElectricCar("JJ001J", Make.Cupra, "Leon", 55, 13, 25, 121.47,
+                            new Insurance("JSHDA012PLK", "JJ001J", "Sheilas’ Wheels", Coverage.ALLRISK, LocalDate.of(2022, Month.FEBRUARY, 8))),
                     new DriversLicense("JDUT82632P", CountryEnum.BELGIUM, LocalDate.of(2024, Month.FEBRUARY, 29), "../img/driverslicense/JANSJ901212.PNG")
             );
             Customer customerSix = new Customer(
@@ -144,14 +150,19 @@ public class PreDataConfig {
             bankaccountRepository.saveAll(List.of(bankaccountOne, bankaccountTwo, bankaccountThree));
 
 //          PRE CARS
-            Car carOne = new FuelCar(
-                    "RGBB54", Make.MercedesBenz, "ALG318 (AMG)", FuelType.PETROL, 65, 9, 3L, 299
+            Car carOne =
+                    new FuelCar("RGBB54", Make.MercedesBenz, "ALG318 (AMG)", FuelType.DIESEL, 65, 9, 3L, 299,
+                    new Insurance("SDSDA8SD90", "RGBB54", "Sky Insurance", Coverage.ALLRISK, LocalDate.of(2022, Month.JANUARY, 31))
+
             );
-            Car carTwo = new FuelCar(
-                    "DRGH78", Make.Ferrari, "Testarossa", FuelType.PETROL, 80, 5, 5L, 449
+            Car carTwo =
+                    new FuelCar("DRGH78", Make.Ferrari, "Testarossa", FuelType.PETROL, 80, 5, 5L, 449,
+                    new Insurance("MHSD985PP0", "DRGH78", "Start Rescue", Coverage.ALLRISK, LocalDate.of(2021, Month.DECEMBER, 7))
+
             );
-            Car carThree = new FuelCar(
-                    "RTP89T", Make.Opel, "Vectra", FuelType.DIESEL, 55, 10, 1L, 39.90
+            Car carThree =
+                    new FuelCar("RTP89T", Make.Opel, "Vectra", FuelType.LPG, 55, 10, 1L, 39.90,
+                    new Insurance("SDAS67DD990S", "RTP89T", "Tesco Bank", Coverage.WAPLUS, LocalDate.of(2022, Month.MARCH, 28))
             );
             carRepository.saveAll(List.of(carOne, carTwo, carThree));
 

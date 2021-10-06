@@ -1,7 +1,7 @@
 package com.example.sharity.controller;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Enums.Availability;
+import com.example.sharity.entity.car.enums.Availability;
 import com.example.sharity.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

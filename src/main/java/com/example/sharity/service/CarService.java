@@ -1,9 +1,12 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.Enums.Availability;
 import com.example.sharity.repository.CarRepository;
+import net.bytebuddy.dynamic.NexusAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,4 +29,25 @@ public class CarService {
         return car.getRent();
     }
 
+    @Transactional
+    public void updateCar(String licensePlate, double rent, Availability available) {
+        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new IllegalStateException("Car with licenseplate " + licensePlate + " unknown in database"));
+
+        if (rent <= 0) {
+            throw new IllegalStateException("Rent must be higher than zero");
+        } else {
+            car.setRent(rent);
+        }
+
+        if (car.getAvailable() == available) {
+            if (available == Availability.YES) {
+                throw new IllegalStateException("Car already available");
+            } else if (available == Availability.NO) {
+                throw new IllegalStateException("Car already inavailable");
+            }
+        } else {
+            car.setAvailable(available);
+        }
+
+    }
 }

@@ -5,9 +5,11 @@ import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.service.CustomerService;
 import com.example.sharity.entity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,14 +40,13 @@ public class CustomerController {
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password,
-            @RequestParam(required = false) String dateOfBirth,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
             @RequestParam(required = false) String address,
             @RequestParam(required = false) String houseNumber,
+            @RequestParam(required = false) String postalCode,
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) CountryEnum countryEnum)
-
-    {
-        customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, city, countryEnum);
+            @RequestParam(required = false) CountryEnum countryEnum) throws NoSuchAlgorithmException {
+        customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum);
     }
 
 }

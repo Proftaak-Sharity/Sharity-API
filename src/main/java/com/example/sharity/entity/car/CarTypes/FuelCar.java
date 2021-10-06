@@ -1,6 +1,9 @@
-package com.example.sharity.entity.car;
+package com.example.sharity.entity.car.CarTypes;
 
 import com.example.sharity.abstracts.NumberRounder;
+import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.Enums.FuelType;
+import com.example.sharity.entity.car.Enums.Make;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,13 +22,13 @@ public class FuelCar extends Car {
 
 
     @Enumerated(EnumType.STRING)
-    private FuelTypeEnum fuelType;
+    private FuelType fuelType;
 
     private int sizeFueltank;
     private int kmPerLiterFuel;
     private double rent;
 
-    public FuelCar(String licensePlate, MakeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel, double rent) {
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double rent) {
         super(licensePlate, make, model);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
@@ -33,7 +36,7 @@ public class FuelCar extends Car {
         this.rent = NumberRounder.roundDouble(rent, 2);
     }
 
-    public FuelCar(String licensePlate, MakeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double rent) {
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double rent) {
         super(licensePlate, make, model, customerNumber);
         this.fuelType = fuelType;
         this.sizeFueltank = sizeFueltank;

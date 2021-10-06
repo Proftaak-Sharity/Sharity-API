@@ -14,6 +14,7 @@ public class Bankaccount {
     @Column(length = 20)
     private String iban;
 
+    @Column(nullable = false)
     private String accountHolder;
 
     private Long customerNumber;

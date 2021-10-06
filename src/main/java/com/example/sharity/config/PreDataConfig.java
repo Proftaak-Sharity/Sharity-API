@@ -2,6 +2,11 @@ package com.example.sharity.config;
 
 import com.example.sharity.controller.ReservationController;
 import com.example.sharity.entity.car.*;
+import com.example.sharity.entity.car.CarTypes.ElectricCar;
+import com.example.sharity.entity.car.CarTypes.FuelCar;
+import com.example.sharity.entity.car.CarTypes.HydrogenCar;
+import com.example.sharity.entity.car.Enums.FuelType;
+import com.example.sharity.entity.car.Enums.Make;
 import com.example.sharity.entity.customer.Bankaccount;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
@@ -39,10 +44,11 @@ public class PreDataConfig {
                     LocalDate.of(1983, Month.AUGUST, 29),
                     "Hoofdstraat",
                     "12",
+                    "4791BG",
                     "Klundert",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL12INGB122365432", "RPL VAN DER HORST"),
-                    new FuelCar("KNTK01", MakeEnum.Volvo, "XC90", FuelTypeEnum.DIESEL, 52, 12, 99.33),
+                    new FuelCar("KNTK01", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 99.33),
                     new DriversLicense("DFAP51056F", CountryEnum.NETHERLANDS, LocalDate.of(2031, Month.APRIL, 22), "../img/driverslicense/HORSR830829.PNG")
             );
             Customer customerTwo = new Customer(
@@ -53,10 +59,11 @@ public class PreDataConfig {
                     LocalDate.of(1978, Month.MARCH, 20),
                     "Appelweg",
                     "10",
+                    "4995VB",
                     "Made",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78RABO698745632", "D JANSEN"),
-                    new HydrogenCar("XX567R", MakeEnum.LandRover, "Defender", 75, 10, 245.75),
+                    new HydrogenCar("XX567R", Make.LandRover, "Defender", 75, 10, 245.75),
                     new DriversLicense("LKSR78191N", CountryEnum.NETHERLANDS, LocalDate.of(2022, Month.AUGUST, 29), "../img/driverslicense/JANSD780320.PNG")
             );
             Customer customerThree = new Customer(
@@ -67,10 +74,11 @@ public class PreDataConfig {
                     LocalDate.of(1982, Month.NOVEMBER, 9),
                     "Boompjesdijk",
                     "48",
+                    "4892SC",
                     "Etten-Leur",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78RABO126874325", "B GROOTOONK"),
-                    new ElectricCar("BG012X", MakeEnum.Tesla, "Model Y", 75, 10, 45, 199.99),
+                    new ElectricCar("BG012X", Make.Tesla, "Model Y", 75, 10, 45, 199.99),
                     new DriversLicense("HTJL65214U", CountryEnum.NETHERLANDS, LocalDate.of(2027, Month.FEBRUARY, 8), "../img/driverslicense/GROOB821109.PNG")
             );
             Customer customerFour = new Customer(
@@ -81,10 +89,11 @@ public class PreDataConfig {
                     LocalDate.of(1984, Month.APRIL, 18),
                     "Heilig Hartplein",
                     "356-B",
+                    "4824RA",
                     "Breda",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78SNSB098765428", "L HANEGRAAF"),
-                    new FuelCar("LH099X", MakeEnum.Ford, "Mustang Convertible", FuelTypeEnum.PETROL, 70, 8, 75.50),
+                    new FuelCar("LH099X", Make.Ford, "Mustang Convertible", FuelType.PETROL, 70, 8, 75.50),
                     new DriversLicense("HSWT82645B", CountryEnum.NETHERLANDS, LocalDate.of(2025, Month.JANUARY, 31), "../img/driverslicense/HANEL840418.PNG")
             );
             Customer customerFive = new Customer(
@@ -95,10 +104,11 @@ public class PreDataConfig {
                     LocalDate.of(1990, Month.DECEMBER, 12),
                     "Tilburgsebaan",
                     "88",
+                    "2100",
                     "Antwerpen",
                     CountryEnum.BELGIUM,
                     new Bankaccount("NL78RABO985471239", "J JANSEN"),
-                    new ElectricCar("JJ001J", MakeEnum.Cupra, "Leon", 55, 13, 25, 121.47),
+                    new ElectricCar("JJ001J", Make.Cupra, "Leon", 55, 13, 25, 121.47),
                     new DriversLicense("JDUT82632P", CountryEnum.BELGIUM, LocalDate.of(2024, Month.FEBRUARY, 29), "../img/driverslicense/JANSJ901212.PNG")
             );
             Customer customerSix = new Customer(
@@ -109,6 +119,7 @@ public class PreDataConfig {
                     LocalDate.of(1981, Month.MARCH, 11),
                     "Barcelonaplantsoen",
                     "1",
+                    "3425GH",
                     "Utrecht",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL56SNSB865209873", "L MESSI"),
@@ -134,13 +145,13 @@ public class PreDataConfig {
 
 //          PRE CARS
             Car carOne = new FuelCar(
-                    "RGBB54", MakeEnum.MercedesBenz, "ALG318 (AMG)", FuelTypeEnum.PETROL, 65, 9, 3L, 299
+                    "RGBB54", Make.MercedesBenz, "ALG318 (AMG)", FuelType.PETROL, 65, 9, 3L, 299
             );
             Car carTwo = new FuelCar(
-                    "DRGH78", MakeEnum.Ferrari, "Testarossa", FuelTypeEnum.PETROL, 80, 5, 5L, 449
+                    "DRGH78", Make.Ferrari, "Testarossa", FuelType.PETROL, 80, 5, 5L, 449
             );
             Car carThree = new FuelCar(
-                    "RTP89T", MakeEnum.Opel, "Vectra", FuelTypeEnum.DIESEL, 55, 10, 1L, 39.90
+                    "RTP89T", Make.Opel, "Vectra", FuelType.DIESEL, 55, 10, 1L, 39.90
             );
             carRepository.saveAll(List.of(carOne, carTwo, carThree));
 

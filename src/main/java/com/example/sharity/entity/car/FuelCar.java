@@ -24,11 +24,18 @@ public class FuelCar extends Car {
     private int kmPerLiterFuel;
     private double rent = 200;
 
-    public FuelCar(String licensePlate, makeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel) {
+    public FuelCar(String licensePlate, MakeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel) {
         super(licensePlate, make, model);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
         this.fuelType = fuelType;
+    }
+
+    public FuelCar(String licensePlate, MakeEnum make, String model, FuelTypeEnum fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber) {
+        super(licensePlate, make, model, customerNumber);
+        this.fuelType = fuelType;
+        this.sizeFueltank = sizeFueltank;
+        this.kmPerLiterFuel = kmPerLiterFuel;
     }
 
     public FuelCar(int kmPerLiterFuel) {

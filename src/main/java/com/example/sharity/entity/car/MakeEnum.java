@@ -1,6 +1,6 @@
 package com.example.sharity.entity.car;
 
-public enum makeEnum {
+public enum MakeEnum {
 
 Abarth,
 Aiways,

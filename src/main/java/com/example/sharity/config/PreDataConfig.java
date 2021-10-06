@@ -17,16 +17,18 @@ import java.time.Month;
 import java.util.List;
 
 @Component
-public class ReservationConfig {
+public class PreDataConfig {
 
     @Bean
     CommandLineRunner commandLineRunner (ReservationRepository reservationRepository,
                                          CarRepository carRepository,
                                          CustomerRepository customerRepository,
-                                         CarService carService) {
+                                         CarService carService,
+                                         BankaccountRepository bankaccountRepository) {
         return args -> {
 
-            Customer Rob = new Customer(
+//          PRE CUSTOMERS
+            Customer customerOne = new Customer(
                     "Rob",
                     "van der Horst",
                     "rpl.vanderhorst@student.avans.nl",
@@ -37,10 +39,10 @@ public class ReservationConfig {
                     "Klundert",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL12INGB122365432", "RPL VAN DER HORST"),
-                    new FuelCar("KNTK01", makeEnum.Volvo, "XC90", FuelTypeEnum.DIESEL, 52, 12),
+                    new FuelCar("KNTK01", MakeEnum.Volvo, "XC90", FuelTypeEnum.DIESEL, 52, 12),
                     new DriversLicense("DFAP51056F", CountryEnum.NETHERLANDS, LocalDate.of(2031, Month.APRIL, 22), "../img/driverslicense/HORSR830829.PNG")
             );
-            Customer Daniel = new Customer(
+            Customer customerTwo = new Customer(
                     "Daniël",
                     "Jansen",
                     "d.jansen@yahoo.com",
@@ -51,10 +53,10 @@ public class ReservationConfig {
                     "Made",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78RABO698745632", "D JANSEN"),
-                    new HydrogenCar("XX567R", makeEnum.LandRover, "Defender", 75, 10),
+                    new HydrogenCar("XX567R", MakeEnum.LandRover, "Defender", 75, 10),
                     new DriversLicense("LKSR78191N", CountryEnum.NETHERLANDS, LocalDate.of(2022, Month.AUGUST, 29), "../img/driverslicense/JANSD780320.PNG")
             );
-            Customer Bart = new Customer(
+            Customer customerThree = new Customer(
                     "Bart",
                     "Grootoonk",
                     "b.grootoonk@planetmail.com",
@@ -65,10 +67,10 @@ public class ReservationConfig {
                     "Etten-Leur",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78RABO126874325", "B GROOTOONK"),
-                    new ElectricCar("BG012X", makeEnum.Tesla, "Model Y", 75, 10, 45),
+                    new ElectricCar("BG012X", MakeEnum.Tesla, "Model Y", 75, 10, 45),
                     new DriversLicense("HTJL65214U", CountryEnum.NETHERLANDS, LocalDate.of(2027, Month.FEBRUARY, 8), "../img/driverslicense/GROOB821109.PNG")
             );
-            Customer Lars = new Customer(
+            Customer customerFour = new Customer(
                     "Lars",
                     "Hanegraaf",
                     "l.hanegraaf@hotmail.nl",
@@ -79,10 +81,10 @@ public class ReservationConfig {
                     "Breda",
                     CountryEnum.NETHERLANDS,
                     new Bankaccount("NL78SNSB098765428", "L HANEGRAAF"),
-                    new FuelCar("LH099X", makeEnum.Ford, "Mustang Convertible", FuelTypeEnum.PETROL, 70, 8),
+                    new FuelCar("LH099X", MakeEnum.Ford, "Mustang Convertible", FuelTypeEnum.PETROL, 70, 8),
                     new DriversLicense("HSWT82645B", CountryEnum.NETHERLANDS, LocalDate.of(2025, Month.JANUARY, 31), "../img/driverslicense/HANEL840418.PNG")
             );
-            Customer Joris = new Customer(
+            Customer customerFive = new Customer(
                     "Joris",
                     "Jansen",
                     "jorisjansen@gmail.com",
@@ -93,19 +95,68 @@ public class ReservationConfig {
                     "Antwerpen",
                     CountryEnum.BELGIUM,
                     new Bankaccount("NL78RABO985471239", "J JANSEN"),
-                    new ElectricCar("JJ001J", makeEnum.Cupra, "Leon", 55, 13, 25),
+                    new ElectricCar("JJ001J", MakeEnum.Cupra, "Leon", 55, 13, 25),
                     new DriversLicense("JDUT82632P", CountryEnum.BELGIUM, LocalDate.of(2024, Month.FEBRUARY, 29), "../img/driverslicense/JANSJ901212.PNG")
             );
-            customerRepository.saveAll(List.of(Rob, Daniel, Bart, Joris, Lars));
+            Customer customerSix = new Customer(
+                    "Messi",
+                    "Leo",
+                    "l.messi@voetbal.nl",
+                    "welkom65",
+                    LocalDate.of(1981, Month.MARCH, 11),
+                    "Barcelonaplantsoen",
+                    "1",
+                    "Utrecht",
+                    CountryEnum.NETHERLANDS,
+                    new Bankaccount("NL56SNSB865209873", "L MESSI"),
+                    new DriversLicense("HDYT82751L", CountryEnum.NETHERLANDS, LocalDate.of(2029, Month.JUNE, 1), "../img/driverslincense/MESSL810311.PNG")
+            );
+            customerRepository.saveAll(List.of(customerOne, customerTwo, customerThree, customerFour, customerFive, customerSix));
 
-            Reservation RobReservation = new Reservation(
+//          PRE BANKACCOUNTS
+            Bankaccount bankaccountOne = new Bankaccount(
+                    "NL54SNSB369478521",
+                    "L HANEGRAAF EO T VROUWKE",
+                    4L
+            );
+            Bankaccount bankaccountTwo = new Bankaccount(
+                    "NL63RABO658746952",
+                    "D JANSEN",
+                    2L);
+            Bankaccount bankaccountThree = new Bankaccount(
+                    "NL98ABNA987214669",
+                    "RPL VAN DER HORST",
+                    1L);
+            bankaccountRepository.saveAll(List.of(bankaccountOne, bankaccountTwo, bankaccountThree));
+
+//          PRE CARS
+            Car carOne = new FuelCar(
+                    "RGBB54", MakeEnum.MercedesBenz, "ALG318 (AMG)", FuelTypeEnum.PETROL, 65, 9, 3L
+            );
+            Car carTwo = new FuelCar(
+                    "DRGH78", MakeEnum.Ferrari, "Testarossa", FuelTypeEnum.PETROL, 80, 5, 5L
+            );
+            Car carThree = new FuelCar(
+                    "RTP89T", MakeEnum.Opel, "Vectra", FuelTypeEnum.DIESEL, 55, 10, 1L
+            );
+            carRepository.saveAll(List.of(carOne, carTwo, carThree));
+
+//          PRE RESERVATIONS
+            Reservation reservationOne = new Reservation(
                     3L,
                     "KNTK01",
                     carService.getRentFromCar("KNTK01"),
                     LocalDate.of(2021, Month.DECEMBER, 1),
                     LocalDate.of(2021, Month.DECEMBER, 5)
             );
-            reservationRepository.save(RobReservation);
+            Reservation reservationTwo = new Reservation(
+                    6L,
+                    "DRGH78",
+                    carService.getRentFromCar("DRGH78"),
+                    LocalDate.of(2022, Month.JANUARY, 21),
+                    LocalDate.of(2022, Month.DECEMBER, 27)
+            );
+            reservationRepository.saveAll(List.of(reservationOne, reservationTwo));
         };
     }
 }

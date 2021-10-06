@@ -16,10 +16,18 @@ public class Bankaccount {
 
     private String accountHolder;
 
+    private Long customerNumber;
+
 
     public Bankaccount(String iban, String accountHolder) {
         this.iban = iban;
         this.accountHolder = accountHolder;
+    }
+
+    public Bankaccount(String iban, String accountHolder, Long customerNumber) {
+        this.iban = iban;
+        this.accountHolder = accountHolder;
+        this.customerNumber = customerNumber;
     }
 
     public Bankaccount() {

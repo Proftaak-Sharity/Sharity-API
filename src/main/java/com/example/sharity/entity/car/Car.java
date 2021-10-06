@@ -21,13 +21,20 @@ public class Car {
     private Long customerNumber;
 
     @Enumerated(EnumType.STRING)
-    private makeEnum make;
+    private MakeEnum make;
 
     private String model;
     private double rent;
 
-    public Car(String licensePlate, makeEnum make, String model) {
+    public Car(String licensePlate, MakeEnum make, String model) {
         this.licensePlate = licensePlate;
+        this.make = make;
+        this.model = model;
+    }
+
+    public Car(String licensePlate, MakeEnum make, String model, Long customerNumber) {
+        this.licensePlate = licensePlate;
+        this.customerNumber = customerNumber;
         this.make = make;
         this.model = model;
     }

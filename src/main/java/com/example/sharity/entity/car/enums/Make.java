@@ -1,6 +1,6 @@
-package com.example.sharity.entity.car;
+package com.example.sharity.entity.car.enums;
 
-public enum makeEnum {
+public enum Make {
 
 Abarth,
 Aiways,
@@ -14,7 +14,7 @@ Bugatti,
 Cadillac,
 Chevrolet,
 Chrysler,
-Citroën,
+Citroen,
 Cupra,
 Dacia,
 Daewoo,

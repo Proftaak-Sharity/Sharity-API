@@ -1,6 +1,5 @@
 package com.example.sharity.entity.customer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,14 +15,14 @@ public class DriversLicense {
     @Column(length = 20)
     private String licenseNumber;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CountryEnum country;
 
     @Column(nullable = false)
     private LocalDate validUntil;
 
-    @Column(name = "license_copy_url", nullable = false)
+    @Column(name = "license_copy_url")
     private String licenseCopyURL;
 
     public DriversLicense() {

@@ -1,11 +1,15 @@
 // The controller creates the API layer of our application. Basically it let us connect to localhost:8080/api/customer
 package com.example.sharity.controller;
 
+import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.service.CustomerService;
 import com.example.sharity.entity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -25,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public void addCustomer(@RequestBody Customer customer) {
+    public void addCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
         customerService.addCustomer(customer);
     }
 
@@ -33,8 +37,16 @@ public class CustomerController {
     public void updateCustomer(
             @PathVariable("customerNumber") Long customerNumber,
             @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName) {
-        customerService.updateCustomer( customerNumber, firstName, lastName);
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String houseNumber,
+            @RequestParam(required = false) String postalCode,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) CountryEnum countryEnum) throws NoSuchAlgorithmException {
+        customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum);
     }
 
 }

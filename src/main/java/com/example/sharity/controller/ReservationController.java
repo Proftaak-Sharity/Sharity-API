@@ -1,11 +1,11 @@
 package com.example.sharity.controller;
 
+import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,16 +23,24 @@ public class ReservationController {
     public List<Reservation> getReservations() {return reservationService.getReservations();
     }
 
-    @PostMapping
-    public void addReservation(@RequestBody Reservation reservation) {reservationService.addReservation(reservation);
-    }
+//    @PostMapping
+//    public void addReservation(@RequestBody Reservation reservation) {reservationService.addReservation(reservation);
+//    }
+
+//    @PutMapping(path = "{reservationNumber}")
+//    public void updateReservation(
+//            @PathVariable("reservationNumber") int reservationNumber,
+//            @RequestParam(required = false) LocalDate startDate,
+//            @RequestParam(required = false) LocalDate endDate){
+//        reservationService.updateReservation(reservationNumber, startDate, endDate );
+//    }
 
     @PutMapping(path = "{reservationNumber}")
-    public void updateReservation(
-            @PathVariable("reservationNumber") int reservationNumber,
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate){
-        reservationService.updateReservation(reservationNumber, startDate, endDate );
+    public void updatePayment(
+            @PathVariable("reservationNumber") Long reservationNumber,
+            @RequestParam(required = false) PaymentEnum paymentEnum)
+    {
+        reservationService.updatePayment(reservationNumber, paymentEnum);
     }
 }
 

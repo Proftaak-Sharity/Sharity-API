@@ -1,5 +1,6 @@
 package com.example.sharity.entity.reservation;
 
+import com.example.sharity.abstracts.NumberRounder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,8 +37,7 @@ public class Reservation {
         this.startDate = startDate;
         this.endDate = endDate;
         int days = Period.between(startDate, endDate).getDays();
-        this.rent = rent * days;
-
+        this.rent = NumberRounder.roundDouble((rent * days), 2);
     }
 
     public Reservation() {

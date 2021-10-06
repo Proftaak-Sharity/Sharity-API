@@ -26,7 +26,4 @@ public class CarService {
         return car.getRent();
     }
 
-    public List<Car> getCarById(Car licensePlate){
-        return carRepository.findAllById((Iterable<String>) licensePlate);
-    }
 }

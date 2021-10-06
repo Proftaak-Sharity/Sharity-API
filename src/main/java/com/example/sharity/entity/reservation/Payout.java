@@ -1,14 +1,11 @@
 package com.example.sharity.entity.reservation;
 
+import com.example.sharity.abstracts.NumberRounder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.List;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,16 +17,21 @@ public class Payout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payoutNumber;
 
-    private double rent;
+//    @Column(name = "payoutAmount")
+    private double payoutAmount;
+    private double tax;
 
     private Long customerNumber;
 
-    public Payout(double rent, Long customerNumber) {
-        this.rent = rent;
+    private Long reservationNumber;
+
+    public Payout(Long reservationNumber, double payoutAmount, double tax, Long customerNumber) {
+        this.reservationNumber = reservationNumber;
+        this.tax = NumberRounder.roundDouble(tax, 2);
+        this.payoutAmount = NumberRounder.roundDouble(payoutAmount, 2);
         this.customerNumber = customerNumber;
     }
 
     public Payout() {
     }
-
 }

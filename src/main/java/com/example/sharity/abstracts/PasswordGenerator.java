@@ -1,4 +1,4 @@
-package com.example.sharity.statics;
+package com.example.sharity.abstracts;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

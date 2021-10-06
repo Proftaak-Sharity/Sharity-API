@@ -1,12 +1,10 @@
 package com.example.sharity.repository;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.reservation.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 

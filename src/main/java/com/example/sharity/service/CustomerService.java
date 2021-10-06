@@ -3,13 +3,10 @@ package com.example.sharity.service;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.repository.CustomerRepository;
-import com.example.sharity.statics.PasswordGenerator;
+import com.example.sharity.abstracts.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -31,7 +28,7 @@ public class CustomerService {
 
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
-        if (((Optional<?>) customerOptional).isPresent()) {
+        if (customerOptional.isPresent()) {
             throw new IllegalStateException("email already taken");
         }
 
@@ -52,7 +49,7 @@ public class CustomerService {
         }
 
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(email);
-        if (((Optional<?>) customerOptional).isPresent()) {
+        if (customerOptional.isPresent()) {
             throw new IllegalStateException("email already taken");
         } else {
             customer.setEmail(email);

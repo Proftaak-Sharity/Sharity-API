@@ -23,6 +23,7 @@ public class Customer extends PersonModel{
     private String address;
     private String houseNumber;
     private String city;
+    private double balance;
 
     @Enumerated(EnumType.STRING)
     private CountryEnum country;

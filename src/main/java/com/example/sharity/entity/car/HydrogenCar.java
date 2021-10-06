@@ -16,15 +16,22 @@ public class HydrogenCar extends Car {
 
     private int sizeFueltank;
     private int kmPerLiter;
-    private double rent = 400;
+    private double rent;
 
 
-    public HydrogenCar(String licensePlate, MakeEnum make, String model, int sizeFueltank, int kmPerLiter) {
+    public HydrogenCar(String licensePlate, MakeEnum make, String model, int sizeFueltank, int kmPerLiter, double rent) {
         super(licensePlate, make, model);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiter = kmPerLiter;
+        this.rent = rent;
     }
 
+    public HydrogenCar(String licensePlate, MakeEnum make, String model, Long customerNumber, int sizeFueltank, int kmPerLiter, double rent) {
+        super(licensePlate, make, model, customerNumber);
+        this.sizeFueltank = sizeFueltank;
+        this.kmPerLiter = kmPerLiter;
+        this.rent = rent;
+    }
 
     public HydrogenCar() {
         super();

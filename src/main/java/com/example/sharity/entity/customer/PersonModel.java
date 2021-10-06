@@ -1,7 +1,7 @@
 
 package com.example.sharity.entity.customer;
 
-import com.example.sharity.statics.PasswordGenerator;
+import com.example.sharity.abstracts.PasswordGenerator;
 import lombok.*;
 
 import javax.persistence.Column;

@@ -205,9 +205,9 @@ public class PreDataConfig {
             reservationRepository.saveAll(List.of(reservationOne, reservationTwo, reservationThree, reservationFour, reservationFive));
 
 //           PRE UPDATE PAYMENTS
-            reservationController.updatePayment(2L, PaymentEnum.PAID);
-            reservationController.updatePayment(3L, PaymentEnum.PAID);
-            reservationController.updatePayment(5L, PaymentEnum.PAID);
+            reservationController.updateReservation(2L, PaymentEnum.PAID);
+            reservationController.updateReservation(3L, PaymentEnum.PAID);
+            reservationController.updateReservation(5L, PaymentEnum.PAID);
 
         };
     }

@@ -178,8 +178,11 @@ public class CustomerService {
     }
 
     public void deleteCustomer(Long customerNumber){
-        customerRepository.deleteById(customerNumber);
+        Optional<Customer> customerOptional = customerRepository.findCustomerByCustomerNumber(customerNumber);
+        if (customerOptional.isPresent()) {
+            customerRepository.deleteById(customerNumber);
+        } else {
+            throw new IllegalStateException("Customer with customer number " + customerNumber + " unknown");
+        }
     }
-
-
 }

@@ -39,38 +39,6 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-
-    public void updatePayment(Long reservationNumber, PaymentEnum paymentEnum) {
-//
-//        //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
-//        Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
-//        if ((reservationOptional).isPresent()) {
-//            throw new IllegalStateException("Payment had already been completed");
-//        } else {
-//
-//            //          GETTERS FOR UPDATING PAYMENT TABLE
-//            Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
-//            String licensePlate = reservation.getLicensePlate();
-//            Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(() -> new IllegalStateException("LicensePlate unknown"));
-//            Long customerNumber = car.getCustomerNumber();
-//            Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new IllegalStateException("Customer unknown"));
-//            double rent = NumberRounder.roundDouble((reservation.getRent()), 2);
-//
-//            //      SETTERS FOR UPDATING PAYMENT TABLE
-//            reservation.setPaymentEnum(PaymentEnum.PAID);
-//            double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
-//            double tax = NumberRounder.roundDouble((rent * 0.21), 2);
-//            customer.setBalance(NumberRounder.roundDouble(customer.getBalance(), 2) + payoutAmount);
-//
-//            Payout payout = new Payout(reservationNumber, payoutAmount, tax, customerNumber);
-//
-//            //          SAVE TO DATABASE
-//            payoutRepository.save(payout);
-//            reservationRepository.save(reservation);
-//            customerRepository.save(customer);
-//        }
-    }
-
     public void addReservation(Reservation reservation) {
         reservationRepository.save(reservation);
     }

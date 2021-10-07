@@ -47,13 +47,6 @@ public class ReservationController {
         reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
     }
 
-//    @PutMapping(path = "{reservationNumber}")
-//    public void updatePayment(
-//            @PathVariable("reservationNumber") Long reservationNumber,
-//            @RequestParam(required = false) PaymentEnum paymentEnum) {
-//        reservationService.updatePayment(reservationNumber, paymentEnum);
-//    }
-
     @DeleteMapping(path = "{reservationNumber}")
     public void deleteReservation(
             @PathVariable("reservationNumber") Long reservationNumber) {

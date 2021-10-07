@@ -34,7 +34,6 @@ public class PreDataConfig {
                                          CustomerRepository customerRepository,
                                          CarService carService,
                                          ReservationController reservationController,
-                                         CustomerController customerController,
                                          BankaccountRepository bankaccountRepository) {
         return args -> {
 
@@ -210,7 +209,14 @@ public class PreDataConfig {
                     LocalDate.of(2022, Month.JULY, 8),
                     LocalDate.of(2022, Month.JULY, 19)
             );
-            reservationRepository.saveAll(List.of(reservationOne, reservationTwo, reservationThree, reservationFour, reservationFive));
+            Reservation reservationSix = new Reservation(
+                    2L,
+                    "KNTK01",
+                    carService.getRentFromCar("KNTK01"),
+                    LocalDate.of(2022, Month.JULY, 8),
+                    LocalDate.of(2022, Month.JULY, 19)
+            );
+            reservationRepository.saveAll(List.of(reservationOne, reservationTwo, reservationThree, reservationFour, reservationFive, reservationSix));
 
 //           PRE UPDATE PAYMENTS
             reservationController.updateReservation(2L, null, null, PaymentEnum.PAID);

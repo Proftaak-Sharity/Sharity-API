@@ -177,5 +177,9 @@ public class CustomerService {
         }
     }
 
+    public void deleteCustomer(Long customerNumber){
+        customerRepository.deleteById(customerNumber);
+    }
+
 
 }

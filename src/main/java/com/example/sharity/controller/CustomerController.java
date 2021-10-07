@@ -43,6 +43,7 @@ public class CustomerController {
         customerService.addCustomer(customer);
     }
 
+//    UPDATE SELECTED DATA FROM DATABASE
     @PutMapping(path = "{customerNumber}")
     public void updateCustomer(
             @PathVariable("customerNumber") Long customerNumber,
@@ -58,6 +59,12 @@ public class CustomerController {
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) CountryEnum countryEnum) throws NoSuchAlgorithmException {
         customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
+    }
+
+    @DeleteMapping(path = "{customerNumber}")
+    public void deleteCustomer(
+            @PathVariable("customerNumber") Long customerNumber) {
+        customerService.deleteCustomer(customerNumber);
     }
 
 }

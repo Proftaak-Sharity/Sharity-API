@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 
 public abstract class NumberRounder {
 
-
     public static double roundDouble(double number, int places) {
 
         BigDecimal bigDecimal = new BigDecimal(Double.toString(number));

@@ -1,9 +1,11 @@
 package com.example.sharity.service;
 
+import com.example.sharity.abstracts.EmailValidator;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.abstracts.PasswordGenerator;
+import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +32,42 @@ public class CustomerService {
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
         if (customerOptional.isPresent()) {
-            throw new IllegalStateException("email already taken");
+            throw new IllegalStateException("Email address " + customer.getEmail() + " already taken");
+        } else if (customer.getEmail() == null) {
+            throw new IllegalStateException("Email address entry is required");
+        } else if (!EmailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+            throw new IllegalStateException("Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
+        }
+
+        if (customer.getFirstName() == null) {
+            throw new IllegalStateException("Firstname entry is required");
+        } else if (customer.getLastName() == null) {
+            throw new IllegalStateException("Lastname entry is required");
+        } else if (customer.getPassword() == null) {
+            throw new IllegalStateException("Password entry is required");
+        } else if (customer.getAddress() == null) {
+            throw new IllegalStateException("Address entry is required");
+        } else if (customer.getHouseNumber() == null) {
+            throw new IllegalStateException("House number entry is required");
+        } else if (customer.getPostalCode() == null) {
+            throw new IllegalStateException("Postal code entry is required");
+        } else if (customer.getCity() == null) {
+            throw new IllegalStateException("City entry is required");
+        } else if (customer.getDateOfBirth() == null) {
+            throw new IllegalStateException("Date of birth entry is required");
+        } else if (customer.getCountry() == null) {
+            throw new IllegalStateException("County entry is required");
+        } else if (customer.getPhoneNumber() == null) {
+            throw new IllegalStateException("Phone number entry is required");
         }
 
         customer.setPassword(PasswordGenerator.getSHA512Password(customer.getPassword(), PasswordGenerator.getSalt()));
         customerRepository.save(customer);
     }
 
+
     @Transactional
-    public void updateCustomer(Long customerNumber, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum countryEnum) throws NoSuchAlgorithmException {
+    public void updateCustomer(Long customerNumber, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum countryEnum, String phoneNumber) throws NoSuchAlgorithmException {
         Customer customer = customerRepository.findCustomerByCustomerNumber(customerNumber).orElseThrow(() -> new IllegalStateException("Customer with customer number " + customerNumber + " does not exist"));
 
         if (firstName != null) {
@@ -63,14 +92,16 @@ public class CustomerService {
 
         if (email != null) {
             Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
-            if (emailOptional.isPresent()) {
-                throw new IllegalStateException("email " + email + " is already taken");
-            }
+
             if (email.equals(customer.getEmail())) {
                 throw new IllegalStateException(email + " was already your set email");
-            } else {
-                customer.setEmail(email);
+            } else if (emailOptional.isPresent()) {
+                throw new IllegalStateException("email address " + email + " is already taken");
+            } else if (!EmailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_+&*-]+(?:\\[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+                throw new IllegalStateException("Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
             }
+
+            customer.setEmail(email);
         }
 
         if (password != null) {
@@ -122,6 +153,14 @@ public class CustomerService {
                 throw new IllegalStateException(countryEnum + " was already set as your country");
             } else {
                 customer.setCountry(countryEnum);
+            }
+        }
+
+        if (phoneNumber != null) {
+            if (phoneNumber.equals(customer.getPhoneNumber())) {
+                throw new IllegalStateException(phoneNumber + " was already set as your phone number");
+            } else {
+                customer.setPhoneNumber(phoneNumber);
             }
         }
     }

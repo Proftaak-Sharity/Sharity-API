@@ -45,8 +45,9 @@ public class CustomerController {
             @RequestParam(required = false) String houseNumber,
             @RequestParam(required = false) String postalCode,
             @RequestParam(required = false) String city,
+            @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) CountryEnum countryEnum) throws NoSuchAlgorithmException {
-        customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum);
+        customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
     }
 
 }

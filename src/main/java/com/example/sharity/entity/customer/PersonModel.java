@@ -14,13 +14,16 @@ import java.security.NoSuchAlgorithmException;
 @MappedSuperclass
 public class PersonModel {
 
+	@Column(nullable = false)
 	private String firstName;
 
+	@Column(nullable = false)
 	private String lastName;
 
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	private String email;
 
+	@Column(nullable = false)
 	private String password;
 
 	public PersonModel(String firstName, String lastName, String email, String password) throws NoSuchAlgorithmException {

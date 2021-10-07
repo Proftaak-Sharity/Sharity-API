@@ -3,6 +3,7 @@ package com.example.sharity.entity.customer;
 import com.example.sharity.entity.car.Car;
 import lombok.*;
 
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -20,9 +21,6 @@ public class Customer extends PersonModel{
     private Long customerNumber;
 
     @Column(nullable = false)
-    private LocalDate dateOfBirth;
-
-    @Column(nullable = false)
     private String address;
 
     @Column(nullable = false)
@@ -33,6 +31,12 @@ public class Customer extends PersonModel{
 
     @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
 
     private double balance;
 
@@ -51,11 +55,10 @@ public class Customer extends PersonModel{
     private List<Bankaccount> bankaccounts;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
     private DriversLicense driversLicense;
 
 
-    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -63,9 +66,10 @@ public class Customer extends PersonModel{
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
+        this.phoneNumber = phoneNumber;
     }
 
-    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, Bankaccount bankaccount, DriversLicense driversLicense) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, DriversLicense driversLicense) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -75,9 +79,11 @@ public class Customer extends PersonModel{
         this.country = country;
         this.bankaccounts = Collections.singletonList(bankaccount);
         this.driversLicense = driversLicense;
+        this.phoneNumber = phoneNumber;
+
     }
 
-    public Customer(String firstName, String lastName,  String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, Bankaccount bankaccount, Car car) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName,  String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, Car car) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -87,8 +93,10 @@ public class Customer extends PersonModel{
         this.country = country;
         this.bankaccounts = Collections.singletonList(bankaccount);
         this.cars = Collections.singletonList(car);
+        this.phoneNumber = phoneNumber;
+
     }
-    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, Bankaccount bankaccount, Car car, DriversLicense driversLicense) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, Car car, DriversLicense driversLicense) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -99,6 +107,7 @@ public class Customer extends PersonModel{
         this.bankaccounts = Collections.singletonList(bankaccount);
         this.cars = Collections.singletonList(car);
         this.driversLicense = driversLicense;
+        this.phoneNumber = phoneNumber;
     }
 
     public Customer() {

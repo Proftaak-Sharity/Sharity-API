@@ -1,5 +1,6 @@
 package com.example.sharity.config;
 
+import com.example.sharity.controller.CustomerController;
 import com.example.sharity.controller.ReservationController;
 import com.example.sharity.entity.car.*;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
@@ -33,6 +34,7 @@ public class PreDataConfig {
                                          CustomerRepository customerRepository,
                                          CarService carService,
                                          ReservationController reservationController,
+                                         CustomerController customerController,
                                          BankaccountRepository bankaccountRepository) {
         return args -> {
 
@@ -205,9 +207,9 @@ public class PreDataConfig {
             reservationRepository.saveAll(List.of(reservationOne, reservationTwo, reservationThree, reservationFour, reservationFive));
 
 //           PRE UPDATE PAYMENTS
-            reservationController.updateReservation(2L, PaymentEnum.PAID);
-            reservationController.updateReservation(3L, PaymentEnum.PAID);
-            reservationController.updateReservation(5L, PaymentEnum.PAID);
+            reservationController.updateReservation(2L, null, null, PaymentEnum.PAID);
+            reservationController.updateReservation(3L, null, null, PaymentEnum.PAID);
+            reservationController.updateReservation(5L, null, null, PaymentEnum.PAID);
 
         };
     }

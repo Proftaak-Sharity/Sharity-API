@@ -76,15 +76,15 @@ public class ReservationService {
     }
 
     public void updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
+        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
+        Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
-        Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
         if ((reservationOptional).isPresent()) {
             throw new IllegalStateException("Payment had already been completed");
         } else {
 
             //          GETTERS FOR UPDATING PAYMENT TABLE
-            Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
             String licensePlate = reservation.getLicensePlate();
             Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(() -> new IllegalStateException("LicensePlate unknown"));
             Long customerNumber = car.getCustomerNumber();

@@ -111,9 +111,13 @@ public class ReservationService {
         reservationRepository.delete(reservation);
     }
 
-    public List<Reservation> getReservation(Long reservationNumber) {
-        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
-            return reservationRepository.findAll();
+    public Optional <Reservation> findReservation(Long reservationNumber) {
+        Optional <Reservation> reservationOptional = reservationRepository.findReservationByReservationNumber(reservationNumber);
+        if (reservationOptional.isEmpty()) {
+            throw new IllegalStateException("test");
+        }
+
+        return reservationRepository.findReservationByReservationNumber(reservationNumber);
         }
 
 }

@@ -82,7 +82,7 @@ public class ReservationService {
     public Optional <Reservation> findReservation(Long reservationNumber) {
         Optional <Reservation> reservationOptional = reservationRepository.findReservationByReservationNumber(reservationNumber);
         if (reservationOptional.isEmpty()) {
-            throw new IllegalStateException("test");
+            throw new IllegalStateException("Reservation unknown");
         }
 
         return reservationRepository.findReservationByReservationNumber(reservationNumber);

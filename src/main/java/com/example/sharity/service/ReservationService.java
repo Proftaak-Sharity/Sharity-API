@@ -12,12 +12,16 @@ import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
+//interne logica
 
 @Service
 public class ReservationService {
@@ -39,12 +43,18 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public void addReservation(Reservation reservation) {
-        reservationRepository.save(reservation);
+    public Reservation addReservation(Reservation reservation) {
+        String licensePlate = reservation.getLicensePlate();
+        Car car = carRepository.getById(licensePlate);
+        double rent = car.getRent() * (Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays());
+
+        reservation.setRent(rent);
+
+        return reservationRepository.save(reservation);
     }
 
     public void updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
-        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
+        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
@@ -54,9 +64,9 @@ public class ReservationService {
 
             //          GETTERS FOR UPDATING PAYMENT TABLE
             String licensePlate = reservation.getLicensePlate();
-            Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(() -> new IllegalStateException("LicensePlate unknown"));
+            Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             Long customerNumber = car.getCustomerNumber();
-            Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new IllegalStateException("Customer unknown"));
+            Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
             double rent = NumberRounder.roundDouble((reservation.getRent()), 2);
 
             //      SETTERS FOR UPDATING PAYMENT TABLE
@@ -75,14 +85,15 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long reservationNumber) {
-        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
+        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         reservationRepository.delete(reservation);
     }
 
     public Optional <Reservation> findReservation(Long reservationNumber) {
         Optional <Reservation> reservationOptional = reservationRepository.findReservationByReservationNumber(reservationNumber);
         if (reservationOptional.isEmpty()) {
-            throw new IllegalStateException("Reservation unknown");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
         }
 
         return reservationRepository.findReservationByReservationNumber(reservationNumber);

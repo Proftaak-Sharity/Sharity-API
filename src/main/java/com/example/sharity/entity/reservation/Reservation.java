@@ -36,8 +36,6 @@ public class Reservation {
         this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
-        int days = Period.between(startDate, endDate).getDays();
-        this.rent = NumberRounder.roundDouble((rent * days), 2);
     }
 
     public Reservation() {

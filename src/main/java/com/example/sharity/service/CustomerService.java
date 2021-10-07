@@ -5,7 +5,6 @@ import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.abstracts.PasswordGenerator;
-import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +24,23 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+
+    public Optional<Customer> findCustomer(Long customerNumber) {
+        Optional<Customer> customerOptional = customerRepository.findCustomerByCustomerNumber(customerNumber);
+
+        if (customerOptional.isEmpty()) {
+            throw new IllegalStateException("Customer with customer number " + customerNumber + " is unknown");
+        }
+
+        return customerRepository.findCustomerByCustomerNumber(customerNumber);
+    }
+
+
     public List<Customer> getCustomers() {
         return customerRepository.findAll();
     }
 
+    
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
         if (customerOptional.isPresent()) {
@@ -164,4 +176,6 @@ public class CustomerService {
             }
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/customers")
@@ -23,11 +24,20 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+//    GET ALL DATA FROM CUSTOMERTABLE
     @GetMapping
     public List<Customer> getCustomers() {
         return customerService.getCustomers();
     }
 
+//    GET SPECIFIC DATA FROM CUSTOMERTABLE (BY CUSTOMERNUMBER)
+    @GetMapping(path = "{customerNumber}")
+        public Optional<Customer> findCustomer(
+                @PathVariable("customerNumber") Long customerNumber) {
+        return customerService.findCustomer(customerNumber);
+    }
+
+//    ADD CUSTOMERDATA TO DATABASE
     @PostMapping
     public void addCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
         customerService.addCustomer(customer);

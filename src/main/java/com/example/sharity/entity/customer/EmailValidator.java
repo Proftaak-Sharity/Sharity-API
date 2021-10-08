@@ -1,4 +1,4 @@
-package com.example.sharity.abstracts;
+package com.example.sharity.entity.customer;
 
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class EmailValidator {
 
     public boolean patternMatches(String emailAddress, String regexPattern) {
-        return Pattern.compile(regexPattern)
+        return !Pattern.compile(regexPattern)
                 .matcher(emailAddress)
                 .matches();
     }

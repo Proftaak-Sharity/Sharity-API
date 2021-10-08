@@ -1,6 +1,6 @@
 package com.example.sharity.entity.reservation;
 
-import com.example.sharity.abstracts.NumberRounder;
+import com.example.sharity.service.NumberRounder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

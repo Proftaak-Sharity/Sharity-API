@@ -1,7 +1,5 @@
 package com.example.sharity.service;
 
-
-import com.example.sharity.abstracts.NumberRounder;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
@@ -43,9 +41,14 @@ public class ReservationService {
     }
 
     public void addReservation(Reservation reservation) {
+        //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
+        Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, reservation.getStartDate(), reservation.getEndDate());
+        if (reservationOptional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
+        }
+
 //        GETTERS TO FIND CARDATA
-        String licensePlate = reservation.getLicensePlate();
-        Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(()-> new IllegalStateException("Car with license plate " + licensePlate + " not in database"));
+        Car car = carRepository.findCarByLicensePlate(reservation.licensePlate).orElseThrow(()-> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
         double pricePerDay = car.getPricePerDay();
         double rent = pricePerDay * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
 
@@ -73,12 +76,19 @@ public class ReservationService {
 
 
     public void updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
-//        CHECK IF RESERVATION IS IN DATABASE
+        //        CHECK IF CAR & RESERVATION ARE IN DATABASE
         Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation with reservation number " + reservationNumber + " not in database"));
+        Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).orElseThrow(()-> new IllegalStateException("Rented car with license plate " + reservation.getLicensePlate() + " not in database"));
+
+        //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
+        Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, startDate, endDate);
+        if (reservationOptional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
+        }
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
-        Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
-        if ((reservationOptional).isPresent()) {
+        Optional<Payout> payoutOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
+        if (payoutOptional.isPresent()) {
             throw new IllegalStateException("Payment had already been completed");
         } else {
 
@@ -90,23 +100,22 @@ public class ReservationService {
                 reservation.setEndDate(endDate);
             }
 
-            double rent = reservation.getRent();
+//            UPDATE RENTPRICE
+            double rent = car.getPricePerDay() * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
+            reservation.setRent(rent);
 
 //            CHECK IF PAYMENTENUM IS SET TO UPDATE, IF ALREADY PAID, IT CAN'T RE-OPEN BECAUSE A PAYMENT CAN BE DONE TWICE
             if (paymentEnum == PaymentEnum.PAID) {
                 reservation.setPaymentEnum(paymentEnum);
 
-                //          GETTERS FOR UPDATING PAYMENT TABLE
-                String licensePlate = reservation.getLicensePlate();
-                Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(()-> new IllegalStateException("Rented car with license plate " + licensePlate + " not in database"));
-                Long customerNumber = car.getCustomerNumber();
-                Customer customer = customerRepository.findCustomerByCustomerNumber(customerNumber).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Carowner of car with licenseplate " +licensePlate + " of customer number " + customerNumber + " not in database"));
+                //          GETTER FOR UPDATING PAYMENT TABLE
+                Customer customer = customerRepository.findCustomerByCustomerNumber(car.getCustomerNumber()).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Carowner of car with licenseplate " + reservation.getLicensePlate() + " of customer number " + reservation.getCustomerNumber() + " not in database"));
 
                 //      SETTERS FOR UPDATING PAYMENT TABLE
                 double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
                 double tax = rent - payoutAmount;
                 customer.setBalance(customer.getBalance() + payoutAmount);
-                Payout payout = new Payout(reservationNumber, payoutAmount, tax, customerNumber);
+                Payout payout = new Payout(reservationNumber, payoutAmount, tax, car.getCustomerNumber());
 
                 payoutRepository.save(payout);
                 customerRepository.save(customer);
@@ -116,7 +125,6 @@ public class ReservationService {
             }
 
             reservationRepository.save(reservation);
-
         }
     }
 

@@ -1,12 +1,11 @@
 package com.example.sharity.entity.reservation;
 
-import com.example.sharity.abstracts.NumberRounder;
+import com.example.sharity.service.NumberRounder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.Period;
 
 
 @Getter

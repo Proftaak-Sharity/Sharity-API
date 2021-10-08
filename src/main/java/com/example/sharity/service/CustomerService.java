@@ -1,14 +1,13 @@
 package com.example.sharity.service;
 
-import com.example.sharity.abstracts.EmailValidator;
+import com.example.sharity.entity.customer.EmailValidator;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.repository.CustomerRepository;
-import com.example.sharity.abstracts.PasswordGenerator;
+import com.example.sharity.entity.customer.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.NoSuchAlgorithmException;
@@ -21,11 +20,13 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final EmailValidator emailValidator;
+    private final PasswordGenerator passwordGenerator;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, EmailValidator emailValidator) {
+    public CustomerService(CustomerRepository customerRepository, EmailValidator emailValidator, PasswordGenerator passwordGenerator) {
         this.customerRepository = customerRepository;
         this.emailValidator = emailValidator;
+        this.passwordGenerator = passwordGenerator;
     }
 
 
@@ -51,7 +52,7 @@ public class CustomerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address " + customer.getEmail() + " already taken");
         } else if (customer.getEmail() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address entry is required");
-        } else if (!emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+        } else if (emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
         }
 
@@ -77,7 +78,7 @@ public class CustomerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number entry is required");
         }
 
-        customer.setPassword(PasswordGenerator.getSHA512Password(customer.getPassword(), PasswordGenerator.getSalt()));
+        customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
         customerRepository.save(customer);
     }
 
@@ -112,14 +113,14 @@ public class CustomerService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, email + " was already your set email");
             } else if (emailOptional.isPresent()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email address " + email + " is already taken");
-            } else if (!emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+            } else if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
             }
             customer.setEmail(email);
         }
 
         if (password != null) {
-            customer.setPassword(PasswordGenerator.getSHA512Password(customer.getPassword(), PasswordGenerator.getSalt()));
+            customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
         }
 
         if (dateOfBirth != null) {

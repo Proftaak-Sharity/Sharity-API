@@ -1,6 +1,6 @@
 package com.example.sharity.entity.car.carTypes;
 
-import com.example.sharity.abstracts.NumberRounder;
+import com.example.sharity.service.NumberRounder;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.entity.car.Insurance;

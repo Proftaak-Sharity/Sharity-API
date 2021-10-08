@@ -1,7 +1,6 @@
 
 package com.example.sharity.entity.customer;
 
-import com.example.sharity.abstracts.PasswordGenerator;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -30,7 +29,7 @@ public abstract class PersonModel {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = PasswordGenerator.getSHA512Password(password, PasswordGenerator.getSalt());
+		this.password = password;
 	}
 
 	public PersonModel() {

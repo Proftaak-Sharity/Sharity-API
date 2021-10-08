@@ -4,8 +4,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+//TODO DELETE ABSTRACT LIKE IN EMAILVALIDATOR
+
 public abstract class PasswordGenerator {
 
+    //    TODO DELETE STATIC LIKE IN EMAILVALIDATOR
     public static String getSHA512Password(String passwordToEncrypt, byte[] salt) {
 
         String generatedPassword = null;
@@ -28,6 +31,7 @@ public abstract class PasswordGenerator {
         return generatedPassword;
     }
 
+//    TODO DELETE STATIC LIKE IN EMAILVALIDATOR
 
     public static byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr =  SecureRandom.getInstanceStrong();

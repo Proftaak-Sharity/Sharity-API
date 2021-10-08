@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public class Car {
+public abstract class Car {
 
     @Id
     @Column(unique = true, length = 20)
@@ -26,8 +26,11 @@ public class Car {
     private Make make;
 
     private String model;
-    private double rent;
 
+    // TODO NEW NAME FOR RENT: PRICE PER DAY? SO IT'S MORE CLEAR WHAT IT IS?
+    private double pricePerDay;
+
+    // TODO WRITE A METHOD THAT COUNTS IF LOCALDATE.NOW IS BETWEEN LOCALDATES OF RENTPERIOD
     @Enumerated(EnumType.STRING)
     private Availability available = Availability.YES;
 

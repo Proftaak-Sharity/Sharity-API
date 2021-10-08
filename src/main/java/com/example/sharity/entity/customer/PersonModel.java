@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 @Setter
 @ToString
 @MappedSuperclass
-public class PersonModel {
+public abstract class PersonModel {
 
 	@Column(nullable = false)
 	private String firstName;

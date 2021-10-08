@@ -36,8 +36,17 @@ public class Reservation {
         this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
-        int days = Period.between(startDate, endDate).getDays();
-        this.rent = NumberRounder.roundDouble((rent * days), 2);
+        this.rent = NumberRounder.roundDouble(rent, 2);
+    }
+
+//   TODO LET THE ADDRESERVATION SET ENUM ON PAID, SO IT IS ALREADY PAID WITHIN BOOKING
+    public Reservation(Long customerNumber, String licensePlate, double rent, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
+        this.customerNumber = customerNumber;
+        this.licensePlate = licensePlate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.rent = NumberRounder.roundDouble(rent, 2);
+        this.paymentEnum = paymentEnum;
     }
 
     public Reservation() {

@@ -1,6 +1,5 @@
 package com.example.sharity.config;
 
-import com.example.sharity.controller.CustomerController;
 import com.example.sharity.controller.ReservationController;
 import com.example.sharity.entity.car.*;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Period;
 import java.util.List;
 
 @Component
@@ -165,7 +165,6 @@ public class PreDataConfig {
             Car carTwo =
                     new FuelCar("DRGH78", Make.Ferrari, "Testarossa", FuelType.PETROL, 80, 5, 5L, 449,
                     new Insurance("MHSD985PP0", "DRGH78", "Start Rescue", Coverage.ALLRISK, LocalDate.of(2021, Month.DECEMBER, 7))
-
             );
             Car carThree =
                     new FuelCar("RTP89T", Make.Opel, "Vectra", FuelType.LPG, 55, 10, 1L, 39.90,
@@ -177,44 +176,56 @@ public class PreDataConfig {
             Reservation reservationOne = new Reservation(
                     3L,
                     "KNTK01",
-                    carService.getRentFromCar("KNTK01"),
+                    carService.getRentFromCar("KNTK01") * Period.between(LocalDate.of(2021, Month.DECEMBER, 1),
+                            LocalDate.of(2021, Month.DECEMBER, 5)).getDays(),
                     LocalDate.of(2021, Month.DECEMBER, 1),
                     LocalDate.of(2021, Month.DECEMBER, 5)
             );
             Reservation reservationTwo = new Reservation(
                     6L,
                     "DRGH78",
-                    carService.getRentFromCar("DRGH78"),
+                    carService.getRentFromCar("DRGH78") * Period.between(
+                            LocalDate.of(2022, Month.JANUARY, 21),
+                            LocalDate.of(2022, Month.DECEMBER, 27)).getDays(),
                     LocalDate.of(2022, Month.JANUARY, 21),
                     LocalDate.of(2022, Month.DECEMBER, 27)
             );
             Reservation reservationThree = new Reservation(
                     6L,
                     "DRGH78",
-                    carService.getRentFromCar("DRGH78"),
+                    carService.getRentFromCar("DRGH78") * Period.between(
+                            LocalDate.of(2022, Month.MARCH, 27),
+                            LocalDate.of(2022, Month.APRIL, 5)).getDays(),
                     LocalDate.of(2022, Month.MARCH, 27),
                     LocalDate.of(2022, Month.APRIL, 5)
             );
             Reservation reservationFour = new Reservation(
                     1L,
                     "JJ001J",
-                    carService.getRentFromCar("JJ001J"),
+                    carService.getRentFromCar("JJ001J") * Period.between(
+                            LocalDate.of(2021, Month.NOVEMBER, 23),
+                            LocalDate.of(2021, Month.DECEMBER, 18)).getDays(),
                     LocalDate.of(2021, Month.NOVEMBER, 23),
                     LocalDate.of(2021, Month.DECEMBER, 18)
             );
             Reservation reservationFive = new Reservation(
                     2L,
                     "LH099X",
-                    carService.getRentFromCar("LH099X"),
+                    carService.getRentFromCar("LH099X") * Period.between(
+                            LocalDate.of(2022, Month.JULY, 8),
+                            LocalDate.of(2022, Month.JULY, 19)).getDays(),
                     LocalDate.of(2022, Month.JULY, 8),
                     LocalDate.of(2022, Month.JULY, 19)
             );
             Reservation reservationSix = new Reservation(
                     2L,
                     "KNTK01",
-                    carService.getRentFromCar("KNTK01"),
+                    carService.getRentFromCar("KNTK01") * Period.between(
+                            LocalDate.of(2022, Month.JULY, 8),
+                            LocalDate.of(2022, Month.JULY, 19)).getDays(),
                     LocalDate.of(2022, Month.JULY, 8),
-                    LocalDate.of(2022, Month.JULY, 19)
+                    LocalDate.of(2022, Month.JULY, 19),
+                    PaymentEnum.PAID
             );
             reservationRepository.saveAll(List.of(reservationOne, reservationTwo, reservationThree, reservationFour, reservationFive, reservationSix));
 

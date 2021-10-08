@@ -1,10 +1,13 @@
 package com.example.sharity.abstracts;
 
+import org.springframework.stereotype.Component;
+
 import java.util.regex.Pattern;
 
-public abstract class EmailValidator {
+@Component
+public class EmailValidator {
 
-    public static boolean patternMatches(String emailAddress, String regexPattern) {
+    public boolean patternMatches(String emailAddress, String regexPattern) {
         return Pattern.compile(regexPattern)
                 .matcher(emailAddress)
                 .matches();

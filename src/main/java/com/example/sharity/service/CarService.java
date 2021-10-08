@@ -1,12 +1,10 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.enums.Availability;
 import com.example.sharity.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;

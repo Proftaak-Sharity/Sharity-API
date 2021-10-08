@@ -21,8 +21,6 @@ public class ElectricCar extends Car {
     private int batteryCapacity;
     private int kmPerKw;
     private int fastChargingTime;
-
-    // TODO NEW NAME FOR RENT: PRICE PER DAY? SO IT'S MORE CLEAR WHAT IT IS?
     private double pricePerDay;
 
     public ElectricCar(String licensePlate, Make make, String model, int batteryCapacity, int kmPerKw, int fastChargingTime, double pricePerDay, Insurance insurance) {

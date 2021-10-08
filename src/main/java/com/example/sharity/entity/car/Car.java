@@ -1,7 +1,6 @@
 package com.example.sharity.entity.car;
 
 
-import com.example.sharity.entity.car.enums.Availability;
 import com.example.sharity.entity.car.enums.Make;
 import lombok.*;
 
@@ -27,12 +26,7 @@ public abstract class Car {
 
     private String model;
 
-    // TODO NEW NAME FOR RENT: PRICE PER DAY? SO IT'S MORE CLEAR WHAT IT IS?
     private double pricePerDay;
-
-    // TODO WRITE A METHOD THAT COUNTS IF LOCALDATE.NOW IS BETWEEN LOCALDATES OF RENTPERIOD
-    @Enumerated(EnumType.STRING)
-    private Availability available = Availability.YES;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)

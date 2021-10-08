@@ -27,8 +27,6 @@ public class FuelCar extends Car {
 
     private int sizeFueltank;
     private int kmPerLiterFuel;
-
-    // TODO NEW NAME FOR RENT: PRICE PER DAY? SO IT'S MORE CLEAR WHAT IT IS?
     private double pricePerDay;
 
     public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double pricePerDay, Insurance insurance) {

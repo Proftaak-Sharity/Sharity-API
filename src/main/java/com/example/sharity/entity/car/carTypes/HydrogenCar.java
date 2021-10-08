@@ -19,8 +19,6 @@ public class HydrogenCar extends Car {
 
     private int sizeFueltank;
     private int kmPerLiter;
-
-    // TODO NEW NAME FOR RENT: PRICE PER DAY? SO IT'S MORE CLEAR WHAT IT IS?
     private double pricePerDay;
 
 

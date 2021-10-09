@@ -3,6 +3,10 @@ package com.example.sharity.service;
 import com.example.sharity.entity.customer.EmailValidator;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.errorHandling.NoChangesDateException;
+import com.example.sharity.errorHandling.customer.EmptyValueException;
+import com.example.sharity.errorHandling.NoChangesStringException;
+import com.example.sharity.errorHandling.UniqueException;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.entity.customer.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,99 +88,106 @@ public class CustomerService {
 
 
     public void updateCustomer(Long customerNumber, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum countryEnum, String phoneNumber) throws NoSuchAlgorithmException {
-        Customer customer = customerRepository.findCustomerByCustomerNumber(customerNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer with customer number " + customerNumber + " does not exist"));
+        Customer customer = customerRepository.getById(customerNumber);
 
         if (firstName != null) {
             if (firstName.length() == 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Firstname was empty");
+                throw new EmptyValueException("first name");
             } else if (firstName.equals(customer.getFirstName())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, firstName + " is already your set firstname");
             } else {
                 customer.setFirstName(firstName);
+                customerRepository.save(customer);
             }
         }
 
         if (lastName != null) {
             if (lastName.length() == 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lastname was empty");
+                throw new EmptyValueException("last name");
             } else if (lastName.equals(customer.getLastName())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, lastName + " is already your lastname");
             } else {
                 customer.setFirstName(lastName);
+                customerRepository.save(customer);
             }
         }
 
         if (email != null) {
+            if (email.length() == 0) {
+                throw new EmptyValueException("email");
+            }
             Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
-
             if (email.equals(customer.getEmail())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, email + " was already your set email");
+                throw new NoChangesStringException("email", email);
             } else if (emailOptional.isPresent()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email address " + email + " is already taken");
+                throw new UniqueException(email);
             } else if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
             }
             customer.setEmail(email);
+            customerRepository.save(customer);
         }
 
         if (password != null) {
             customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
+            customerRepository.save(customer);
         }
 
         if (dateOfBirth != null) {
             if (dateOfBirth.equals(customer.getDateOfBirth())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, dateOfBirth + " was already set as your date of birth");
-            } else {
-                customer.setDateOfBirth(dateOfBirth);
+                throw new NoChangesDateException("Date of birth", dateOfBirth);
             }
+            customer.setDateOfBirth(dateOfBirth);
+            customerRepository.save(customer);
         }
 
         if (address != null) {
             if (address.equals(customer.getAddress())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, address + " was already set as your address");
-            } else {
-                customer.setAddress(address);
             }
+            customer.setAddress(address);
+            customerRepository.save(customer);
         }
 
         if (houseNumber != null) {
             if (houseNumber.equals(customer.getHouseNumber())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, houseNumber + " was already set as your house number");
-            } else {
-                customer.setHouseNumber(houseNumber);
             }
+            customer.setHouseNumber(houseNumber);
+            customerRepository.save(customer);
+
         }
 
         if (city != null) {
             if (city.equals(customer.getCity())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, city + " was already set as your city");
-            } else {
-                customer.setCity(city);
             }
+            customer.setCity(city);
+            customerRepository.save(customer);
         }
 
         if (postalCode != null) {
             if (postalCode.equals(customer.getEmail())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, postalCode + " was already set as your postal code");
-            } else {
-                customer.setPostalCode(postalCode);
             }
+            customer.setPostalCode(postalCode);
+            customerRepository.save(customer);
         }
 
         if (countryEnum != null) {
             if (countryEnum.equals(customer.getCountry())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, countryEnum + " was already set as your country");
-            } else {
-                customer.setCountry(countryEnum);
             }
+            customer.setCountry(countryEnum);
+            customerRepository.save(customer);
         }
 
         if (phoneNumber != null) {
             if (phoneNumber.equals(customer.getPhoneNumber())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, phoneNumber + " was already set as your phone number");
-            } else {
-                customer.setPhoneNumber(phoneNumber);
             }
+            customer.setPhoneNumber(phoneNumber);
+            customerRepository.save(customer);
         }
     }
 

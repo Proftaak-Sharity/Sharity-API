@@ -1,7 +1,6 @@
 
 package com.example.sharity.entity.customer;
 
-import com.example.sharity.abstracts.PasswordGenerator;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -12,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 @Setter
 @ToString
 @MappedSuperclass
-public class PersonModel {
+public abstract class PersonModel {
 
 	@Column(nullable = false)
 	private String firstName;
@@ -26,11 +25,11 @@ public class PersonModel {
 	@Column(nullable = false)
 	private String password;
 
-	public PersonModel(String firstName, String lastName, String email, String password) throws NoSuchAlgorithmException {
+	public PersonModel(String firstName, String lastName, String email, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = PasswordGenerator.getSHA512Password(password, PasswordGenerator.getSalt());
+		this.password = password;
 	}
 
 	public PersonModel() {

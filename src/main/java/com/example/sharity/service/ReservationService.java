@@ -1,7 +1,5 @@
 package com.example.sharity.service;
 
-
-import com.example.sharity.abstracts.NumberRounder;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
@@ -53,12 +51,14 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+
     public void updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
         Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation with reservationNumber " + reservationNumber + " not found."));
         Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
-        if ((reservationOptional).isPresent()) {
+        Optional<Payout> payoutOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
+        if (payoutOptional.isPresent()) {
             throw new IllegalStateException("Payment had already been completed");
         } else {
 
@@ -69,18 +69,31 @@ public class ReservationService {
             Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new IllegalStateException("Customer with customernumber " + customerNumber + " not found."));
             double rent = NumberRounder.roundDouble((reservation.getRent()), 2);
 
-            //      SETTERS FOR UPDATING PAYMENT TABLE
-            reservation.setPaymentEnum(PaymentEnum.PAID);
-            double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
-            double tax = NumberRounder.roundDouble((rent * 0.21), 2);
-            customer.setBalance(NumberRounder.roundDouble(customer.getBalance(), 2) + payoutAmount);
+//            UPDATE RENTPRICE
+            double rent = car.getPricePerDay() * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
+            reservation.setRent(rent);
 
-            Payout payout = new Payout(reservationNumber, payoutAmount, tax, customerNumber);
+//            CHECK IF PAYMENTENUM IS SET TO UPDATE, IF ALREADY PAID, IT CAN'T RE-OPEN BECAUSE A PAYMENT CAN BE DONE TWICE
+            if (paymentEnum == PaymentEnum.PAID) {
+                reservation.setPaymentEnum(paymentEnum);
 
-            //          SAVE TO DATABASE
-            payoutRepository.save(payout);
+                //          GETTER FOR UPDATING PAYMENT TABLE
+                Customer customer = customerRepository.findCustomerByCustomerNumber(car.getCustomerNumber()).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Carowner of car with licenseplate " + reservation.getLicensePlate() + " of customer number " + reservation.getCustomerNumber() + " not in database"));
+
+                //      SETTERS FOR UPDATING PAYMENT TABLE
+                double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
+                double tax = rent - payoutAmount;
+                customer.setBalance(customer.getBalance() + payoutAmount);
+                Payout payout = new Payout(reservationNumber, payoutAmount, tax, car.getCustomerNumber());
+
+                payoutRepository.save(payout);
+                customerRepository.save(customer);
+
+            } else if (paymentEnum == PaymentEnum.OPEN) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment is already PAID and can not be re-opened");
+            }
+
             reservationRepository.save(reservation);
-            customerRepository.save(customer);
         }
     }
 

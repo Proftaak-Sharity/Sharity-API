@@ -1,7 +1,6 @@
 package com.example.sharity.entity.car;
 
 
-import com.example.sharity.entity.car.enums.Availability;
 import com.example.sharity.entity.car.enums.Make;
 import lombok.*;
 
@@ -14,7 +13,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public class Car {
+public abstract class Car {
 
     @Id
     @Column(unique = true, length = 20)
@@ -26,10 +25,8 @@ public class Car {
     private Make make;
 
     private String model;
-    private double rent;
 
-    @Enumerated(EnumType.STRING)
-    private Availability available = Availability.YES;
+    private double pricePerDay;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)

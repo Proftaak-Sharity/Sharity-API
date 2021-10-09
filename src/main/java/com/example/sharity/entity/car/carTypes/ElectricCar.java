@@ -1,6 +1,6 @@
 package com.example.sharity.entity.car.carTypes;
 
-import com.example.sharity.abstracts.NumberRounder;
+import com.example.sharity.service.NumberRounder;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.entity.car.Insurance;
@@ -21,22 +21,22 @@ public class ElectricCar extends Car {
     private int batteryCapacity;
     private int kmPerKw;
     private int fastChargingTime;
-    private double rent;
+    private double pricePerDay;
 
-    public ElectricCar(String licensePlate, Make make, String model, int batteryCapacity, int kmPerKw, int fastChargingTime, double rent, Insurance insurance) {
+    public ElectricCar(String licensePlate, Make make, String model, int batteryCapacity, int kmPerKw, int fastChargingTime, double pricePerDay, Insurance insurance) {
         super(licensePlate, make, model, insurance);
         this.batteryCapacity = batteryCapacity;
         this.kmPerKw = kmPerKw;
         this.fastChargingTime = fastChargingTime;
-        this.rent = NumberRounder.roundDouble(rent, 2);
+        this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
     }
 
-    public ElectricCar(String licensePlate, Make make, String model, Long customerNumber, int batteryCapacity, int kmPerKw, int fastChargingTime, double rent, Insurance insurance) {
+    public ElectricCar(String licensePlate, Make make, String model, Long customerNumber, int batteryCapacity, int kmPerKw, int fastChargingTime, double pricePerDay, Insurance insurance) {
         super(licensePlate, make, model, insurance);
         this.batteryCapacity = batteryCapacity;
         this.kmPerKw = kmPerKw;
         this.fastChargingTime = fastChargingTime;
-        this.rent = NumberRounder.roundDouble(rent, 2);
+        this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
     }
 
     public ElectricCar() {

@@ -1,11 +1,11 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.enums.Availability;
 import com.example.sharity.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,28 +24,18 @@ public class CarService {
     }
 
     public double getRentFromCar(String licensePlate) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new IllegalStateException("Car with licenseplate " + licensePlate + " not known"));
-        return car.getRent();
+        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " not known"));
+        return car.getPricePerDay();
     }
 
-    @Transactional
-    public void updateCar(String licensePlate, double rent, Availability available) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new IllegalStateException("Car with licenseplate " + licensePlate + " unknown in database"));
 
-        if (rent <= 0) {
-            throw new IllegalStateException("Rent must be higher than zero");
-        } else {
-            car.setRent(rent);
-        }
+    public void updateCar(String licensePlate, double pricePerDay) {
+        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
 
-        if (car.getAvailable() == available) {
-            if (available == Availability.YES) {
-                throw new IllegalStateException("Car already available");
-            } else if (available == Availability.NO) {
-                throw new IllegalStateException("Car already inavailable");
-            }
+        if (pricePerDay <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
         } else {
-            car.setAvailable(available);
+            car.setPricePerDay(pricePerDay);
         }
 
     }

@@ -3,7 +3,6 @@ package com.example.sharity.entity.customer;
 import com.example.sharity.entity.car.Car;
 import lombok.*;
 
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.Collections;

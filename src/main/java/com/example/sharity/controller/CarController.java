@@ -25,10 +25,9 @@ public class CarController {
 
     @PutMapping(path = "{licensePlate}")
     public void updateCar(@PathVariable("licensePlate") String licensePlate,
-                          @RequestParam(required = false) double pricePerDay,
-                          @RequestParam(required = false) Availability available)
+                          @RequestParam(required = false) double pricePerDay)
     {
-        carService.updateCar(licensePlate, pricePerDay, available);
+        carService.updateCar(licensePlate, pricePerDay);
     }
 
 

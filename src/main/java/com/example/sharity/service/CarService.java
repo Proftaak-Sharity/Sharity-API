@@ -29,23 +29,13 @@ public class CarService {
     }
 
 
-    public void updateCar(String licensePlate, double pricePerDay, Availability available) {
+    public void updateCar(String licensePlate, double pricePerDay) {
         Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
 
         if (pricePerDay <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
         } else {
             car.setPricePerDay(pricePerDay);
-        }
-
-        if (car.getAvailable() == available) {
-            if (available == Availability.YES) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already available");
-            } else if (available == Availability.NO) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already inavailable");
-            }
-        } else {
-            car.setAvailable(available);
         }
 
     }

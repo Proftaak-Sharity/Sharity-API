@@ -54,7 +54,7 @@ public class ReservationService {
     }
 
     public void updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
-        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation with reservationNumber " + reservationNumber + " not found."));
         Optional<Payout> reservationOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
@@ -64,9 +64,9 @@ public class ReservationService {
 
             //          GETTERS FOR UPDATING PAYMENT TABLE
             String licensePlate = reservation.getLicensePlate();
-            Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            Car car = carRepository.findCarByLicensePlate(licensePlate).orElseThrow(() -> new IllegalStateException("Car with licenseplate " + licensePlate + " not found."));
             Long customerNumber = car.getCustomerNumber();
-            Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new IllegalStateException("Customer with customernumber " + customerNumber + " not found."));
             double rent = NumberRounder.roundDouble((reservation.getRent()), 2);
 
             //      SETTERS FOR UPDATING PAYMENT TABLE
@@ -85,14 +85,16 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long reservationNumber) {
-        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation with reservationNumber " + reservationNumber + " not found."));
         reservationRepository.delete(reservation);
     }
 
     public Optional <Reservation> findReservation(Long reservationNumber) {
         Optional <Reservation> reservationOptional = reservationRepository.findReservationByReservationNumber(reservationNumber);
         if (reservationOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new IllegalStateException("Reservation with reservationNumber " + reservationNumber + " not found.");
+
+//                    ResponseStatusException(HttpStatus.NOT_FOUND);
 
         }
 

@@ -38,7 +38,7 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
         Reservation newReservation = reservationService.addReservation(reservation);
-        return ResponseEntity.created( URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
+        return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
     }
 
     @PutMapping(path = "{reservationNumber}")

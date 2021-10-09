@@ -1,4 +1,4 @@
-package com.example.sharity.errorHandling;
+package com.example.sharity.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

@@ -2,7 +2,7 @@
 package com.example.sharity.controller;
 
 import com.example.sharity.entity.customer.CountryEnum;
-import com.example.sharity.errorHandling.customer.NotFoundException;
+import com.example.sharity.error.NotFoundError;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.service.CustomerService;
 import com.example.sharity.entity.customer.Customer;
@@ -38,7 +38,10 @@ public class CustomerController {
 //    GET SPECIFIC DATA FROM CUSTOMERTABLE (BY CUSTOMERNUMBER)
     @GetMapping(path = "{customerNumber}")
         public Optional<Customer> findCustomer(
-                @PathVariable("customerNumber") Long customerNumber) {
+                @PathVariable("customerNumber") Long customerNumber,
+                @Valid @RequestBody Customer customerDetails) {
+                    Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundError("Customer number", customerNumber));
+
         return customerService.findCustomer(customerNumber);
     }
 
@@ -64,14 +67,16 @@ public class CustomerController {
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) CountryEnum countryEnum,
             @Valid @RequestBody Customer customerDetails) throws NoSuchAlgorithmException {
-            Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer", customerNumber));
+            Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundError("Customer number", customerNumber));
 
         customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
     }
 
     @DeleteMapping(path = "{customerNumber}")
     public void deleteCustomer(
-            @PathVariable("customerNumber") Long customerNumber) {
+            @PathVariable("customerNumber") Long customerNumber,
+            @Valid @RequestBody Customer customerDetails) {
+                Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundError("Customer number", customerNumber));
         customerService.deleteCustomer(customerNumber);
     }
 

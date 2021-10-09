@@ -3,10 +3,7 @@ package com.example.sharity.service;
 import com.example.sharity.entity.customer.EmailValidator;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.errorHandling.NoChangesDateException;
-import com.example.sharity.errorHandling.customer.EmptyValueException;
-import com.example.sharity.errorHandling.NoChangesStringException;
-import com.example.sharity.errorHandling.UniqueException;
+import com.example.sharity.error.*;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.entity.customer.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +50,11 @@ public class CustomerService {
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
         if (customerOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address " + customer.getEmail() + " already taken");
+            throw new NotUniqueError("Email");
         } else if (customer.getEmail() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address entry is required");
+            throw new EmptyValueError("Email");
         } else if (emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
+            throw new EmailPatternError(customer.getEmail());
         }
 
         if (customer.getFirstName() == null) {
@@ -84,115 +81,129 @@ public class CustomerService {
 
         customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
         customerRepository.save(customer);
+        throw new DataInserted("Customer");
     }
 
 
     public void updateCustomer(Long customerNumber, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum countryEnum, String phoneNumber) throws NoSuchAlgorithmException {
         Customer customer = customerRepository.getById(customerNumber);
+        Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
 
-        if (firstName != null) {
-            if (firstName.length() == 0) {
-                throw new EmptyValueException("first name");
-            } else if (firstName.equals(customer.getFirstName())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, firstName + " is already your set firstname");
-            } else {
-                customer.setFirstName(firstName);
-                customerRepository.save(customer);
+        if (firstName == null && lastName == null && email == null && password == null && dateOfBirth == null && address == null && houseNumber == null && city == null && postalCode == null && countryEnum == null && phoneNumber == null) {
+            throw new AllNullError();
+        } else {
+
+            if (firstName != null) {
+                if (firstName.length() == 0) {
+                    throw new EmptyValueError("first name");
+                } else if (firstName.equals(customer.getFirstName())) {
+                    throw new NoChangesStringError("First name", firstName);
+                } else {
+                    customer.setFirstName(firstName);
+                }
+            }
+
+            if (lastName != null) {
+                if (lastName.length() == 0) {
+                    throw new EmptyValueError("last name");
+                } else if (lastName.equals(customer.getLastName())) {
+                    throw new NoChangesStringError("Last name", lastName);
+                } else {
+                    customer.setFirstName(lastName);
+                }
+            }
+
+            if (email != null) {
+                if (email.length() == 0) {
+                    throw new EmptyValueError("email");
+                } else if (email.equals(customer.getEmail())) {
+                    throw new NoChangesStringError("email", email);
+                } else if (emailOptional.isPresent()) {
+                    throw new NotUniqueError(email);
+                } else if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+                    throw new EmailPatternError(email);
+                } else {
+                    customer.setEmail(email);
+                }
+            }
+
+            if (password != null) {
+                if (password.length() == 0) {
+                    throw new EmptyValueError("password");
+                } else {
+                    customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
+                }
+            }
+
+            if (dateOfBirth != null) {
+                if (dateOfBirth.equals(customer.getDateOfBirth())) {
+                    throw new NoChangesDateError("Date of birth", dateOfBirth);
+                } else {
+                    customer.setDateOfBirth(dateOfBirth);
+                }
+            }
+
+            if (address != null) {
+                if (address.length() == 0) {
+                    throw new EmptyValueError("address");
+                } else if (address.equals(customer.getAddress())) {
+                    throw new NoChangesStringError("Address", address);
+                } else {
+                    customer.setAddress(address);
+                }
+            }
+
+            if (houseNumber != null) {
+                if (password.length() == 0) {
+                    throw new EmptyValueError("password");
+                }
+                if (houseNumber.equals(customer.getHouseNumber())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, houseNumber + " was already set as your house number");
+                } else {
+                    customer.setHouseNumber(houseNumber);
+                }
+            }
+
+            if (city != null) {
+                if (city.equals(customer.getCity())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, city + " was already set as your city");
+                } else {
+                    customer.setCity(city);
+                }
+            }
+
+            if (postalCode != null) {
+                if (postalCode.equals(customer.getEmail())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, postalCode + " was already set as your postal code");
+                } else {
+                    customer.setPostalCode(postalCode);
+                }
+            }
+
+            if (countryEnum != null) {
+                if (countryEnum.equals(customer.getCountry())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, countryEnum + " was already set as your country");
+                } else {
+                    customer.setCountry(countryEnum);
+                }
+            }
+
+            if (phoneNumber != null) {
+                if (phoneNumber.equals(customer.getPhoneNumber())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, phoneNumber + " was already set as your phone number");
+                } else {
+                    customer.setPhoneNumber(phoneNumber);
+                }
             }
         }
-
-        if (lastName != null) {
-            if (lastName.length() == 0) {
-                throw new EmptyValueException("last name");
-            } else if (lastName.equals(customer.getLastName())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, lastName + " is already your lastname");
-            } else {
-                customer.setFirstName(lastName);
-                customerRepository.save(customer);
-            }
-        }
-
-        if (email != null) {
-            if (email.length() == 0) {
-                throw new EmptyValueException("email");
-            }
-            Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
-            if (email.equals(customer.getEmail())) {
-                throw new NoChangesStringException("email", email);
-            } else if (emailOptional.isPresent()) {
-                throw new UniqueException(email);
-            } else if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
-            }
-            customer.setEmail(email);
-            customerRepository.save(customer);
-        }
-
-        if (password != null) {
-            customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
-            customerRepository.save(customer);
-        }
-
-        if (dateOfBirth != null) {
-            if (dateOfBirth.equals(customer.getDateOfBirth())) {
-                throw new NoChangesDateException("Date of birth", dateOfBirth);
-            }
-            customer.setDateOfBirth(dateOfBirth);
-            customerRepository.save(customer);
-        }
-
-        if (address != null) {
-            if (address.equals(customer.getAddress())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, address + " was already set as your address");
-            }
-            customer.setAddress(address);
-            customerRepository.save(customer);
-        }
-
-        if (houseNumber != null) {
-            if (houseNumber.equals(customer.getHouseNumber())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, houseNumber + " was already set as your house number");
-            }
-            customer.setHouseNumber(houseNumber);
-            customerRepository.save(customer);
-
-        }
-
-        if (city != null) {
-            if (city.equals(customer.getCity())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, city + " was already set as your city");
-            }
-            customer.setCity(city);
-            customerRepository.save(customer);
-        }
-
-        if (postalCode != null) {
-            if (postalCode.equals(customer.getEmail())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, postalCode + " was already set as your postal code");
-            }
-            customer.setPostalCode(postalCode);
-            customerRepository.save(customer);
-        }
-
-        if (countryEnum != null) {
-            if (countryEnum.equals(customer.getCountry())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, countryEnum + " was already set as your country");
-            }
-            customer.setCountry(countryEnum);
-            customerRepository.save(customer);
-        }
-
-        if (phoneNumber != null) {
-            if (phoneNumber.equals(customer.getPhoneNumber())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, phoneNumber + " was already set as your phone number");
-            }
-            customer.setPhoneNumber(phoneNumber);
-            customerRepository.save(customer);
-        }
+        customerRepository.save(customer);
+        throw new DataUpdated("Customer");
     }
+
 
     public void deleteCustomer(Long customerNumber){
         Optional<Customer> customerOptional = customerRepository.findCustomerByCustomerNumber(customerNumber);
+
         if (customerOptional.isPresent()) {
             customerRepository.deleteById(customerNumber);
         } else {

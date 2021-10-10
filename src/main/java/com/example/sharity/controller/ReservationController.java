@@ -42,12 +42,13 @@ public class ReservationController {
     }
 
     @PutMapping(path = "{reservationNumber}")
-    public void updateReservation(
+    public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,
             @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) PaymentEnum paymentEnum) {
-        reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
+        Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
+        return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
     }
 
     @DeleteMapping(path = "{reservationNumber}")

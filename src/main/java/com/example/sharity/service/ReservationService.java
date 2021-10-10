@@ -73,11 +73,11 @@ public class ReservationService {
 
             payoutRepository.save(payout);
         }
-        return reservationRepository.save(reservation);
+        return reservation;
     }
 
 
-    public void updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
+    public Reservation updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
         //        CHECK IF CAR & RESERVATION ARE IN DATABASE
         Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation with reservation number " + reservationNumber + " not in database"));
         Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).orElseThrow(()-> new IllegalStateException("Rented car with license plate " + reservation.getLicensePlate() + " not in database"));
@@ -125,9 +125,9 @@ public class ReservationService {
             } else if (paymentEnum == PaymentEnum.OPEN) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment is already PAID and can not be re-opened");
             }
-
             reservationRepository.save(reservation);
         }
+        return reservation;
     }
 
     public void deleteReservation(Long reservationNumber) {

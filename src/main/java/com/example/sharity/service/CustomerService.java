@@ -1,18 +1,12 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.customer.EmailValidator;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.errorHandling.NoChangesDateException;
-import com.example.sharity.errorHandling.customer.EmptyValueException;
-import com.example.sharity.errorHandling.NoChangesStringException;
-import com.example.sharity.errorHandling.UniqueException;
+import com.example.sharity.exception.*;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.entity.customer.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -23,24 +17,16 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final EmailValidator emailValidator;
     private final PasswordGenerator passwordGenerator;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, EmailValidator emailValidator, PasswordGenerator passwordGenerator) {
+    public CustomerService(CustomerRepository customerRepository, PasswordGenerator passwordGenerator) {
         this.customerRepository = customerRepository;
-        this.emailValidator = emailValidator;
         this.passwordGenerator = passwordGenerator;
     }
 
 
-
     public Optional<Customer> findCustomer(Long customerNumber) {
-        Optional<Customer> customerOptional = customerRepository.findCustomerByCustomerNumber(customerNumber);
-
-        if (customerOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer with customer number " + customerNumber + " is unknown");
-        }
         return customerRepository.findCustomerByCustomerNumber(customerNumber);
     }
 
@@ -53,33 +39,7 @@ public class CustomerService {
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
         Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
         if (customerOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address " + customer.getEmail() + " already taken");
-        } else if (customer.getEmail() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address entry is required");
-        } else if (emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
-        }
-
-        if (customer.getFirstName() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Firstname entry is required");
-        } else if (customer.getLastName() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lastname entry is required");
-        } else if (customer.getPassword() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password entry is required");
-        } else if (customer.getAddress() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Address entry is required");
-        } else if (customer.getHouseNumber() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "House number entry is required");
-        } else if (customer.getPostalCode() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Postal code entry is required");
-        } else if (customer.getCity() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "City entry is required");
-        } else if (customer.getDateOfBirth() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date of birth entry is required");
-        } else if (customer.getCountry() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "County entry is required");
-        } else if (customer.getPhoneNumber() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number entry is required");
+            throw new NotUniqueException("Email");
         }
 
         customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
@@ -89,114 +49,85 @@ public class CustomerService {
 
     public void updateCustomer(Long customerNumber, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum countryEnum, String phoneNumber) throws NoSuchAlgorithmException {
         Customer customer = customerRepository.getById(customerNumber);
+        Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
 
-        if (firstName != null) {
-            if (firstName.length() == 0) {
-                throw new EmptyValueException("first name");
-            } else if (firstName.equals(customer.getFirstName())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, firstName + " is already your set firstname");
-            } else {
+            if (firstName != null) {
+                if (firstName.length() == 0) {
+                    throw new EmptyValueException("First name");
+                }
                 customer.setFirstName(firstName);
-                customerRepository.save(customer);
             }
-        }
 
-        if (lastName != null) {
-            if (lastName.length() == 0) {
-                throw new EmptyValueException("last name");
-            } else if (lastName.equals(customer.getLastName())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, lastName + " is already your lastname");
-            } else {
-                customer.setFirstName(lastName);
-                customerRepository.save(customer);
+            if (lastName != null) {
+                if (lastName.length() == 0) {
+                    throw new EmptyValueException("Last name");
+                }
+                customer.setLastName(lastName);
             }
-        }
 
-        if (email != null) {
-            if (email.length() == 0) {
-                throw new EmptyValueException("email");
+            if (email != null) {
+                if (email.length() == 0) {
+                    throw new EmptyValueException("Email");
+                } else if (emailOptional.isPresent()) {
+                    throw new NotUniqueException(email);
+                }
+                customer.setEmail(email);
             }
-            Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
-            if (email.equals(customer.getEmail())) {
-                throw new NoChangesStringException("email", email);
-            } else if (emailOptional.isPresent()) {
-                throw new UniqueException(email);
-            } else if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email address does not meet set requirements. Did you miss a '@' or a '.' ?");
+
+            if (password != null) {
+                if (password.length() == 0) {
+                    throw new EmptyValueException("Password");
+                }
+                customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
             }
-            customer.setEmail(email);
-            customerRepository.save(customer);
-        }
 
-        if (password != null) {
-            customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
-            customerRepository.save(customer);
-        }
-
-        if (dateOfBirth != null) {
-            if (dateOfBirth.equals(customer.getDateOfBirth())) {
-                throw new NoChangesDateException("Date of birth", dateOfBirth);
+            if (dateOfBirth != null) {
+                customer.setDateOfBirth(dateOfBirth);
             }
-            customer.setDateOfBirth(dateOfBirth);
-            customerRepository.save(customer);
-        }
 
-        if (address != null) {
-            if (address.equals(customer.getAddress())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, address + " was already set as your address");
+            if (address != null) {
+                if (address.length() == 0) {
+                    throw new EmptyValueException("Address");
+                }
+                customer.setAddress(address);
             }
-            customer.setAddress(address);
-            customerRepository.save(customer);
-        }
 
-        if (houseNumber != null) {
-            if (houseNumber.equals(customer.getHouseNumber())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, houseNumber + " was already set as your house number");
+            if (houseNumber != null) {
+                if (houseNumber.length() == 0) {
+                    throw new EmptyValueException("House number");
+                }
+                customer.setHouseNumber(houseNumber);
             }
-            customer.setHouseNumber(houseNumber);
-            customerRepository.save(customer);
 
-        }
-
-        if (city != null) {
-            if (city.equals(customer.getCity())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, city + " was already set as your city");
+            if (city != null) {
+                if (city.length() == 0) {
+                    throw new EmptyValueException("City");
+                }
+                customer.setCity(city);
             }
-            customer.setCity(city);
-            customerRepository.save(customer);
-        }
 
-        if (postalCode != null) {
-            if (postalCode.equals(customer.getEmail())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, postalCode + " was already set as your postal code");
+            if (postalCode != null) {
+                if (postalCode.length() == 0) {
+                    throw new EmptyValueException("Postal code");
+                }
+                customer.setPostalCode(postalCode);
             }
-            customer.setPostalCode(postalCode);
-            customerRepository.save(customer);
-        }
 
-        if (countryEnum != null) {
-            if (countryEnum.equals(customer.getCountry())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, countryEnum + " was already set as your country");
+            if (countryEnum != null) {
+                customer.setCountry(countryEnum);
             }
-            customer.setCountry(countryEnum);
-            customerRepository.save(customer);
-        }
 
-        if (phoneNumber != null) {
-            if (phoneNumber.equals(customer.getPhoneNumber())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, phoneNumber + " was already set as your phone number");
+            if (phoneNumber != null) {
+                if (phoneNumber.length() == 0) {
+                    throw new EmptyValueException("Phone number");
+                }
+                customer.setPhoneNumber(phoneNumber);
             }
-            customer.setPhoneNumber(phoneNumber);
-            customerRepository.save(customer);
-        }
+
+        customerRepository.save(customer);
     }
 
     public void deleteCustomer(Long customerNumber){
-        Optional<Customer> customerOptional = customerRepository.findCustomerByCustomerNumber(customerNumber);
-        if (customerOptional.isPresent()) {
-            customerRepository.deleteById(customerNumber);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer with customer number " + customerNumber + " unknown");
-        }
+        customerRepository.deleteById(customerNumber);
     }
 }

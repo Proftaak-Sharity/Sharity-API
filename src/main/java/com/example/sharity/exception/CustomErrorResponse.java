@@ -1,4 +1,4 @@
-package com.example.sharity.errorHandling;
+package com.example.sharity.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 public class CustomErrorResponse {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    //  CREATES CUSTOMIZED EXCEPTIONS LAYOUT, ONLY TIMESTAMP, STATUS AND CUSTOMIZED ERROR SHOWN
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime timestamp;
     private int status;
     private String Error;

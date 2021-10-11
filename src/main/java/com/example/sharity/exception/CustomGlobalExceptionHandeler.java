@@ -1,7 +1,5 @@
-package com.example.sharity.errorHandling;
+package com.example.sharity.exception;
 
-import com.example.sharity.errorHandling.customer.NotFoundException;
-import com.example.sharity.errorHandling.customer.EmptyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +12,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandler {
 
+    //  CREATES CUSTOMIZED ERRORS BY HTTPSTATUS
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request) {
 
@@ -27,9 +26,10 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
 
     @ExceptionHandler({
             EmptyValueException.class,
-            UniqueException.class,
-            NoChangesStringException.class,
-            NoChangesDateException.class })
+            NotUniqueException.class,
+            EmailPatternException.class,
+            AllNullException.class,
+            FieldRequiredException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerBadRequest(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -40,15 +40,28 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(UniqueException.class)
-//    public ResponseEntity<CustomErrorResponse> customHandlerBadRequest(Exception ex, WebRequest request) {
-//
-//        CustomErrorResponse errors = new CustomErrorResponse();
-//        errors.setTimestamp(LocalDateTime.now());
-//        errors.setError(ex.getMessage());
-//        errors.setStatus(HttpStatus.BAD_REQUEST.value());
-//
-//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler({
+            CrudException.class })
+    public ResponseEntity<CustomErrorResponse> customHandlerOk(Exception ex, WebRequest request) {
+
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setTimestamp(LocalDateTime.now());
+        errors.setError(ex.getMessage());
+        errors.setStatus(HttpStatus.OK.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.OK);
+    }
+
+    @ExceptionHandler({
+            CrudAllException.class })
+    public ResponseEntity<CustomErrorResponse> customHandlerNotAllowed(Exception ex, WebRequest request) {
+
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setTimestamp(LocalDateTime.now());
+        errors.setError(ex.getMessage());
+        errors.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.METHOD_NOT_ALLOWED);
+    }
 }
 

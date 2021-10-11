@@ -5,6 +5,7 @@ import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.entity.customer.CountryEnum;
+import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/cars")
@@ -28,6 +30,12 @@ public class CarController {
     @GetMapping
     public List<Car> getCars() {
         return carService.getCars();
+    }
+
+    @GetMapping(path = "{licensePlate}")
+    public Optional<Car> findCar(
+            @PathVariable("licensePlate") String licensePlate) {
+        return carService.findCar(licensePlate);
     }
 
     @PutMapping(path = "{licensePlate}")

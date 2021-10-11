@@ -36,15 +36,6 @@ public class CarService {
 
     public void updateCar(String licensePlate, Long customerNumber, Make make, double perDay, Insurance insurance, int batteryCapacity, int kmPerKw, int fastChargingTime, FuelType fuelType, int fueltank, int kmPerLiterFuel, int sizeFueltank, double pricePerDay) {
         Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
-
-        /*
-        TODO:
-            Make car check what type it is and use coresponding shit?
-
-        */
-
-
-
         if (pricePerDay <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
         } else {
@@ -54,11 +45,15 @@ public class CarService {
     }
 
     public void deleteCar(String licensePlate) {
-        Optional<Car> carOptional = carRepository.findCarByLicensePlate(licensePlate);
-        if (carOptional.isPresent()) {
             carRepository.deleteById(licensePlate);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licencePlate " + licensePlate + " unknown");
+    }
+
+    public Optional<Car> findCar(String licensePlate) {
+        Optional<Car> customerOptional = carRepository.findById(licensePlate);
+
+        if (customerOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with  licensePlate " + licensePlate + " is unknown");
         }
+        return carRepository.findById(licensePlate);
     }
 }

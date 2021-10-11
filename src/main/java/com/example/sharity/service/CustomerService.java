@@ -127,7 +127,6 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-
     public void deleteCustomer(Long customerNumber){
         customerRepository.deleteById(customerNumber);
     }

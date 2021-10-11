@@ -1,4 +1,4 @@
-package com.example.sharity.error;
+package com.example.sharity.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoundError.class)
+    //  CREATES CUSTOMIZED ERRORS BY HTTPSTATUS
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -24,12 +25,11 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler({
-            EmptyValueError.class,
-            NotUniqueError.class,
-            NoChangesStringError.class,
-            NoChangesDateError.class,
-            EmailPatternError.class,
-            AllNullError.class })
+            EmptyValueException.class,
+            NotUniqueException.class,
+            EmailPatternException.class,
+            AllNullException.class,
+            FieldRequiredException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerBadRequest(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -41,8 +41,7 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler({
-            DataUpdated.class,
-            DataInserted.class})
+            CrudException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerOk(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -51,6 +50,18 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
         errors.setStatus(HttpStatus.OK.value());
 
         return new ResponseEntity<>(errors, HttpStatus.OK);
+    }
+
+    @ExceptionHandler({
+            CrudAllException.class })
+    public ResponseEntity<CustomErrorResponse> customHandlerNotAllowed(Exception ex, WebRequest request) {
+
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setTimestamp(LocalDateTime.now());
+        errors.setError(ex.getMessage());
+        errors.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
 

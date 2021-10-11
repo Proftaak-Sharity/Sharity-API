@@ -8,10 +8,7 @@ import com.example.sharity.entity.car.carTypes.HydrogenCar;
 import com.example.sharity.entity.car.enums.Coverage;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.entity.customer.Bankaccount;
-import com.example.sharity.entity.customer.CountryEnum;
-import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.entity.customer.DriversLicense;
+import com.example.sharity.entity.customer.*;
 import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.repository.*;
@@ -34,7 +31,8 @@ public class PreDataConfig {
                                          CustomerRepository customerRepository,
                                          CarService carService,
                                          ReservationController reservationController,
-                                         BankaccountRepository bankaccountRepository) {
+                                         BankaccountRepository bankaccountRepository,
+                                         PasswordGenerator passwordGenerator) {
         return args -> {
 
 //          PRE CUSTOMERS
@@ -42,7 +40,7 @@ public class PreDataConfig {
                     "Rob",
                     "van der Horst",
                     "rpl.vanderhorst@student.avans.nl",
-                    "welkom01",
+                    passwordGenerator.getSHA512Password("welkom01", passwordGenerator.getSalt()),
                     LocalDate.of(1983, Month.AUGUST, 29),
                     "Hoofdstraat",
                     "12",
@@ -59,7 +57,7 @@ public class PreDataConfig {
                     "Daniël",
                     "Jansen",
                     "d.jansen@yahoo.com",
-                    "welkom02",
+                    passwordGenerator.getSHA512Password("welkom02", passwordGenerator.getSalt()),
                     LocalDate.of(1978, Month.MARCH, 20),
                     "Appelweg",
                     "10",
@@ -76,7 +74,7 @@ public class PreDataConfig {
                     "Bart",
                     "Grootoonk",
                     "b.grootoonk@planetmail.com",
-                    "welkom03",
+                    passwordGenerator.getSHA512Password("welkom03", passwordGenerator.getSalt()),
                     LocalDate.of(1982, Month.NOVEMBER, 9),
                     "Boompjesdijk",
                     "48",
@@ -93,7 +91,7 @@ public class PreDataConfig {
                     "Lars",
                     "Hanegraaf",
                     "l.hanegraaf@hotmail.nl",
-                    "welkom04",
+                    passwordGenerator.getSHA512Password("welkom04", passwordGenerator.getSalt()),
                     LocalDate.of(1984, Month.APRIL, 18),
                     "Heilig Hartplein",
                     "356-B",
@@ -110,7 +108,7 @@ public class PreDataConfig {
                     "Joris",
                     "Jansen",
                     "jorisjansen@gmail.com",
-                    "welkom05",
+                    passwordGenerator.getSHA512Password("welkom05", passwordGenerator.getSalt()),
                     LocalDate.of(1990, Month.DECEMBER, 12),
                     "Tilburgsebaan",
                     "88",
@@ -127,7 +125,7 @@ public class PreDataConfig {
                     "Messi",
                     "Leo",
                     "l.messi@voetbal.nl",
-                    "welkom65",
+                    passwordGenerator.getSHA512Password("welkom06", passwordGenerator.getSalt()),
                     LocalDate.of(1981, Month.MARCH, 11),
                     "Barcelonaplantsoen",
                     "1",

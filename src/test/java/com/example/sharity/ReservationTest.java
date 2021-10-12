@@ -20,19 +20,19 @@ import static org.mockito.Mockito.when;
 
 public class ReservationTest {
 
-//    private CarService sut;
-//
-//    @BeforeEach
-//    public void beforeEach() {
-//        CarRepository repository = mock(CarRepository.class);
-//
-//        Car car = mock(Car.class);
-//        when(car.getPricePerDay()).thenReturn(150.00);
-//
-//        when(repository.getById(car.getLicensePlate())).thenReturn(car);
-//
-//        sut = new CarService(repository);
-//    }
+    private CarService sut;
+
+    @BeforeEach
+    public void beforeEach() {
+        CarRepository repository = mock(CarRepository.class);
+
+        Car car = mock(Car.class);
+        when(car.getPricePerDay()).thenReturn(150.00);
+
+        when(repository.getById(car.getLicensePlate())).thenReturn(car);
+
+        sut = new CarService(repository);
+    }
 
 
     @Test
@@ -45,11 +45,10 @@ public class ReservationTest {
         // Assert
         assertEquals(4,4);
     }
-}
 
 //    @Test
 //    void addReservationGetRentTest() {
-//      //  Car car = new FuelCar("KNTK01", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 99.33);
+//     Car car = new FuelCar("KNTK01", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 99.33);
 //        // Arrange
 //        Reservation reservation = new Reservation(3L,"KNTK01", 600, LocalDate.of(2021, Month.DECEMBER, 1),
 //                LocalDate.of(2021, Month.DECEMBER, 5));
@@ -58,6 +57,6 @@ public class ReservationTest {
 //        // Assert
 //        assertEquals(99.33,99.33);
 //    }
-//
-//}
+
+}
 

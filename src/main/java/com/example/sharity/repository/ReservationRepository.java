@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.Optional;
 
+
+//databse
 @Repository
 public interface ReservationRepository  extends JpaRepository<Reservation, Long> {
 

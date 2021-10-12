@@ -47,8 +47,6 @@ public class Reservation {
         this.rent = NumberRounder.roundDouble(rent, 2);
         this.paymentEnum = paymentEnum;
     }
-
     public Reservation() {
     }
-
 }

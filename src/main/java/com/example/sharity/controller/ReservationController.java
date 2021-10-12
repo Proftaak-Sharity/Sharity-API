@@ -5,8 +5,10 @@ import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -34,17 +36,19 @@ public class ReservationController {
     }
 
     @PostMapping
-    public void addReservation(@RequestBody Reservation reservation) {
-        reservationService.addReservation(reservation);
+    public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
+        Reservation newReservation = reservationService.addReservation(reservation);
+        return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
     }
 
     @PutMapping(path = "{reservationNumber}")
-    public void updateReservation(
+    public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,
             @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) PaymentEnum paymentEnum) {
-        reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
+        Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
+        return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
     }
 
     @DeleteMapping(path = "{reservationNumber}")

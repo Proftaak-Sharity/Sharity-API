@@ -9,5 +9,4 @@ class SharityApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

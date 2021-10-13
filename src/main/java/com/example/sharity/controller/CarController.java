@@ -50,13 +50,13 @@ public class CarController {
     public void updateCar(
             @PathVariable("licensePlate") String licensePlate,
             @RequestParam(required = false) Long customerNumber,
-            @RequestParam(required = false) double pricePerDay,
-            @RequestParam(required = false) int batteryCapacity,
-            @RequestParam(required = false) int kmPerKw,
-            @RequestParam(required = false) int fastChargingTime,
+            @RequestParam(required = false) Double pricePerDay,
+            @RequestParam(required = false) Integer batteryCapacity,
+            @RequestParam(required = false) Integer kmPerKw,
+            @RequestParam(required = false) Integer fastChargingTime,
             @RequestParam(required = false) FuelType fuelType,
-            @RequestParam(required = false) int sizeFueltank,
-            @RequestParam(required = false) int kmPerLiterFuel) throws NoSuchAlgorithmException {
+            @RequestParam(required = false) Integer sizeFueltank,
+            @RequestParam(required = false) Integer kmPerLiterFuel) {
 
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
         carService.updateCar(licensePlate, customerNumber, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime, kmPerLiterFuel);

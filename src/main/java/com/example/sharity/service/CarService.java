@@ -42,7 +42,7 @@ public class CarService {
     }
 
 
-    public void updateCar(String licensePlate, Long customerNumber, double pricePerDay, int batteryCapacity, int kmPerKw, int fastChargingTime, int kmPerLiterFuel) {
+    public void updateCar(String licensePlate, Long customerNumber, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime, Integer kmPerLiterFuel) {
         Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
 
         if (customerNumber != null) {
@@ -56,31 +56,34 @@ public class CarService {
             }
         }
 
-        if (pricePerDay <= 0.0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
-        } else if (pricePerDay > 0.0)  {
-            car.setPricePerDay(pricePerDay);
+        if (pricePerDay != null) {
+            if (pricePerDay <= 0.0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
+            } else if (pricePerDay > 0.0) {
+                car.setPricePerDay(pricePerDay);
+                carRepository.save(car);
+            }
         }
 
-        if (batteryCapacity != 0) {
-//                ElectricCar.setBatteryCapacity(batteryCapacity);
-//                carRepository.save(car);
-        }
-
-        if (kmPerKw != 0) {
-//                if (kmPerKw.equals(car.getkmPerKw())) {
-//                }
-//                car.setKmPerKw(kmPerKw);
-//                carRepository.save(car);
-        }
-
-        if (fastChargingTime != 0) {
-
-        }
-
-        if (kmPerLiterFuel != 0) {
-
-        }
+//        if (batteryCapacity != 0) {
+////                ElectricCar.setBatteryCapacity(batteryCapacity);
+////                carRepository.save(car);
+//        }
+//
+//        if (kmPerKw != 0) {
+////                if (kmPerKw.equals(car.getkmPerKw())) {
+////                }
+////                car.setKmPerKw(kmPerKw);
+////                carRepository.save(car);
+//        }
+//
+//        if (fastChargingTime != 0) {
+//
+//        }
+//
+//        if (kmPerLiterFuel != 0) {
+//
+//        }
     }
 
     public void deleteCar(String licensePlate) {

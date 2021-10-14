@@ -4,6 +4,7 @@ import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.CrudAllException;
 import com.example.sharity.exception.CrudException;
+import com.example.sharity.exception.InputNotAllowedException;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,6 +39,11 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
+//        EXCEPTIONS
+        if (reservation.getReservationNumber() != null) {
+            throw new InputNotAllowedException("reservation number(" + reservation.getReservationNumber() + ")");
+        }
+
         Reservation newReservation = reservationService.addReservation(reservation);
         return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
     }

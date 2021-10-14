@@ -1,22 +1,34 @@
 package com.example.sharity.service;
 
+import com.example.sharity.entity.Payout;
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.carTypes.FuelCar;
+import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
+import java.util.Objects;
 import java.util.Optional;
 
+import static com.example.sharity.entity.reservation.PaymentEnum.OPEN;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ReservationServiceTest {
 
-        private ReservationService sut;
+    private ReservationService sut;
 
     @BeforeEach
     public void beforeEach() {
@@ -26,9 +38,14 @@ class ReservationServiceTest {
         CustomerRepository customerRepository = mock(CustomerRepository.class);
 
         Car car = mock(Car.class);
+
         when(car.getPricePerDay()).thenReturn(100.00);
+        when(car.getCustomerNumber()).thenReturn(1L);
 
         when(carRepository.findCarByLicensePlate("KNTK01")).thenReturn(Optional.of(car));
+
+        Customer customer = mock(Customer.class);
+        when(customer.getCustomerNumber()).thenReturn(3L);
 
         sut = new ReservationService(reservationRepository, payoutRepository, carRepository, customerRepository);
     }
@@ -46,6 +63,4 @@ class ReservationServiceTest {
         // Assert
         verify(given, times(1)).setRent(400.0);
     }
-
-
 }

@@ -4,6 +4,7 @@ import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.CrudAllException;
 import com.example.sharity.exception.CrudException;
+import com.example.sharity.exception.InputNotAllowedException;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,6 +39,11 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
+//        EXCEPTIONS
+        if (reservation.getReservationNumber() != null) {
+            throw new InputNotAllowedException("reservation number(" + reservation.getReservationNumber() + ")");
+        }
+
         Reservation newReservation = reservationService.addReservation(reservation);
         return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
     }
@@ -45,8 +51,8 @@ public class ReservationController {
     @PutMapping(path = "{reservationNumber}")
     public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,
-            @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) PaymentEnum paymentEnum) {
         Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
@@ -57,11 +63,16 @@ public class ReservationController {
             @PathVariable("reservationNumber") Long reservationNumber) {
         reservationService.deleteReservation(reservationNumber);
         throw new CrudException("Reservation", "delete");
-            }
+    }
 
     //  IF NO RESERVATIONNUMBER INSERTED
     @DeleteMapping
     public void deleteAllReservations() {
         throw new CrudAllException("delete", "reservations");
+    }
+
+    @PutMapping
+    public void updateAllReservations() {
+        throw new CrudAllException("update", "reservations");
     }
 }

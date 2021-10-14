@@ -1,10 +1,11 @@
 package com.example.sharity.service;
 
+import com.example.sharity.entity.Payout;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
-import com.example.sharity.entity.Payout;
 import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.exception.AllNullException;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
@@ -13,12 +14,12 @@ import com.example.sharity.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -40,11 +41,15 @@ public class ReservationService {
     }
 
     public List<Reservation> findReservations() {
-        return reservationRepository.findAll();
+        var reservations = reservationRepository.findAll();
+        if (reservations.isEmpty()){
+           throw new NotFoundException("Reservations");
+        }
+        return reservations;
     }
 
     public Reservation addReservation(Reservation reservation) {
-        //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
+//        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, reservation.getStartDate(), reservation.getEndDate());
         if (reservationOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
@@ -52,7 +57,7 @@ public class ReservationService {
 
 //        GETTERS TO FIND CARDATA
         Car car = carRepository.findCarByLicensePlate(reservation.licensePlate).
-                orElseThrow(()-> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
+                orElseThrow(() -> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
         double pricePerDay = car.getPricePerDay();
         double rent = pricePerDay * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
 
@@ -63,11 +68,11 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
 //        IF RESERVATION IS PAID DIRECTLY AT RESERVATIONMOMENT
-        if (reservation.getPaymentEnum() == PaymentEnum.PAID){
+        if (reservation.getPaymentEnum() == PaymentEnum.PAID) {
 //            GETTERS TO GET OWNER OF THE CAR
             Long customerNumber = car.getCustomerNumber();
             Customer customer = customerRepository.findById(customerNumber).
-                    orElseThrow(()->new NotFoundException("Customer", customerNumber));
+                    orElseThrow(() -> new NotFoundException("Customer", customerNumber));
 
             double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
             double tax = rent - payoutAmount;
@@ -87,13 +92,13 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation with reservation number " + reservationNumber + " not in database"));
         Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).
-                orElseThrow(()-> new IllegalStateException("Rented car with license plate " + reservation.getLicensePlate() + " not in database"));
+                orElseThrow(() -> new IllegalStateException("Rented car with license plate " + reservation.getLicensePlate() + " not in database"));
 
         //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, startDate, endDate);
-        if (reservationOptional.isPresent()) {
+       if (reservationOptional.isPresent() && !Objects.equals(reservationNumber, reservationOptional.get().getReservationNumber())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
-        }
+      }
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
         Optional<Payout> payoutOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
@@ -118,7 +123,7 @@ public class ReservationService {
                 reservation.setPaymentEnum(paymentEnum);
 
                 //          GETTER FOR UPDATING PAYMENT TABLE
-                Customer customer = customerRepository.findById(car.getCustomerNumber()).orElseThrow(()->new NotFoundException("Customer", car.getCustomerNumber()));
+                Customer customer = customerRepository.findById(car.getCustomerNumber()).orElseThrow(() -> new NotFoundException("Customer", car.getCustomerNumber()));
 
                 //      SETTERS FOR UPDATING PAYMENT TABLE
                 double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
@@ -139,13 +144,13 @@ public class ReservationService {
 
     public void deleteReservation(Long reservationNumber) {
         Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).
-                orElseThrow(() -> new NotFoundException("Reservation number",reservationNumber));
+                orElseThrow(() -> new NotFoundException("Reservation number", reservationNumber));
         reservationRepository.delete(reservation);
     }
 
 
     public Reservation findReservation(Long reservationNumber) {
-        Reservation reservation = reservationRepository.findById(reservationNumber).orElseThrow(()->new NotFoundException("Reservation", reservationNumber));
+        Reservation reservation = reservationRepository.findById(reservationNumber).orElseThrow(() -> new NotFoundException("Reservation", reservationNumber));
 
         return reservationRepository.getById(reservationNumber);
     }

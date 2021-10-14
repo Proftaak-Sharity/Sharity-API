@@ -6,7 +6,7 @@ import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.carTypes.HydrogenCar;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.errorHandling.customer.EmptyValueException;
+import com.example.sharity.exception.EmptyValueException;
 import com.example.sharity.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

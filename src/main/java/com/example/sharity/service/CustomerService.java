@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -67,7 +66,6 @@ public class CustomerService {
         } if (phoneNumber != null) {
             customer.setPhoneNumber(phoneNumber);
         }
-
         customerRepository.save(customer);
     }
 

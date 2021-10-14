@@ -3,6 +3,7 @@ package com.example.sharity.controller;
 
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.EmailValidator;
+import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.*;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.service.CustomerService;
@@ -10,10 +11,12 @@ import com.example.sharity.entity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
@@ -87,7 +90,7 @@ public class CustomerController {
         }
 
         customerService.addCustomer(customer);
-        throw new CrudException("Customer", "added");
+        throw new CreatedException("Customer");
     }
 
 //    UPDATE SELECTED DATA FROM DATABASE
@@ -168,7 +171,6 @@ public class CustomerController {
     public void deleteAllCustomers() {
         throw new CrudAllException("delete", "customers");
     }
-
 }
 
 

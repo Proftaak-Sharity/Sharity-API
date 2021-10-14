@@ -1,6 +1,7 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
 import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.carTypes.HydrogenCar;
@@ -8,6 +9,7 @@ import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.exception.EmptyValueException;
 import com.example.sharity.repository.CarRepository;
+import com.example.sharity.repository.InsuranceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,12 @@ import java.util.Optional;
 public class CarService {
 
     private final CarRepository carRepository;
+    private final InsuranceRepository insuranceRepository;
 
     @Autowired
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, InsuranceRepository insuranceRepository) {
         this.carRepository = carRepository;
+        this.insuranceRepository = insuranceRepository;
     }
 
     public List<Car> getCars() {
@@ -111,9 +115,14 @@ public class CarService {
         }
         return carRepository.findById(licensePlate);
     }
+
+    public void addInsurance(Insurance insurance) {
+        Car car = carRepository.findById(insurance.getLicensePlate()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenceplate " + insurance.getLicensePlate() + " unknown in database"));
+
+            insuranceRepository.save(insurance);
+            car.setInsurance(insurance);
+            carRepository.save(car);
+
+    }
 }
 
-//    public void addElectricCar(ElectricCar electricCar) {
-//        carRepository.save(electricCar);
-//    }
-//}

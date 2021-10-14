@@ -18,7 +18,7 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
 
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());
-        errors.setError(ex.getMessage());
+        errors.setMessage(ex.getMessage());
         errors.setStatus(HttpStatus.NOT_FOUND.value());
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
@@ -34,7 +34,7 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
 
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());
-        errors.setError(ex.getMessage());
+        errors.setMessage(ex.getMessage());
         errors.setStatus(HttpStatus.BAD_REQUEST.value());
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
@@ -46,19 +46,20 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
 
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());
-        errors.setError(ex.getMessage());
+        errors.setMessage(ex.getMessage());
         errors.setStatus(HttpStatus.OK.value());
 
         return new ResponseEntity<>(errors, HttpStatus.OK);
     }
 
     @ExceptionHandler({
-            CrudAllException.class })
+            CrudAllException.class,
+            InputNotAllowedException.class})
     public ResponseEntity<CustomErrorResponse> customHandlerNotAllowed(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());
-        errors.setError(ex.getMessage());
+        errors.setMessage(ex.getMessage());
         errors.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
 
         return new ResponseEntity<>(errors, HttpStatus.METHOD_NOT_ALLOWED);

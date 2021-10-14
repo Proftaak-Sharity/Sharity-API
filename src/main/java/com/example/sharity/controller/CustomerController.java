@@ -36,18 +36,17 @@ public class CustomerController {
 
 //    GET ALL DATA FROM CUSTOMERTABLE
     @GetMapping
-    public List<Customer> getCustomers() {
-        return customerService.getCustomers();
+    public List<Customer> findCustomers() {
+        return customerService.findCustomers();
     }
 
 //    GET SPECIFIC DATA FROM CUSTOMERTABLE (BY CUSTOMERNUMBER)
     @GetMapping(path = "{customerNumber}")
-        public Optional<Customer> findCustomer(
-                @PathVariable("customerNumber") Long customerNumber,
-                @Valid @RequestBody Customer customerDetails) {
+        public Customer getCustomer(
+                @PathVariable("customerNumber") Long customerNumber) {
                     Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
-        return customerService.findCustomer(customerNumber);
+        return customerService.getCustomer(customerNumber);
     }
 
 //    ADD CUSTOMERDATA TO DATABASE
@@ -107,6 +106,7 @@ public class CustomerController {
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) CountryEnum countryEnum,
             @Valid @RequestBody Customer customerDetails) throws NoSuchAlgorithmException {
+
         Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
 //            EXCEPTIONS

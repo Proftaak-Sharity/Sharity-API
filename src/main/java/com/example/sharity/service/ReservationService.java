@@ -3,8 +3,9 @@ package com.example.sharity.service;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
-import com.example.sharity.entity.reservation.Payout;
+import com.example.sharity.entity.Payout;
 import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
@@ -63,7 +64,7 @@ public class ReservationService {
         if (reservation.getPaymentEnum() == PaymentEnum.PAID){
 //            GETTERS TO GET OWNER OF THE CAR
             Long customerNumber = car.getCustomerNumber();
-            Customer customer = customerRepository.findCustomerByCustomerNumber(customerNumber).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer with customer number " + customerNumber + " not in database"));
+            Customer customer = customerRepository.findById(customerNumber).orElseThrow(()->new NotFoundException("Customer", customerNumber));
             double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
             double tax = rent - payoutAmount;
 
@@ -111,7 +112,7 @@ public class ReservationService {
                 reservation.setPaymentEnum(paymentEnum);
 
                 //          GETTER FOR UPDATING PAYMENT TABLE
-                Customer customer = customerRepository.findCustomerByCustomerNumber(car.getCustomerNumber()).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Carowner of car with licenseplate " + reservation.getLicensePlate() + " of customer number " + reservation.getCustomerNumber() + " not in database"));
+                Customer customer = customerRepository.findById(car.getCustomerNumber()).orElseThrow(()->new NotFoundException("Customer", car.getCustomerNumber()));
 
                 //      SETTERS FOR UPDATING PAYMENT TABLE
                 double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
@@ -131,17 +132,14 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long reservationNumber) {
-        Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).orElseThrow(() -> new IllegalStateException("Reservation unknown"));
+        Reservation reservation = reservationRepository.findById(reservationNumber).orElseThrow(() -> new NotFoundException("Reservation", reservationNumber));
         reservationRepository.delete(reservation);
     }
 
-    public Optional <Reservation> findReservation(Long reservationNumber) {
-        Optional <Reservation> reservationOptional = reservationRepository.findReservationByReservationNumber(reservationNumber);
-        if (reservationOptional.isEmpty()) {
-            throw new IllegalStateException("Reservation unknown");
-        }
+    public Reservation findReservation(Long reservationNumber) {
+        Reservation reservation = reservationRepository.findById(reservationNumber).orElseThrow(()->new NotFoundException("Reservation", reservationNumber));
 
-        return reservationRepository.findReservationByReservationNumber(reservationNumber);
+        return reservationRepository.getById(reservationNumber);
     }
 
 }

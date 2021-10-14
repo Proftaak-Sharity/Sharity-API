@@ -25,12 +25,12 @@ public class CustomerService {
     }
 
 
-    public Optional<Customer> findCustomer(Long customerNumber) {
-        return customerRepository.findCustomerByCustomerNumber(customerNumber);
+    public Customer getCustomer(Long customerNumber) {
+        return customerRepository.getById(customerNumber);
     }
 
 
-    public List<Customer> getCustomers() {
+    public List<Customer> findCustomers() {
         return customerRepository.findAll();
     }
 

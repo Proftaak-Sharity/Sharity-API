@@ -1,6 +1,7 @@
 package com.example.sharity.entity.customer;
 
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.reservation.Reservation;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -54,6 +55,11 @@ public class Customer extends PersonModel{
     @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
     @ToString.Exclude
     private List<Bankaccount> bankaccounts;
+
+    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
+    @ToString.Exclude
+    private List<Reservation> reservations;
 
     @OneToOne(cascade = CascadeType.ALL)
     private DriversLicense driversLicense;

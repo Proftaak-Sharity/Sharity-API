@@ -1,4 +1,4 @@
-package com.example.sharity.entity.reservation;
+package com.example.sharity.entity;
 
 import com.example.sharity.service.NumberRounder;
 import lombok.Getter;

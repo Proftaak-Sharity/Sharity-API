@@ -45,6 +45,14 @@ public class FuelCar extends Car {
         this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
     }
 
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double pricePerDay) {
+        super(licensePlate, make, model, customerNumber);
+        this.fuelType = fuelType;
+        this.sizeFueltank = sizeFueltank;
+        this.kmPerLiterFuel = kmPerLiterFuel;
+        this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
+    }
+
     public FuelCar(int kmPerLiterFuel) {
         this.kmPerLiterFuel = kmPerLiterFuel;
     }

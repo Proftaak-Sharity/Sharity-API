@@ -1,8 +1,6 @@
 package com.example.sharity.controller;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.carTypes.ElectricCar;
-import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.errorHandling.car.NotFoundException;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,13 +78,11 @@ public class CarController {
 
         if(fuelType == null && batteryCapacity == null && kmPerLiter ==null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insert fueltype, battery capacity or km per kW to define if it is a fuel-, electric- or hydrogen car");
-        }
-
-        if (fuelType != null) {
+        } else if (fuelType != null) {
             carService.addFuelCar(licensePlate, customerNumber, make, model, pricePerDay, fuelType, sizeFueltank, kmPerLiterFuel);
         } else if (batteryCapacity != null) {
             carService.addElectricCar(licensePlate, customerNumber, make, model, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime);
-        } else if (kmPerLiter != null) {
+        } else {
             carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerLiter);
         }
     }

@@ -65,4 +65,10 @@ public class ReservationController {
     public void deleteAllReservations() {
         throw new CrudAllException("delete", "reservations");
     }
+    @PutMapping
+    public void updateAllReservations(){
+        throw new CrudAllException("update", "reservations");
+    }
+
+
 }

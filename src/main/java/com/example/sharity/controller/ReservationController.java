@@ -51,8 +51,8 @@ public class ReservationController {
     @PutMapping(path = "{reservationNumber}")
     public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,
-            @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) PaymentEnum paymentEnum) {
         Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
@@ -63,17 +63,16 @@ public class ReservationController {
             @PathVariable("reservationNumber") Long reservationNumber) {
         reservationService.deleteReservation(reservationNumber);
         throw new CrudException("Reservation", "delete");
-            }
+    }
 
     //  IF NO RESERVATIONNUMBER INSERTED
     @DeleteMapping
     public void deleteAllReservations() {
         throw new CrudAllException("delete", "reservations");
     }
+
     @PutMapping
-    public void updateAllReservations(){
+    public void updateAllReservations() {
         throw new CrudAllException("update", "reservations");
     }
-
-
 }

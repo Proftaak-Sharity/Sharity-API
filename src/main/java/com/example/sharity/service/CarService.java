@@ -3,6 +3,8 @@ package com.example.sharity.service;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
+import com.example.sharity.entity.car.carTypes.FuelCar;
+import com.example.sharity.entity.car.carTypes.HydrogenCar;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.entity.customer.CountryEnum;
@@ -15,6 +17,8 @@ import com.example.sharity.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.NoSuchAlgorithmException;
@@ -37,13 +41,13 @@ public class CarService {
     }
 
     public double getRentFromCar(String licensePlate) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " not known"));
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " not known"));
         return car.getPricePerDay();
     }
 
 
     public void updateCar(String licensePlate, Long customerNumber, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime, Integer kmPerLiterFuel) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
 
         if (customerNumber != null) {
             if (customerNumber == 0) {
@@ -86,8 +90,48 @@ public class CarService {
 //        }
     }
 
+    public void addFuelCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, FuelType fuelType, Integer sizeFueltank, Integer kmPerLiterFuel) {
+        FuelCar fuelCar = new FuelCar();
+        fuelCar.setLicensePlate(licensePlate);
+        fuelCar.setCustomerNumber(customerNumber);
+        fuelCar.setMake(make);
+        fuelCar.setModel(model);
+        fuelCar.setPricePerDay(pricePerDay);
+        fuelCar.setFuelType(fuelType);
+        fuelCar.setSizeFueltank(sizeFueltank);
+        fuelCar.setKmPerLiterFuel(kmPerLiterFuel);
+        carRepository.save(fuelCar);
+    }
+
+    public void addElectricCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime) {
+        ElectricCar electricCar = new ElectricCar();
+        electricCar.setLicensePlate(licensePlate);
+        electricCar.setCustomerNumber(customerNumber);
+        electricCar.setMake(make);
+        electricCar.setModel(model);
+        electricCar.setPricePerDay(pricePerDay);
+        electricCar.setBatteryCapacity(batteryCapacity);
+        electricCar.setKmPerKw(kmPerKw);
+        electricCar.setFastChargingTime(fastChargingTime);
+        carRepository.save(electricCar);
+    }
+
+    public void addHydrogenCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer sizeFueltank, Integer kmPerLiter) {
+        HydrogenCar hydrogenCar = new HydrogenCar();
+        hydrogenCar.setLicensePlate(licensePlate);
+        hydrogenCar.setCustomerNumber(customerNumber);
+        hydrogenCar.setMake(make);
+        hydrogenCar.setModel(model);
+        hydrogenCar.setPricePerDay(pricePerDay);
+        hydrogenCar.setSizeFueltank(sizeFueltank);
+        hydrogenCar.setKmPerLiter(kmPerLiter);
+        carRepository.save(hydrogenCar);
+    }
+
+
+
     public void deleteCar(String licensePlate) {
-            carRepository.deleteById(licensePlate);
+        carRepository.deleteById(licensePlate);
     }
 
     public Optional<Car> findCar(String licensePlate) {
@@ -99,3 +143,8 @@ public class CarService {
         return carRepository.findById(licensePlate);
     }
 }
+
+//    public void addElectricCar(ElectricCar electricCar) {
+//        carRepository.save(electricCar);
+//    }
+//}

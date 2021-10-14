@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public abstract class Car {
+public class Car {
 
     @Id
     @Column(unique = true, length = 20)
@@ -29,7 +29,7 @@ public abstract class Car {
     private double pricePerDay;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     private Insurance insurance;
 
     public Car(String licensePlate, Make make, String model, Insurance insurance) {
@@ -45,6 +45,13 @@ public abstract class Car {
         this.make = make;
         this.model = model;
         this.insurance = insurance;
+    }
+
+    public Car(String licensePlate, Make make, String model, Long customerNumber) {
+        this.licensePlate = licensePlate;
+        this.customerNumber = customerNumber;
+        this.make = make;
+        this.model = model;
     }
 
     public Car() {

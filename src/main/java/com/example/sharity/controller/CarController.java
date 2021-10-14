@@ -50,10 +50,11 @@ public class CarController {
             @RequestParam(required = false) Integer fastChargingTime,
             @RequestParam(required = false) FuelType fuelType,
             @RequestParam(required = false) Integer sizeFueltank,
-            @RequestParam(required = false) Integer kmPerLiterFuel) {
+            @RequestParam(required = false) Double kmPerLiterFuel,
+            @RequestParam(required = false) Double kmPerKilo) {
 
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
-        carService.updateCar(licensePlate, customerNumber, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime, kmPerLiterFuel);
+        carService.updateCar(licensePlate, customerNumber, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime, fuelType, sizeFueltank, kmPerLiterFuel, kmPerKilo);
     }
 
     @DeleteMapping(path = "{licensePlate}")

@@ -1,6 +1,7 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.TotalCostOwnership;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
 import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.carTypes.HydrogenCar;
@@ -19,10 +20,12 @@ import java.util.Optional;
 public class CarService {
 
     private final CarRepository carRepository;
+    private final TotalCostOwnership totalCostOwnership;
 
     @Autowired
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, TotalCostOwnership totalCostOwnership) {
         this.carRepository = carRepository;
+        this.totalCostOwnership = totalCostOwnership;
     }
 
     public List<Car> getCars() {
@@ -35,7 +38,7 @@ public class CarService {
     }
 
 
-    public void updateCar(String licensePlate, Long customerNumber, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime, Integer kmPerLiterFuel) {
+    public void updateCar(String licensePlate, Long customerNumber, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime, FuelType fuelType, Integer sizeFueltank, Double kmPerLiterFuel, Double kmPerKilo) {
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
 
         if (customerNumber != null) {
@@ -69,6 +72,7 @@ public class CarService {
         fuelCar.setFuelType(fuelType);
         fuelCar.setSizeFueltank(sizeFueltank);
         fuelCar.setKmPerLiterFuel(kmPerLiterFuel);
+        fuelCar.setPricePerKm(totalCostOwnership.TotalCostOwnershipFuel(sizeFueltank, kmPerLiterFuel, fuelType));
         carRepository.save(fuelCar);
     }
 
@@ -85,7 +89,7 @@ public class CarService {
         carRepository.save(electricCar);
     }
 
-    public void addHydrogenCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer sizeFueltank, Integer kmPerLiter) {
+    public void addHydrogenCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer sizeFueltank, Integer kmPerKilo) {
         HydrogenCar hydrogenCar = new HydrogenCar();
         hydrogenCar.setLicensePlate(licensePlate);
         hydrogenCar.setCustomerNumber(customerNumber);
@@ -93,7 +97,7 @@ public class CarService {
         hydrogenCar.setModel(model);
         hydrogenCar.setPricePerDay(pricePerDay);
         hydrogenCar.setSizeFueltank(sizeFueltank);
-        hydrogenCar.setKmPerLiter(kmPerLiter);
+        hydrogenCar.setKmPerKilo(kmPerKilo);
         carRepository.save(hydrogenCar);
     }
 

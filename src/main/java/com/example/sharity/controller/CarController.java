@@ -3,7 +3,7 @@ package com.example.sharity.controller;
 import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.errorHandling.car.NotFoundException;
+import com.example.sharity.exception.car.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,9 @@ public class CarController {
     @GetMapping(path = "{licensePlate}")
     public Optional<Car> findCar(
             @PathVariable("licensePlate") String licensePlate) {
+
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("Car ", licensePlate));
+
         return carService.findCar(licensePlate);
     }
 
@@ -59,6 +62,7 @@ public class CarController {
     @DeleteMapping(path = "{licensePlate}")
     public void deleteCar(
             @PathVariable("licensePlate") String licensePlate) {
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
         carService.deleteCar(licensePlate);
     }
 

@@ -1,8 +1,8 @@
-package com.example.sharity.errorHandling.car;
+package com.example.sharity.exception.car;
 
 public class NotFoundException extends RuntimeException{
 
     public NotFoundException(String key, String value) {
-        super(key + " not found: " + value);
+        super(key + " with licence plate: " + value + " not found");
     }
 }

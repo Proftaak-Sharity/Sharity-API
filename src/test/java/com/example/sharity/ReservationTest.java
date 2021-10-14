@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 public class ReservationTest {
 
-    private CarService sut;
+//    private CarService sut;
 
 //    @BeforeEach
 //    public void beforeEach() {
@@ -35,7 +35,7 @@ public class ReservationTest {
 //        sut = new CarService(repository);
 //    }
 
-
+    //check if we get the right amount of days
     @Test
     void addReservationGetDaysTest() {
         // Arrange
@@ -47,6 +47,7 @@ public class ReservationTest {
         assertEquals(4, days);
     }
 
+    //check whether the rent is calculated correctly
     @Test
     void addReservationGetRentTest() {
         // Arrange

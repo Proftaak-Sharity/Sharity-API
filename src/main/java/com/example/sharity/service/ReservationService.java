@@ -41,15 +41,17 @@ public class ReservationService {
     }
 
     public List<Reservation> findReservations() {
-        return reservationRepository.findAll();
+        var reservations = reservationRepository.findAll();
+        if (reservations.isEmpty()){
+           throw new NotFoundException("Reservations");
+        }
+        return reservations;
     }
 
     public Reservation addReservation(Reservation reservation) {
 //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, reservation.getStartDate(), reservation.getEndDate());
-            if (reservationOptional.isPresent() && Objects.equals(reservation.getReservationNumber(), reservationOptional.get().getReservationNumber())){
-            }
-        else if (reservationOptional.isPresent() && !Objects.equals(reservation.getReservationNumber(), reservationOptional.get().getReservationNumber())){
+        if (reservationOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
         }
 

@@ -1,6 +1,7 @@
 package com.example.sharity.entity.car;
 
 
+
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.entity.reservation.Reservation;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public abstract class Car {
+public class Car {
 
     @Id
     @Column(unique = true, length = 20)
@@ -31,7 +32,7 @@ public abstract class Car {
     private double pricePerDay;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     private Insurance insurance;
 
     @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
@@ -52,6 +53,13 @@ public abstract class Car {
         this.make = make;
         this.model = model;
         this.insurance = insurance;
+    }
+
+    public Car(String licensePlate, Make make, String model, Long customerNumber) {
+        this.licensePlate = licensePlate;
+        this.customerNumber = customerNumber;
+        this.make = make;
+        this.model = model;
     }
 
     public Car() {

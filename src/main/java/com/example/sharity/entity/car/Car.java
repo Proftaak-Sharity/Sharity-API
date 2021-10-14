@@ -2,9 +2,11 @@ package com.example.sharity.entity.car;
 
 
 import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.entity.reservation.Reservation;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
@@ -31,6 +33,11 @@ public abstract class Car {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private Insurance insurance;
+
+    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "licensePlate", referencedColumnName = "licensePlate")
+    @ToString.Exclude
+    private List<Reservation> reservations;
 
     public Car(String licensePlate, Make make, String model, Insurance insurance) {
         this.licensePlate = licensePlate;

@@ -1,6 +1,7 @@
 package com.example.sharity.entity.reservation;
 
 import com.example.sharity.service.NumberRounder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,7 +57,7 @@ public class Reservation {
     }
     public Reservation() {
     }
-
+@JsonIgnore
     public Period getPeriod() {
         return Period.between(startDate, endDate);
     }

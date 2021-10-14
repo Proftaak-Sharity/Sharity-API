@@ -5,7 +5,6 @@ import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Payout;
 import com.example.sharity.entity.reservation.Reservation;
-import com.example.sharity.exception.CrudAllException;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
@@ -14,7 +13,7 @@ import com.example.sharity.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;

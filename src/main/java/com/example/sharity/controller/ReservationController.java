@@ -4,7 +4,6 @@ import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.CrudAllException;
 import com.example.sharity.exception.CrudException;
-import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

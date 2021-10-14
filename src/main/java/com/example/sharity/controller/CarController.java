@@ -1,6 +1,8 @@
 package com.example.sharity.controller;
 
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.Insurance;
+import com.example.sharity.entity.car.enums.Coverage;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.exception.car.NotFoundException;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,6 +100,18 @@ public class CarController {
             carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerLiter);
             throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         }
+    }
+
+    @PutMapping(path = "/insurance/{licensePlate}")
+    public void updateInsurance(
+            @PathVariable("licensePlate") String licensePlate,
+            @RequestParam String insuranceNumber,
+            @RequestParam String insuranceCompany,
+            @RequestParam Coverage coverage,
+            @RequestParam LocalDate validUntil) {
+
+        Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
+        carService.updateInsurance(insurance, licensePlate);
     }
 
 }

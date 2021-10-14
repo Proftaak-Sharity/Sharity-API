@@ -1,6 +1,7 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
+import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
 import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.carTypes.HydrogenCar;
@@ -111,9 +112,15 @@ public class CarService {
         }
         return carRepository.findById(licensePlate);
     }
+
+    public void updateInsurance(Insurance insurance, String licensePlate) {
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "blahbalh " + insurance + " unknown in database"));
+
+        if (licensePlate != null) {
+            car.setLicensePlate(licensePlate);
+            carRepository.save(car);
+
+        }
+    }
 }
 
-//    public void addElectricCar(ElectricCar electricCar) {
-//        carRepository.save(electricCar);
-//    }
-//}

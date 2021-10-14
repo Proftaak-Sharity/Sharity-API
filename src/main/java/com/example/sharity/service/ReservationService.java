@@ -68,7 +68,7 @@ public class ReservationService {
 //            GETTERS TO GET OWNER OF THE CAR
             Long customerNumber = car.getCustomerNumber();
             Customer customer = customerRepository.findCustomerByCustomerNumber(customerNumber).
-                    orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer with customer number " + customerNumber + " not in database"));
+                    orElseThrow(()->new NotFoundException("Customer", customerNumber));
             double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
             double tax = rent - payoutAmount;
 
@@ -132,7 +132,7 @@ public class ReservationService {
                 customerRepository.save(customer);
 
             } else if (paymentEnum == PaymentEnum.OPEN) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment is already PAID and can not be re-opened");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Payment is already PAID and can not be re-opened");
             }
             reservationRepository.save(reservation);
         }

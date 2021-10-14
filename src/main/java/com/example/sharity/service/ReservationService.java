@@ -5,7 +5,6 @@ import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
-import com.example.sharity.exception.AllNullException;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
@@ -50,16 +49,17 @@ public class ReservationService {
 
     public Reservation addReservation(Reservation reservation) {
 //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
-        Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, reservation.getStartDate(), reservation.getEndDate());
+        Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.getLicensePlate(), reservation.getStartDate(), reservation.getEndDate());
         if (reservationOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
         }
 
 //        GETTERS TO FIND CARDATA
-        Car car = carRepository.findCarByLicensePlate(reservation.licensePlate).
+        Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).
                 orElseThrow(() -> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
         double pricePerDay = car.getPricePerDay();
-        double rent = pricePerDay * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
+        int days = reservation.getPeriod().getDays();
+        double rent = pricePerDay * days;
 
 //        SET THE RENT * DAYS OF RENT
         reservation.setRent(NumberRounder.roundDouble((rent), 2));
@@ -95,7 +95,7 @@ public class ReservationService {
                 orElseThrow(() -> new IllegalStateException("Rented car with license plate " + reservation.getLicensePlate() + " not in database"));
 
         //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
-        Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, startDate, endDate);
+        Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.getLicensePlate(), startDate, endDate);
        if (reservationOptional.isPresent() && !Objects.equals(reservationNumber, reservationOptional.get().getReservationNumber())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
       }

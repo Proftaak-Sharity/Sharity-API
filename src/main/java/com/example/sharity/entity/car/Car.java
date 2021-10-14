@@ -1,7 +1,7 @@
 package com.example.sharity.entity.car;
 
 
-import com.example.sharity.entity.car.enums.Make;
+
 import com.example.sharity.entity.reservation.Reservation;
 import lombok.*;
 

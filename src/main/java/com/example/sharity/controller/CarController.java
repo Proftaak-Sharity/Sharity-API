@@ -7,6 +7,7 @@ import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.exception.car.NotFoundException;
 import com.example.sharity.repository.CarRepository;
+import com.example.sharity.repository.InsuranceRepository;
 import com.example.sharity.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,15 @@ public class CarController {
 
     private final CarService carService;
     private final CarRepository carRepository;
+    private final InsuranceRepository insuranceRepository;
 
 
     @Autowired
-    public CarController(CarService carService, CarRepository carRepository){
+    public CarController(CarService carService, CarRepository carRepository,InsuranceRepository insuranceRepository){
 
         this.carService = carService;
         this.carRepository = carRepository;
+        this.insuranceRepository = insuranceRepository;
     }
 
     @GetMapping
@@ -111,6 +114,12 @@ public class CarController {
             @RequestParam Coverage coverage,
             @RequestParam String validUntilString) {
         LocalDate validUntil = LocalDate.parse(validUntilString);
+
+        Optional<Insurance> insuranceOptional = insuranceRepository.findInsuranceByInsuranceNumber(insuranceNumber);
+        if (insuranceOptional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insurance already in database");
+        }
+
         Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
         carService.addInsurance(insurance);
     }

@@ -117,7 +117,7 @@ public class CarService {
     }
 
     public void addInsurance(Insurance insurance) {
-        Car car = carRepository.findById(insurance.getLicensePlate()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "blahbalh " + insurance + " unknown in database"));
+        Car car = carRepository.findById(insurance.getLicensePlate()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenceplate " + insurance.getLicensePlate() + " unknown in database"));
 
             insuranceRepository.save(insurance);
             car.setInsurance(insurance);

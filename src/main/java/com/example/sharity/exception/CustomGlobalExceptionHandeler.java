@@ -53,6 +53,18 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler({
+            CreatedException.class })
+    public ResponseEntity<CustomErrorResponse> customHandlerCreated(Exception ex, WebRequest request) {
+
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setTimestamp(LocalDateTime.now());
+        errors.setMessage(ex.getMessage());
+        errors.setStatus(HttpStatus.CREATED.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.CREATED);
+    }
+
+    @ExceptionHandler({
             CrudAllException.class,
             InputNotAllowedException.class})
     public ResponseEntity<CustomErrorResponse> customHandlerNotAllowed(Exception ex, WebRequest request) {

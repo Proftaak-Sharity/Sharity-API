@@ -1,7 +1,6 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Period;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ReservationServiceTest {

@@ -57,7 +57,11 @@ public class ReservationService {
 //        GETTERS TO FIND CARDATA
         Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).
                 orElseThrow(()-> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
-        double dayRent = car.getPricePerDay() * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
+        double pricePerDay = car.getPricePerDay();
+        int days = reservation.getPeriod().getDays();
+        double rent = pricePerDay * days;
+
+        double dayRent = pricePerDay * days;
         double packageprice = car.getPricePerKm() * reservation.getKmPackage();
         double totalRent = packageprice + dayRent;
 

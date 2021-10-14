@@ -102,16 +102,17 @@ public class CarController {
         }
     }
 
-    @PutMapping(path = "/insurance/{licensePlate}")
-    public void updateInsurance(
-            @PathVariable("licensePlate") String licensePlate,
+
+    @PostMapping(path = "/insurance")
+    public void addInsurance(
+            @RequestParam String licensePlate,
             @RequestParam String insuranceNumber,
             @RequestParam String insuranceCompany,
             @RequestParam Coverage coverage,
-            @RequestParam LocalDate validUntil) {
-
+            @RequestParam String validUntilString) {
+        LocalDate validUntil = LocalDate.parse(validUntilString);
         Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
-        carService.updateInsurance(insurance, licensePlate);
+        carService.addInsurance(insurance);
     }
 
 }

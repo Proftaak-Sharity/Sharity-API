@@ -9,6 +9,7 @@ import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
 import com.example.sharity.exception.EmptyValueException;
 import com.example.sharity.repository.CarRepository;
+import com.example.sharity.repository.InsuranceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,12 @@ import java.util.Optional;
 public class CarService {
 
     private final CarRepository carRepository;
+    private final InsuranceRepository insuranceRepository;
 
     @Autowired
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, InsuranceRepository insuranceRepository) {
         this.carRepository = carRepository;
+        this.insuranceRepository = insuranceRepository;
     }
 
     public List<Car> getCars() {
@@ -113,14 +116,13 @@ public class CarService {
         return carRepository.findById(licensePlate);
     }
 
-    public void updateInsurance(Insurance insurance, String licensePlate) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "blahbalh " + insurance + " unknown in database"));
+    public void addInsurance(Insurance insurance) {
+        Car car = carRepository.findById(insurance.getLicensePlate()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "blahbalh " + insurance + " unknown in database"));
 
-        if (licensePlate != null) {
-            car.setLicensePlate(licensePlate);
+            insuranceRepository.save(insurance);
+            car.setInsurance(insurance);
             carRepository.save(car);
 
-        }
     }
 }
 

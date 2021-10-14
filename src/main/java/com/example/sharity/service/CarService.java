@@ -1,28 +1,17 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.carTypes.ElectricCar;
 import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.carTypes.HydrogenCar;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.entity.customer.CountryEnum;
-import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.errorHandling.NoChangesDateException;
-import com.example.sharity.errorHandling.NoChangesStringException;
-import com.example.sharity.errorHandling.UniqueException;
 import com.example.sharity.errorHandling.customer.EmptyValueException;
 import com.example.sharity.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,26 +57,6 @@ public class CarService {
                 carRepository.save(car);
             }
         }
-
-//        if (batteryCapacity != 0) {
-////                ElectricCar.setBatteryCapacity(batteryCapacity);
-////                carRepository.save(car);
-//        }
-//
-//        if (kmPerKw != 0) {
-////                if (kmPerKw.equals(car.getkmPerKw())) {
-////                }
-////                car.setKmPerKw(kmPerKw);
-////                carRepository.save(car);
-//        }
-//
-//        if (fastChargingTime != 0) {
-//
-//        }
-//
-//        if (kmPerLiterFuel != 0) {
-//
-//        }
     }
 
     public void addFuelCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, FuelType fuelType, Integer sizeFueltank, Integer kmPerLiterFuel) {
@@ -129,10 +98,10 @@ public class CarService {
     }
 
 
-
     public void deleteCar(String licensePlate) {
         carRepository.deleteById(licensePlate);
     }
+
 
     public Optional<Car> findCar(String licensePlate) {
         Optional<Car> customerOptional = carRepository.findById(licensePlate);

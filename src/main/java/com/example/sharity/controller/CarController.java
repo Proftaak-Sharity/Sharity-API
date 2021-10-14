@@ -76,17 +76,23 @@ public class CarController {
                        @RequestParam (required = false) Integer fastChargingTime,
                        @RequestParam (required = false) Integer kmPerLiter) {
 
-        if(fuelType == null && batteryCapacity == null && kmPerLiter ==null) {
+                       Optional<Car> carOptional = carRepository.findCarByLicensePlate(licensePlate);
+                       if (carOptional.isPresent()) {
+                           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already in database");
+                       }
+
+        if(fuelType == null && batteryCapacity == null && kmPerLiter == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insert fueltype, battery capacity or km per kW to define if it is a fuel-, electric- or hydrogen car");
         } else if (fuelType != null) {
             carService.addFuelCar(licensePlate, customerNumber, make, model, pricePerDay, fuelType, sizeFueltank, kmPerLiterFuel);
+            throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         } else if (batteryCapacity != null) {
             carService.addElectricCar(licensePlate, customerNumber, make, model, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime);
+            throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         } else {
             carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerLiter);
+            throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         }
     }
-
-
 
 }

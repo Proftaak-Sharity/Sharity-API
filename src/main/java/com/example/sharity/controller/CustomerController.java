@@ -9,7 +9,9 @@ import com.example.sharity.service.CustomerService;
 import com.example.sharity.entity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
@@ -51,8 +53,18 @@ public class CustomerController {
 //    ADD CUSTOMERDATA TO DATABASE
     @PostMapping
     public void addCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
+//        EXCEPTIONS
+        if (customer.getCustomerNumber() != null) {
+            throw new InputNotAllowedException("customer number(" + customer.getCustomerNumber() + ")");
+        } else if (customer.getEmail() != null) {
+            Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
+            if (customerOptional.isPresent()) {
+                throw new NotUniqueException("Email");
+            }
+        } else {
+            throw new FieldRequiredException("Email");
+        }
 
-//        REQUIRED FIELD EXCEPTIONS
         if (customer.getFirstName() == null) {
             throw new FieldRequiredException("First name");
         } else if (customer.getLastName() == null) {
@@ -73,13 +85,10 @@ public class CustomerController {
             throw new FieldRequiredException("Country");
         } else if (customer.getPhoneNumber() == null) {
             throw new FieldRequiredException("Phone number");
-        } else if (customer.getEmail() == null) {
-            throw new FieldRequiredException("Email");
-        } else if (emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-            throw new EmailPatternException(customer.getEmail());
         }
+
         customerService.addCustomer(customer);
-        throw new CrudException("Customer", "adde");
+        throw new CrudException("Customer", "added");
     }
 
 //    UPDATE SELECTED DATA FROM DATABASE
@@ -98,13 +107,40 @@ public class CustomerController {
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) CountryEnum countryEnum,
             @Valid @RequestBody Customer customerDetails) throws NoSuchAlgorithmException {
-            Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
+        Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
 //            EXCEPTIONS
         if (firstName == null && lastName == null && email == null && password == null && dateOfBirth == null && address == null && houseNumber == null && city == null && postalCode == null && countryEnum == null && phoneNumber == null) {
             throw new AllNullException();
-        } else if (email != null && emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-            throw new EmailPatternException(email);
+        } else if (email != null) {
+            Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
+            if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+                throw new EmailPatternException(email);
+            } else if (emailOptional.isPresent()) {
+                throw new NotUniqueException(email);
+            } else if (email.length() == 0) {
+                throw new EmptyValueException("Email");
+            }
+        } else if (firstName != null && firstName.length() == 0) {
+            throw new EmptyValueException("First name");
+        } else if (lastName != null && lastName.length() == 0) {
+            throw new EmptyValueException("Last name");
+        } else if (password != null && password.length() == 0) {
+            throw new EmptyValueException("Password");
+        } else if (dateOfBirth != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date of birth cannot be empty");
+        } else if (address != null && address.length() == 0) {
+            throw new EmptyValueException("Address");
+        } else if (houseNumber != null && houseNumber.length() == 0) {
+            throw new EmptyValueException("House number");
+        } else if (city != null && city.length() == 0) {
+            throw new EmptyValueException("City");
+        } else if (postalCode != null && postalCode.length() == 0) {
+            throw new EmptyValueException("Postal code");
+        } else if (countryEnum != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Country cannot be empty");
+        } else if (phoneNumber != null && phoneNumber.length() == 0) {
+            throw new EmptyValueException("Phone number");
         }
 
         customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
@@ -124,7 +160,7 @@ public class CustomerController {
                 Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
         customerService.deleteCustomer(customerNumber);
-        throw new CrudException("Customer", "delete");
+        throw new CrudException("Customer", "deleted");
     }
 
     //  IF NO CUSTOMERNUMBER INSERTED

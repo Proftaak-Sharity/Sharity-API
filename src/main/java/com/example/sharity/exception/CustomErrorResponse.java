@@ -14,6 +14,6 @@ public class CustomErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime timestamp;
     private int status;
-    private String Error;
+    private String message;
 }
 

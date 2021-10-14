@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 
 
 @Getter
@@ -18,7 +20,7 @@ public class Reservation {
     @Column
     private Long reservationNumber;
 
-    public String licensePlate;
+    private String licensePlate;
 
     private Long customerNumber;
     private double rent;
@@ -48,5 +50,9 @@ public class Reservation {
         this.paymentEnum = paymentEnum;
     }
     public Reservation() {
+    }
+
+    public Period getPeriod() {
+        return Period.between(startDate, endDate);
     }
 }

@@ -41,4 +41,5 @@ public class Insurance {
 
     public Insurance() {
     }
+
 }

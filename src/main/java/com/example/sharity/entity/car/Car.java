@@ -30,9 +30,10 @@ public class Car {
     private String model;
 
     private double pricePerDay;
+    private double pricePerKm;
 
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(nullable = false)
+//  @JoinColumn(nullable = false)
     private Insurance insurance;
 
     @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)

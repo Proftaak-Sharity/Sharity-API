@@ -5,6 +5,7 @@ import com.example.sharity.entity.car.Car;
 import com.example.sharity.entity.customer.Customer;
 import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.exception.AllNullException;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -43,9 +45,11 @@ public class ReservationService {
     }
 
     public Reservation addReservation(Reservation reservation) {
-        //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
+//        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, reservation.getStartDate(), reservation.getEndDate());
-        if (reservationOptional.isPresent()) {
+            if (reservationOptional.isPresent() && Objects.equals(reservation.getReservationNumber(), reservationOptional.get().getReservationNumber())){
+            }
+        else if (reservationOptional.isPresent() && !Objects.equals(reservation.getReservationNumber(), reservationOptional.get().getReservationNumber())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
         }
 
@@ -90,9 +94,9 @@ public class ReservationService {
 
         //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.licensePlate, startDate, endDate);
-        if (reservationOptional.isPresent()) {
+       if (reservationOptional.isPresent() && !Objects.equals(reservationNumber, reservationOptional.get().getReservationNumber())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
-        }
+      }
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
         Optional<Payout> payoutOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);

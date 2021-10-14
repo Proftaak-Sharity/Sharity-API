@@ -24,6 +24,8 @@ public class Reservation {
 
     private Long customerNumber;
     private double rent;
+    private int kmPackage;
+    private Double packagePrice;
     private LocalDate reservationDate = LocalDate.now();
     private LocalDate startDate;
     private LocalDate endDate;
@@ -32,22 +34,25 @@ public class Reservation {
     @Column(name = "payment")
     private PaymentEnum paymentEnum = PaymentEnum.OPEN;
 
-    public Reservation(Long customerNumber, String licensePlate, double rent, LocalDate startDate, LocalDate endDate) {
+    public Reservation(Long customerNumber, String licensePlate, double rent, int kmPackage, Double packagePrice, LocalDate startDate, LocalDate endDate) {
         this.customerNumber = customerNumber;
         this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.rent = NumberRounder.roundDouble(rent, 2);
+        this.rent = NumberRounder.roundDouble((rent + packagePrice), 2);
+        this.kmPackage = kmPackage;
+        this.packagePrice = NumberRounder.roundDouble(packagePrice, 2);
     }
 
-//   TODO LET THE ADDRESERVATION SET ENUM ON PAID, SO IT IS ALREADY PAID WITHIN BOOKING
-    public Reservation(Long customerNumber, String licensePlate, double rent, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
+    public Reservation(Long customerNumber, String licensePlate, double rent, int kmPackage, Double packagePrice, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
         this.customerNumber = customerNumber;
         this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.rent = NumberRounder.roundDouble(rent, 2);
+        this.rent = NumberRounder.roundDouble((rent + packagePrice), 2);
         this.paymentEnum = paymentEnum;
+        this.kmPackage = kmPackage;
+        this.packagePrice = NumberRounder.roundDouble(packagePrice, 2);
     }
     public Reservation() {
     }

@@ -66,7 +66,9 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
 
     @ExceptionHandler({
             CrudAllException.class,
-            InputNotAllowedException.class})
+            InputNotAllowedException.class,
+            DeleteNotAllowedException.class,
+            UpdateNotAllowedException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerNotAllowed(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();

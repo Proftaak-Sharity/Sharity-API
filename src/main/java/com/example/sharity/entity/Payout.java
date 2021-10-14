@@ -20,16 +20,18 @@ public class Payout {
 //    @Column(name = "payoutAmount")
     private double payoutAmount;
     private double tax;
+    private double sharityProfit;
 
     private Long customerNumber;
 
     private Long reservationNumber;
 
-    public Payout(Long reservationNumber, double payoutAmount, double tax, Long customerNumber) {
+    public Payout(Long reservationNumber, double payoutAmount, double tax, double sharityProfit, Long customerNumber) {
         this.reservationNumber = reservationNumber;
         this.tax = NumberRounder.roundDouble(tax, 2);
         this.payoutAmount = NumberRounder.roundDouble(payoutAmount, 2);
         this.customerNumber = customerNumber;
+        this.sharityProfit = sharityProfit;
     }
 
     public Payout() {

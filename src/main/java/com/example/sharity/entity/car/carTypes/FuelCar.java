@@ -28,8 +28,18 @@ public class FuelCar extends Car {
     private int sizeFueltank;
     private int kmPerLiterFuel;
     private double pricePerDay;
+    private double pricePerKm;
 
-    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double pricePerDay, Insurance insurance) {
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double pricePerDay, double pricePerKm,  Insurance insurance) {
+        super(licensePlate, make, model, insurance);
+        this.sizeFueltank = sizeFueltank;
+        this.kmPerLiterFuel = kmPerLiterFuel;
+        this.fuelType = fuelType;
+        this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
+        this.pricePerKm = pricePerKm;
+    }
+
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, double pricePerDay,  Insurance insurance) {
         super(licensePlate, make, model, insurance);
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
@@ -37,20 +47,22 @@ public class FuelCar extends Car {
         this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
     }
 
-    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double pricePerDay, Insurance insurance) {
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double pricePerDay, double pricePerKm, Insurance insurance) {
         super(licensePlate, make, model, customerNumber, insurance);
         this.fuelType = fuelType;
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
         this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
+        this.pricePerKm = pricePerKm;
     }
 
-    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double pricePerDay) {
+    public FuelCar(String licensePlate, Make make, String model, FuelType fuelType, int sizeFueltank, int kmPerLiterFuel, Long customerNumber, double pricePerDay, double pricePerKm) {
         super(licensePlate, make, model, customerNumber);
         this.fuelType = fuelType;
         this.sizeFueltank = sizeFueltank;
         this.kmPerLiterFuel = kmPerLiterFuel;
         this.pricePerDay = NumberRounder.roundDouble(pricePerDay, 2);
+        this.pricePerKm = pricePerKm;
     }
 
     public FuelCar(int kmPerLiterFuel) {

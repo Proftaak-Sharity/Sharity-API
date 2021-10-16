@@ -2,18 +2,15 @@ package com.example.sharity.repository;
 
 import com.example.sharity.entity.reservation.Reservation;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 class ReservationRepositoryTest {
@@ -35,7 +32,7 @@ class ReservationRepositoryTest {
     }
 
     @Test
-    void checkCarAvailability() {
+    void checkCarAvailabilityIsPresent() {
         // Arrange
         Reservation reservation = new Reservation(3L, "KNTK01", 100, 150, 250.00, LocalDate.of(2021, Month.DECEMBER, 1),
                 LocalDate.of(2021, Month.DECEMBER, 5));

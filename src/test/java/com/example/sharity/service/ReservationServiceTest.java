@@ -1,29 +1,17 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.Payout;
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.entity.reservation.PaymentEnum;
 import com.example.sharity.entity.reservation.Reservation;
-import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
-import java.util.Objects;
 import java.util.Optional;
 
-import static com.example.sharity.entity.reservation.PaymentEnum.OPEN;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ReservationServiceTest {

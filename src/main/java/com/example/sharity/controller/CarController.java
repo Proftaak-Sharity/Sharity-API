@@ -52,17 +52,10 @@ public class CarController {
     @PutMapping(path = "{licensePlate}")
     public void updateCar(
             @PathVariable("licensePlate") String licensePlate,
-            @RequestParam(required = false) Long customerNumber,
-            @RequestParam(required = false) Double pricePerDay,
-            @RequestParam(required = false) Integer batteryCapacity,
-            @RequestParam(required = false) Integer kmPerKw,
-            @RequestParam(required = false) Integer fastChargingTime,
-            @RequestParam(required = false) FuelType fuelType,
-            @RequestParam(required = false) Integer sizeFueltank,
-            @RequestParam(required = false) Integer kmPerLiterFuel) {
+            @RequestParam(required = false) Double pricePerDay) {
 
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
-        carService.updateCar(licensePlate, customerNumber, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime, kmPerLiterFuel);
+        carService.updateCar(licensePlate, pricePerDay);
     }
 
     @DeleteMapping(path = "{licensePlate}")

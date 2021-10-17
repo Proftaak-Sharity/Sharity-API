@@ -1,10 +1,10 @@
-package com.example.sharity;
-
-
-public class ReservationTest {
-
+//package com.example.sharity;
+//
+//
+//public class ReservationTest {
+//
 //    private CarService sut;
-
+//
 //    @BeforeEach
 //    public void beforeEach() {
 //        CarRepository repository = mock(CarRepository.class);
@@ -16,8 +16,8 @@ public class ReservationTest {
 //
 //        sut = new CarService(repository);
 //    }
-
-    //check if we get the right amount of days
+//
+//    check if we get the right amount of days
 //    @Test
 //    void addReservationGetDaysTest() {
 //        // Arrange
@@ -43,6 +43,6 @@ public class ReservationTest {
 //        // Assert
 //        assertEquals(400.00, rent);
 //    }
-
-}
+//
+//}
 

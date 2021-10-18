@@ -18,22 +18,25 @@ import javax.persistence.Entity;
 public class HydrogenCar extends Car {
 
     private int sizeFueltank;
-    private int kmPerLiter;
+    private int kmPerKilo;
     private double pricePerDay;
+    private double pricePerKm;
 
 
-    public HydrogenCar(String licensePlate, Make make, String model, int sizeFueltank, int kmPerLiter, double pricePerDay, Insurance insurance) {
+    public HydrogenCar(String licensePlate, Make make, String model, int sizeFueltank, int kmPerKilo, double pricePerDay, double pricePerKm, Insurance insurance) {
         super(licensePlate, make, model, insurance);
         this.sizeFueltank = sizeFueltank;
-        this.kmPerLiter = kmPerLiter;
+        this.kmPerKilo = kmPerKilo;
         this.pricePerDay = pricePerDay;
+        this.pricePerKm = pricePerKm;
     }
 
-    public HydrogenCar(String licensePlate, Make make, String model, Long customerNumber, int sizeFueltank, int kmPerLiter, double pricePerDay, Insurance insurance) {
+    public HydrogenCar(String licensePlate, Make make, String model, Long customerNumber, int sizeFueltank, int kmPerKilo, double pricePerDay, double pricePerKm, Insurance insurance) {
         super(licensePlate, make, model, customerNumber, insurance);
         this.sizeFueltank = sizeFueltank;
-        this.kmPerLiter = kmPerLiter;
+        this.kmPerKilo = kmPerKilo;
         this.pricePerDay = pricePerDay;
+        this.pricePerKm = pricePerKm;
     }
 
     public HydrogenCar() {

@@ -56,13 +56,20 @@ public class ReservationService {
 
 //        GETTERS TO FIND CARDATA
         Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).
-                orElseThrow(() -> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
+                orElseThrow(()-> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
         double pricePerDay = car.getPricePerDay();
         int days = reservation.getPeriod().getDays();
         double rent = pricePerDay * days;
 
+        double dayRent = pricePerDay * days;
+        double packageprice = car.getPricePerKm() * reservation.getKmPackage();
+        double totalRent = packageprice + dayRent;
+
+
 //        SET THE RENT * DAYS OF RENT
-        reservation.setRent(NumberRounder.roundDouble((rent), 2));
+        reservation.setPackagePrice(packageprice);
+        reservation.setRent(NumberRounder.roundDouble(totalRent, 2));
+
 
 //        SAVE HERE AND NOT AT THE END, BECAUSE OTHERWISE THE NEW PAYOUT CAN'T FIND A RESERVATIONNUMBER
         reservationRepository.save(reservation);
@@ -74,14 +81,21 @@ public class ReservationService {
             Customer customer = customerRepository.findById(customerNumber).
                     orElseThrow(() -> new NotFoundException("Customer", customerNumber));
 
-            double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
-            double tax = rent - payoutAmount;
+            double sharityProfit = NumberRounder.roundDouble((totalRent * 0.1), 2);
+            double tax = NumberRounder.roundDouble((totalRent * 0.21), 2);
+            double payoutAmount = NumberRounder.roundDouble((totalRent - sharityProfit - tax), 2);
 
             //        SETTERS TO SET THE PAYOUT AND WRITE ON BALANCE OF OWNER
-            customer.setBalance(customer.getBalance() + payoutAmount);
-            Payout payout = new Payout(reservation.getReservationNumber(), payoutAmount, tax, customerNumber);
 
+            Payout payout = new Payout(reservation.getReservationNumber(), sharityProfit, payoutAmount, tax, customerNumber);
+            payout.setPayoutAmount(payoutAmount);
+            payout.setSharityProfit(sharityProfit);
+            payout.setTax(tax);
             payoutRepository.save(payout);
+
+            customer.setBalance(customer.getBalance() + payoutAmount);
+            customerRepository.save(customer);
+
         }
         return reservation;
     }
@@ -115,8 +129,11 @@ public class ReservationService {
             }
 
 //            UPDATE RENTPRICE
-            double rent = car.getPricePerDay() * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
-            reservation.setRent(rent);
+            double dayRent = car.getPricePerDay() * Period.between(reservation.getStartDate(), reservation.getEndDate()).getDays();
+            double packageprice = car.getPricePerKm() * reservation.getKmPackage();
+            double totalRent = NumberRounder.roundDouble((dayRent + packageprice), 2);
+            reservation.setRent(totalRent);
+            reservationRepository.save(reservation);
 
 //            CHECK IF PAYMENTENUM IS SET TO UPDATE, IF ALREADY PAID, IT CAN'T RE-OPEN BECAUSE A PAYMENT CAN BE DONE TWICE
             if (paymentEnum == PaymentEnum.PAID) {
@@ -126,12 +143,17 @@ public class ReservationService {
                 Customer customer = customerRepository.findById(car.getCustomerNumber()).orElseThrow(() -> new NotFoundException("Customer", car.getCustomerNumber()));
 
                 //      SETTERS FOR UPDATING PAYMENT TABLE
-                double payoutAmount = NumberRounder.roundDouble((rent * 0.79), 2);
-                double tax = rent - payoutAmount;
-                customer.setBalance(customer.getBalance() + payoutAmount);
-                Payout payout = new Payout(reservationNumber, payoutAmount, tax, car.getCustomerNumber());
-
+                double sharityProfit = NumberRounder.roundDouble((totalRent * 0.1), 2);
+                double tax = NumberRounder.roundDouble((totalRent * 0.21), 2);
+                double payoutAmount = NumberRounder.roundDouble((totalRent - sharityProfit - tax), 2);
+                
+                Payout payout = new Payout(reservationNumber, sharityProfit, payoutAmount, tax, car.getCustomerNumber());
+                payout.setPayoutAmount(payoutAmount);
+                payout.setSharityProfit(sharityProfit);
+                payout.setTax(tax);
                 payoutRepository.save(payout);
+
+                customer.setBalance(customer.getBalance() + payoutAmount);
                 customerRepository.save(customer);
 
             } else if (paymentEnum == PaymentEnum.OPEN) {

@@ -16,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReservationRepositoryTest {
 
     @Autowired
-    private ReservationRepository underTest;
+    private ReservationRepository sut;
 
     @Test
     void shouldFindReservationByReservationNumber() {
         // Arrange
         Reservation reservation = new Reservation(7L, "XX95ZR", 100, 150, 250.00, LocalDate.of(2021, Month.JANUARY, 1),
                 LocalDate.of(2021, Month.JANUARY, 5));
-        underTest.save(reservation);
+        sut.save(reservation);
 
         // Act
-        Optional<Reservation> expected = underTest.findReservationByReservationNumber(reservation.getReservationNumber());
+        Optional<Reservation> expected = sut.findReservationByReservationNumber(reservation.getReservationNumber());
         // Assert
         assertThat(expected).isPresent();
     }
@@ -36,10 +36,10 @@ class ReservationRepositoryTest {
         // Arrange
         Reservation reservation = new Reservation(3L, "KNTK01", 100, 150, 250.00, LocalDate.of(2021, Month.DECEMBER, 1),
                 LocalDate.of(2021, Month.DECEMBER, 5));
-        underTest.save(reservation);
+        sut.save(reservation);
 
         // Act
-        Optional<Reservation> expected = underTest.checkCarAvailability("KNTK01",LocalDate.of(2021, Month.DECEMBER, 1),
+        Optional<Reservation> expected = sut.checkCarAvailability("KNTK01",LocalDate.of(2021, Month.DECEMBER, 1),
                 LocalDate.of(2021, Month.DECEMBER, 5));
         // Assert
         assertThat(expected).isPresent();

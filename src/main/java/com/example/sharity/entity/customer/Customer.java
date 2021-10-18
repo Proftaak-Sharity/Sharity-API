@@ -46,7 +46,7 @@ public class Customer extends PersonModel{
     @Column(nullable = false)
     private CountryEnum country;
 
-    @OneToMany(targetEntity = Car.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Car.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
     @ToString.Exclude
     private List<Car> cars;
@@ -56,7 +56,7 @@ public class Customer extends PersonModel{
     @ToString.Exclude
     private List<Bankaccount> bankaccounts;
 
-    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
     @ToString.Exclude
     private List<Reservation> reservations;

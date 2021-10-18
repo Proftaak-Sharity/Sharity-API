@@ -5,15 +5,12 @@ import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.enums.Coverage;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.exception.CrudException;
-import com.example.sharity.exception.car.NotFoundException;
+import com.example.sharity.exception.car.*;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.InsuranceRepository;
 import com.example.sharity.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,17 +52,17 @@ public class CarController {
             @PathVariable("licensePlate") String licensePlate,
             @RequestParam(required = false) Double pricePerDay) {
 
-        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("Car", licensePlate));
         carService.updateCar(licensePlate, pricePerDay);
-        throw new CrudException("Car", "updated");
+        throw new UpdatedException("Car");
     }
 
     @DeleteMapping(path = "{licensePlate}")
     public void deleteCar(
             @PathVariable("licensePlate") String licensePlate) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
+        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("Car", licensePlate));
         carService.deleteCar(licensePlate);
-        throw new CrudException("Car", "deleted");
+        throw new DeletedException("Car");
     }
 
     @PostMapping
@@ -84,21 +81,20 @@ public class CarController {
 
                        Optional<Car> carOptional = carRepository.findCarByLicensePlate(licensePlate);
                        if (carOptional.isPresent()) {
-                           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car already in database");
+                           throw new BadRequestException("Car");
                        }
 
         if(fuelType == null && batteryCapacity == null && kmPerLiter == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insert fueltype, battery capacity or km per kW to define if it is a fuel-, electric- or hydrogen car");
+            throw new BadRequestException();
         } else if (fuelType != null) {
             carService.addFuelCar(licensePlate, customerNumber, make, model, pricePerDay, fuelType, sizeFueltank, kmPerLiterFuel);
-            throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         } else if (batteryCapacity != null) {
             carService.addElectricCar(licensePlate, customerNumber, make, model, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime);
-            throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         } else {
             carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerLiter);
-            throw new ResponseStatusException(HttpStatus.OK, make + " " + model + " with license plate " + licensePlate + " added to database");
         }
+        throw new CreatedException(make, model, licensePlate);
+
     }
 
 
@@ -113,12 +109,12 @@ public class CarController {
 
         Optional<Insurance> insuranceOptional = insuranceRepository.findInsuranceByInsuranceNumber(insuranceNumber);
         if (insuranceOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insurance already in database");
+            throw new BadRequestException("Insurance");
         }
 
         Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
         carService.addInsurance(insurance);
-        throw new CrudException("Insurance", "added");
+        throw new CreatedException("Insurance");
     }
 
 }

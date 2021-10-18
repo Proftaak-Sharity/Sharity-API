@@ -1,5 +1,9 @@
 package com.example.sharity.exception;
 
+import com.example.sharity.exception.car.BadRequestException;
+import com.example.sharity.exception.car.CreatedException;
+import com.example.sharity.exception.car.DeletedException;
+import com.example.sharity.exception.car.UpdatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,7 +33,8 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
             NotUniqueException.class,
             EmailPatternException.class,
             AllNullException.class,
-            FieldRequiredException.class })
+            FieldRequiredException.class,
+            BadRequestException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerBadRequest(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -41,7 +46,8 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler({
-            CrudException.class })
+            DeletedException.class,
+            UpdatedException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerOk(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -53,6 +59,7 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler({
+            com.example.sharity.exception.CreatedException.class,
             CreatedException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerCreated(Exception ex, WebRequest request) {
 

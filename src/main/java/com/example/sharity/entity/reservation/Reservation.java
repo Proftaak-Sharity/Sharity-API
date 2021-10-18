@@ -21,6 +21,7 @@ public class Reservation {
     @Column
     private Long reservationNumber;
 
+
     private String licensePlate;
 
     private Long customerNumber;

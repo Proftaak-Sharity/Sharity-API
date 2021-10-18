@@ -5,18 +5,18 @@ import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.EmailValidator;
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.*;
+import com.example.sharity.exception.car.DeletedException;
+import com.example.sharity.exception.car.UpdatedException;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.service.CustomerService;
 import com.example.sharity.entity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
@@ -107,8 +107,7 @@ public class CustomerController {
             @RequestParam(required = false) String postalCode,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String phoneNumber,
-            @RequestParam(required = false) CountryEnum countryEnum,
-            @Valid @RequestBody Customer customerDetails) throws NoSuchAlgorithmException {
+            @RequestParam(required = false) CountryEnum countryEnum) throws NoSuchAlgorithmException {
 
         Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
@@ -147,7 +146,7 @@ public class CustomerController {
         }
 
         customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
-        throw new CrudException("Customer", "update");
+        throw new UpdatedException("Customer");
     }
 
     //  IF NO CUSTOMERNUMBER INSERTED
@@ -158,12 +157,11 @@ public class CustomerController {
 
     @DeleteMapping(path = "{customerNumber}")
     public void deleteCustomer(
-            @PathVariable("customerNumber") Long customerNumber,
-            @Valid @RequestBody Customer customerDetails) {
+            @PathVariable("customerNumber") Long customerNumber) {
                 Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
         customerService.deleteCustomer(customerNumber);
-        throw new CrudException("Customer", "deleted");
+        throw new DeletedException("Customer");
     }
 
     //  IF NO CUSTOMERNUMBER INSERTED

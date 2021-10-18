@@ -8,7 +8,6 @@ import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.carTypes.HydrogenCar;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.exception.EmptyValueException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.InsuranceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +79,7 @@ public class CarService {
         electricCar.setBatteryCapacity(batteryCapacity);
         electricCar.setKmPerKw(kmPerKw);
         electricCar.setFastChargingTime(fastChargingTime);
+        electricCar.setPricePerKm(totalCostOwnership.TotalCostOwnerShipElectric(batteryCapacity, kmPerKw));
         carRepository.save(electricCar);
     }
 
@@ -92,6 +92,7 @@ public class CarService {
         hydrogenCar.setPricePerDay(pricePerDay);
         hydrogenCar.setSizeFueltank(sizeFueltank);
         hydrogenCar.setKmPerKilo(kmPerKilo);
+        hydrogenCar.setPricePerKm(totalCostOwnership.TotalCostOwnerShipHydrogen(sizeFueltank, kmPerKilo));
         carRepository.save(hydrogenCar);
     }
 

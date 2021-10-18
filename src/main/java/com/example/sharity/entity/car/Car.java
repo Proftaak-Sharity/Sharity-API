@@ -36,7 +36,7 @@ public class Car {
 //  @JoinColumn(nullable = false)
     private Insurance insurance;
 
-    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "licensePlate", referencedColumnName = "licensePlate")
     @ToString.Exclude
     private List<Reservation> reservations;

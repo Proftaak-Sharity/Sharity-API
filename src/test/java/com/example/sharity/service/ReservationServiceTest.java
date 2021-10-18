@@ -1,33 +1,29 @@
 package com.example.sharity.service;
 
 import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.customer.Customer;
+
 import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
-import org.hamcrest.core.Is;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,22 +38,6 @@ class ReservationServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-//        ReservationRepository reservationRepository = mock(ReservationRepository.class);
-//        PayoutRepository payoutRepository = mock(PayoutRepository.class);
-//        CarRepository carRepository = mock(CarRepository.class);
-//        CustomerRepository customerRepository = mock(CustomerRepository.class);
-
-//        Car car = mock(Car.class);
-//
-//        when(car.getPricePerDay()).thenReturn(100.00);
-//        when(car.getCustomerNumber()).thenReturn(1L);
-//
-//        when(carRepository.findCarByLicensePlate("KNTK01")).thenReturn(Optional.of(car));
-
-//        Customer customer = mock(Customer.class);
-//        when(customer.getCustomerNumber()).thenReturn(3L);
-//
-
         sut = new ReservationService(reservationRepository, payoutRepository, carRepository, customerRepository);
     }
 
@@ -81,11 +61,13 @@ class ReservationServiceTest {
     }
 
     @Test
-    public void CanFindReservations() {
+    public void FindReservationsExceptionThrown() {
         // Act
-        sut.findReservations();
+        given(reservationRepository.findAll()).willReturn(Collections.emptyList());
         // Assert
-        verify(reservationRepository).findAll();
+        assertThatThrownBy(() -> sut.findReservations())
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Reservations not found");
     }
 
     @Test
@@ -106,29 +88,5 @@ class ReservationServiceTest {
         Reservation capturedReservation = reservationArgumentCaptor.getValue();
         // Assert
         assertThat(capturedReservation).isEqualTo(reservation);
-    }
-
-    @Test
-    @Disabled
-    void updateReservation() {
-        // Arrange
-        // Act
-        // Assert
-    }
-
-    @Test
-    @Disabled
-    void deleteReservation() {
-        // Arrange
-        // Act
-        // Assert
-    }
-
-    @Test
-    @Disabled
-    void findReservation() {
-        // Arrange
-        // Act
-        // Assert
     }
 }

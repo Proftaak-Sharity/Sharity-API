@@ -5,6 +5,7 @@ import com.example.sharity.entity.car.Insurance;
 import com.example.sharity.entity.car.enums.Coverage;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.exception.CrudException;
 import com.example.sharity.exception.car.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.InsuranceRepository;
@@ -56,6 +57,7 @@ public class CarController {
 
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
         carService.updateCar(licensePlate, pricePerDay);
+        throw new CrudException("Car", "updated");
     }
 
     @DeleteMapping(path = "{licensePlate}")
@@ -63,6 +65,7 @@ public class CarController {
             @PathVariable("licensePlate") String licensePlate) {
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("LicencePlate", licensePlate));
         carService.deleteCar(licensePlate);
+        throw new CrudException("Car", "deleted");
     }
 
     @PostMapping
@@ -115,6 +118,7 @@ public class CarController {
 
         Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
         carService.addInsurance(insurance);
+        throw new CrudException("Insurance", "added");
     }
 
 }

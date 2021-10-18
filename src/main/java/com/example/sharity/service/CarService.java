@@ -42,19 +42,8 @@ public class CarService {
     }
 
 
-    public void updateCar(String licensePlate, Long customerNumber, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime, FuelType fuelType, Integer sizeFueltank, Double kmPerLiterFuel, Double kmPerKilo) {
+    public void updateCar(String licensePlate, Double pricePerDay) {
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " unknown in database"));
-
-        if (customerNumber != null) {
-            if (customerNumber == 0) {
-                throw new EmptyValueException("customerNumber can not be 0");
-            } else if (customerNumber.equals(car.getCustomerNumber())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, customerNumber + " is the customerNumber matching the car");
-            } else {
-                car.setCustomerNumber(customerNumber);
-                carRepository.save(car);
-            }
-        }
 
         if (pricePerDay != null) {
             if (pricePerDay <= 0.0) {
@@ -66,7 +55,7 @@ public class CarService {
         }
     }
 
-    public void addFuelCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, FuelType fuelType, Integer sizeFueltank, Integer kmPerLiterFuel) {
+    public FuelCar addFuelCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, FuelType fuelType, Integer sizeFueltank, Integer kmPerLiterFuel) {
         FuelCar fuelCar = new FuelCar();
         fuelCar.setLicensePlate(licensePlate);
         fuelCar.setCustomerNumber(customerNumber);
@@ -78,6 +67,7 @@ public class CarService {
         fuelCar.setKmPerLiterFuel(kmPerLiterFuel);
         fuelCar.setPricePerKm(totalCostOwnership.TotalCostOwnershipFuel(sizeFueltank, kmPerLiterFuel, fuelType));
         carRepository.save(fuelCar);
+        return fuelCar;
     }
 
     public void addElectricCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime) {

@@ -3,7 +3,6 @@ package com.example.sharity.exception;
 import com.example.sharity.exception.car.BadRequestException;
 import com.example.sharity.exception.car.CreatedException;
 import com.example.sharity.exception.car.DeletedException;
-import com.example.sharity.exception.car.UpdatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

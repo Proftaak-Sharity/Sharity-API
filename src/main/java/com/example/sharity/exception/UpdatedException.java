@@ -1,4 +1,4 @@
-package com.example.sharity.exception.car;
+package com.example.sharity.exception;
 
 public class UpdatedException extends RuntimeException {
 

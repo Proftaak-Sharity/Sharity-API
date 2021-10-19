@@ -1,7 +1,9 @@
 package com.example.sharity.service;
 
+import com.example.sharity.entity.customer.Bankaccount;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.entity.customer.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +12,20 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final PasswordGenerator passwordGenerator;
+    private final BankaccountRepository bankaccountRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, PasswordGenerator passwordGenerator) {
+    public CustomerService(CustomerRepository customerRepository, PasswordGenerator passwordGenerator, BankaccountRepository bankaccountRepository) {
         this.customerRepository = customerRepository;
         this.passwordGenerator = passwordGenerator;
+        this.bankaccountRepository = bankaccountRepository;
     }
 
 
@@ -72,4 +77,15 @@ public class CustomerService {
     public void deleteCustomer(Long customerNumber){
         customerRepository.deleteById(customerNumber);
     }
+
+    public void addBankaccount(Long customerNumber, String iban, String accountHolder) {
+        Bankaccount newBankaccount = new Bankaccount();
+        newBankaccount.setCustomerNumber(customerNumber);
+        newBankaccount.setAccountHolder(accountHolder);
+        newBankaccount.setIban(iban);
+        bankaccountRepository.save(newBankaccount);
+    }
+
+    public void deleteBankaccount(String iban) { bankaccountRepository.deleteById(iban);}
+
 }

@@ -34,4 +34,6 @@ public class Bankaccount {
     public Bankaccount() {
     }
 
+    public Bankaccount(String iban, Long customerNumber, String accountHolder) {
+    }
 }

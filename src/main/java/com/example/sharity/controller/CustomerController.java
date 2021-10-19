@@ -1,12 +1,13 @@
 // The controller creates the API layer of our application. Basically it let us connect to localhost:8080/api/customer
 package com.example.sharity.controller;
 
+import com.example.sharity.entity.customer.Bankaccount;
 import com.example.sharity.entity.customer.CountryEnum;
 import com.example.sharity.entity.customer.EmailValidator;
-import com.example.sharity.entity.reservation.Reservation;
 import com.example.sharity.exception.*;
 import com.example.sharity.exception.car.DeletedException;
-import com.example.sharity.exception.car.UpdatedException;
+import com.example.sharity.exception.UpdatedException;
+import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.service.CustomerService;
 import com.example.sharity.entity.customer.Customer;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,12 +29,14 @@ public class CustomerController {
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
     private final EmailValidator emailValidator;
+    private final BankaccountRepository bankaccountRepository;
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator) {
+    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator,BankaccountRepository bankaccountRepository) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.emailValidator = emailValidator;
+        this.bankaccountRepository = bankaccountRepository;
     }
 
 //    GET ALL DATA FROM CUSTOMERTABLE
@@ -62,6 +64,8 @@ public class CustomerController {
             Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
             if (customerOptional.isPresent()) {
                 throw new NotUniqueException("Email");
+            } else if (emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+                throw new EmailPatternException(customer.getEmail());
             }
         } else {
             throw new FieldRequiredException("Email");
@@ -169,6 +173,32 @@ public class CustomerController {
     public void deleteAllCustomers() {
         throw new CrudAllException("delete", "customers");
     }
+
+    @PostMapping(path = "/bankaccounts")
+    public void addBankaccount(@RequestParam Long customerNumber,
+                               @RequestParam String iban,
+                               @RequestParam String accountHolder) {
+
+        Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new NotFoundException("Customer number", customerNumber));
+        Optional<Bankaccount> bankaccountOptional = bankaccountRepository.findById(iban);
+
+        if (bankaccountOptional.isPresent()) {
+                throw new NotUniqueException("Bankaccount");
+        } else {
+            customerService.addBankaccount(customerNumber, iban, accountHolder);
+            throw new CreatedException("Bankaccount");
+        }
+    }
+
+    @DeleteMapping(path = "/bankaccounts/{iban}")
+    public void deleteBankaccount(
+            @PathVariable("iban") String iban) {
+
+        Bankaccount bankaccount = bankaccountRepository.findById(iban).orElseThrow(()-> new NotFoundException("Bank account"));
+        customerService.deleteBankaccount(iban);
+        throw new DeletedException("Bankaccount");
+    }
+
 }
 
 

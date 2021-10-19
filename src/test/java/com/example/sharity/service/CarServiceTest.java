@@ -7,7 +7,6 @@ import com.example.sharity.entity.car.TotalCostOwnership;
 import com.example.sharity.entity.car.carTypes.FuelCar;
 import com.example.sharity.entity.car.enums.FuelType;
 import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
@@ -29,12 +28,6 @@ public class CarServiceTest
 
     @Mock
     private CarRepository carRepository;
-
-    @BeforeEach
-    public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
-
-    }
 
     @Test
     public void updateCarTestNewRent() {

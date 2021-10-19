@@ -69,7 +69,7 @@ public class CarService {
         return fuelCar;
     }
 
-    public void addElectricCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime) {
+    public ElectricCar addElectricCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime) {
         ElectricCar electricCar = new ElectricCar();
         electricCar.setLicensePlate(licensePlate);
         electricCar.setCustomerNumber(customerNumber);
@@ -81,9 +81,10 @@ public class CarService {
         electricCar.setFastChargingTime(fastChargingTime);
         electricCar.setPricePerKm(totalCostOwnership.TotalCostOwnerShipElectric(batteryCapacity, kmPerKw));
         carRepository.save(electricCar);
+        return electricCar;
     }
 
-    public void addHydrogenCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer sizeFueltank, Integer kmPerKilo) {
+    public HydrogenCar addHydrogenCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer sizeFueltank, Integer kmPerKilo) {
         HydrogenCar hydrogenCar = new HydrogenCar();
         hydrogenCar.setLicensePlate(licensePlate);
         hydrogenCar.setCustomerNumber(customerNumber);
@@ -94,6 +95,7 @@ public class CarService {
         hydrogenCar.setKmPerKilo(kmPerKilo);
         hydrogenCar.setPricePerKm(totalCostOwnership.TotalCostOwnerShipHydrogen(sizeFueltank, kmPerKilo));
         carRepository.save(hydrogenCar);
+        return hydrogenCar;
     }
 
 

@@ -29,6 +29,12 @@ public class CarServiceTest
     @Mock
     private CarRepository carRepository;
 
+    @BeforeEach
+    public void beforeEach() {
+        MockitoAnnotations.initMocks(this);
+
+    }
+
     @Test
     public void updateCarTestNewRent() {
         // Arrange

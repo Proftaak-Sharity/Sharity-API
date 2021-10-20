@@ -56,7 +56,7 @@ public class ReservationService {
 
 //        GETTERS TO FIND CARDATA
         Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).
-                orElseThrow(()-> new IllegalStateException("Car with license plate " + reservation.getLicensePlate() + " not in database"));
+                orElseThrow(()-> new NotFoundException("Car", reservation.getLicensePlate()));
         double pricePerDay = car.getPricePerDay();
         int days = reservation.getPeriod().getDays();
         double rent = pricePerDay * days;
@@ -104,9 +104,9 @@ public class ReservationService {
     public Reservation updateReservation(Long reservationNumber, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
         //        CHECK IF CAR & RESERVATION ARE IN DATABASE
         Reservation reservation = reservationRepository.findReservationByReservationNumber(reservationNumber).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation with reservation number " + reservationNumber + " not in database"));
+                orElseThrow(() -> new NotFoundException("Reservation", reservationNumber));
         Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).
-                orElseThrow(() -> new IllegalStateException("Rented car with license plate " + reservation.getLicensePlate() + " not in database"));
+                orElseThrow(()-> new NotFoundException("Car" + reservation.getLicensePlate()));
 
         //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.getLicensePlate(), startDate, endDate);
@@ -117,7 +117,7 @@ public class ReservationService {
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE
         Optional<Payout> payoutOptional = payoutRepository.findPayoutByReservationNumber(reservationNumber);
         if (payoutOptional.isPresent()) {
-            throw new IllegalStateException("Payment had already been completed");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment had already been completed");
         } else {
 
 //            CHECK IF RESERVATIONDATES WERE SET TO UPDATE
@@ -157,7 +157,7 @@ public class ReservationService {
                 customerRepository.save(customer);
 
             } else if (paymentEnum == PaymentEnum.OPEN) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Payment is already PAID and can not be re-opened");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Payment is already PAID and cannot be re-opened");
             }
             reservationRepository.save(reservation);
         }

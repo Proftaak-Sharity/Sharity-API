@@ -10,4 +10,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String key) {
         super(key + " not found ");
     }
+
+    public NotFoundException(String key, String value) {
+        super(key + " not found: " + value);
+    }
 }

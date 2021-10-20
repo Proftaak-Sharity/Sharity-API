@@ -38,8 +38,10 @@ public class PreDataConfig {
 
         Optional<Customer> customer = customerRepository.findById(1L);
 
-        if (customer.isEmpty()) {
-
+        if (customer.isPresent()) {
+            return args -> {
+            };
+        } else {
             return args -> {
 
 //          PRE CUSTOMERS
@@ -240,6 +242,6 @@ public class PreDataConfig {
                 reservationController.updateReservation(5L, null, null, PaymentEnum.PAID);
 
             };
-        } return null;
+        }
     }
 }

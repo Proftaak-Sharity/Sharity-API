@@ -1,4 +1,4 @@
-package com.example.sharity.config;
+package com.example.sharity;
 
 import com.example.sharity.controller.ReservationController;
 import com.example.sharity.car.*;

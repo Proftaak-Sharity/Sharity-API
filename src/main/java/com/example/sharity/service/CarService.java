@@ -46,7 +46,7 @@ public class CarService {
 
         if (pricePerDay != null) {
             if (pricePerDay <= 0.0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "PricePerDay must be higher than zero");
             } else if (pricePerDay > 0.0) {
                 car.setPricePerDay(pricePerDay);
                 carRepository.save(car);

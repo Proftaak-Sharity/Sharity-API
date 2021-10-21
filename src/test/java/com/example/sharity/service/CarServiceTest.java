@@ -2,11 +2,11 @@ package com.example.sharity.service;
 
 
 
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.TotalCostOwnership;
-import com.example.sharity.entity.car.carTypes.FuelCar;
-import com.example.sharity.entity.car.enums.FuelType;
-import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.car.Car;
+import com.example.sharity.car.TotalCostOwnership;
+import com.example.sharity.car.carTypes.FuelCar;
+import com.example.sharity.car.enums.FuelType;
+import com.example.sharity.car.enums.Make;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;

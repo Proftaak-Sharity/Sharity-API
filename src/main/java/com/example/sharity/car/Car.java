@@ -1,9 +1,9 @@
-package com.example.sharity.entity.car;
+package com.example.sharity.car;
 
 
 
-import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.car.enums.Make;
+import com.example.sharity.reservation.Reservation;
 import lombok.*;
 
 import javax.persistence.*;

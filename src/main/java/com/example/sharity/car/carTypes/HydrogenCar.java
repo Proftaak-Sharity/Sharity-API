@@ -1,8 +1,8 @@
-package com.example.sharity.entity.car.carTypes;
+package com.example.sharity.car.carTypes;
 
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.entity.car.Insurance;
+import com.example.sharity.car.Car;
+import com.example.sharity.car.enums.Make;
+import com.example.sharity.car.Insurance;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

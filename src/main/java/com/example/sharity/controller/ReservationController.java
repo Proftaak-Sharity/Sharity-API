@@ -1,7 +1,7 @@
 package com.example.sharity.controller;
 
-import com.example.sharity.entity.reservation.PaymentEnum;
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.reservation.PaymentEnum;
+import com.example.sharity.reservation.Reservation;
 import com.example.sharity.exception.CrudAllException;
 import com.example.sharity.exception.InputNotAllowedException;
 import com.example.sharity.exception.car.DeletedException;

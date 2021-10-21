@@ -1,16 +1,16 @@
 package com.example.sharity.config;
 
 import com.example.sharity.controller.ReservationController;
-import com.example.sharity.entity.car.*;
-import com.example.sharity.entity.car.carTypes.ElectricCar;
-import com.example.sharity.entity.car.carTypes.FuelCar;
-import com.example.sharity.entity.car.carTypes.HydrogenCar;
-import com.example.sharity.entity.car.enums.Coverage;
-import com.example.sharity.entity.car.enums.FuelType;
-import com.example.sharity.entity.car.enums.Make;
-import com.example.sharity.entity.customer.*;
-import com.example.sharity.entity.reservation.PaymentEnum;
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.car.*;
+import com.example.sharity.car.carTypes.ElectricCar;
+import com.example.sharity.car.carTypes.FuelCar;
+import com.example.sharity.car.carTypes.HydrogenCar;
+import com.example.sharity.car.enums.Coverage;
+import com.example.sharity.car.enums.FuelType;
+import com.example.sharity.car.enums.Make;
+import com.example.sharity.customer.*;
+import com.example.sharity.reservation.PaymentEnum;
+import com.example.sharity.reservation.Reservation;
 import com.example.sharity.repository.*;
 import com.example.sharity.service.CarService;
 import org.springframework.boot.CommandLineRunner;

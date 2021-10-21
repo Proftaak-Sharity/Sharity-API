@@ -1,11 +1,10 @@
 
-package com.example.sharity.entity.customer;
+package com.example.sharity.customer;
 
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.security.NoSuchAlgorithmException;
 
 @Getter
 @Setter

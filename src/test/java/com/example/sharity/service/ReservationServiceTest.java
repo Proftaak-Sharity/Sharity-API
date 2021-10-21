@@ -1,15 +1,14 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.car.Car;
+import com.example.sharity.car.Car;
 
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.reservation.Reservation;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

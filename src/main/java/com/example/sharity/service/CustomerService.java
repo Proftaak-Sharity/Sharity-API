@@ -1,18 +1,17 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.customer.Bankaccount;
-import com.example.sharity.entity.customer.CountryEnum;
-import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.customer.Bankaccount;
+import com.example.sharity.customer.CountryEnum;
+import com.example.sharity.customer.Customer;
 import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
-import com.example.sharity.entity.customer.PasswordGenerator;
+import com.example.sharity.customer.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerService {

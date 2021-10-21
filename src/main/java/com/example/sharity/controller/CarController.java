@@ -1,10 +1,10 @@
 package com.example.sharity.controller;
 
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Insurance;
-import com.example.sharity.entity.car.enums.Coverage;
-import com.example.sharity.entity.car.enums.FuelType;
-import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.car.Car;
+import com.example.sharity.car.Insurance;
+import com.example.sharity.car.enums.Coverage;
+import com.example.sharity.car.enums.FuelType;
+import com.example.sharity.car.enums.Make;
 import com.example.sharity.exception.UpdatedException;
 import com.example.sharity.exception.car.*;
 import com.example.sharity.repository.CarRepository;

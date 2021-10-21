@@ -1,10 +1,10 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.Payout;
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.customer.Customer;
-import com.example.sharity.entity.reservation.PaymentEnum;
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.payout.Payout;
+import com.example.sharity.car.Car;
+import com.example.sharity.customer.Customer;
+import com.example.sharity.reservation.PaymentEnum;
+import com.example.sharity.reservation.Reservation;
 import com.example.sharity.exception.NotFoundException;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;

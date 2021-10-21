@@ -1,6 +1,6 @@
 package com.example.sharity.repository;
 
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.reservation.Reservation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

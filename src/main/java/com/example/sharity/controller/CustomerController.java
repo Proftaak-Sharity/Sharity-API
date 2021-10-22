@@ -1,16 +1,16 @@
 // The controller creates the API layer of our application. Basically it let us connect to localhost:8080/api/customer
 package com.example.sharity.controller;
 
-import com.example.sharity.entity.customer.Bankaccount;
-import com.example.sharity.entity.customer.CountryEnum;
-import com.example.sharity.entity.customer.EmailValidator;
+import com.example.sharity.customer.Bankaccount;
+import com.example.sharity.customer.CountryEnum;
+import com.example.sharity.customer.EmailValidator;
 import com.example.sharity.exception.*;
 import com.example.sharity.exception.car.DeletedException;
 import com.example.sharity.exception.UpdatedException;
 import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.service.CustomerService;
-import com.example.sharity.entity.customer.Customer;
+import com.example.sharity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

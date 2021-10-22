@@ -2,11 +2,11 @@ package com.example.sharity.service;
 
 
 
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.TotalCostOwnership;
-import com.example.sharity.entity.car.carTypes.FuelCar;
-import com.example.sharity.entity.car.enums.FuelType;
-import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.car.Car;
+import com.example.sharity.car.TotalCostOwnership;
+import com.example.sharity.car.carTypes.FuelCar;
+import com.example.sharity.car.enums.FuelType;
+import com.example.sharity.car.enums.Make;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
@@ -31,12 +31,11 @@ public class CarServiceTest
 
     @BeforeEach
     public void beforeEach() {
-        MockitoAnnotations.initMocks(this);
-
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void updateCarTestNewRent() {
+    public void updateCarTestNewPricePerDay() {
         // Arrange
         Car car = mock(Car.class);
         when(car.getLicensePlate()).thenReturn("KTKN01");
@@ -45,13 +44,13 @@ public class CarServiceTest
         FuelCar fuelCar = sut.addFuelCar("KTKN01", customerNumber, make, "model", 100.00, FuelType.PETROL, 50, 20);
         when(carRepository.findById(anyString())).thenReturn(Optional.ofNullable(fuelCar));
 
-        double updatedRent = 400.0;
+        double updatedPriceperDay = 400.0;
 
         // Act
-        sut.updateCar(car.getLicensePlate(), updatedRent);
+        sut.updateCar(car.getLicensePlate(), updatedPriceperDay);
 
         // Assert Equals
-        assertEquals(updatedRent, fuelCar.getPricePerDay());
+        assertEquals(updatedPriceperDay, fuelCar.getPricePerDay());
     }
 
 

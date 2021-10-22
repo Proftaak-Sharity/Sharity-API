@@ -1,4 +1,4 @@
-package com.example.sharity.entity.reservation;
+package com.example.sharity.reservation;
 
 import com.example.sharity.service.NumberRounder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 

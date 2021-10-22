@@ -1,13 +1,11 @@
-package com.example.sharity.entity.customer;
+package com.example.sharity.customer;
 
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.reservation.Reservation;
+import com.example.sharity.car.Car;
+import com.example.sharity.reservation.Reservation;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.*;

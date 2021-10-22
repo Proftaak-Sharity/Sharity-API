@@ -1,6 +1,6 @@
 package com.example.sharity.exception.car;
 
-import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.car.enums.Make;
 
 public class CreatedException extends RuntimeException {
 

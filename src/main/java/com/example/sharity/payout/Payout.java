@@ -1,4 +1,4 @@
-package com.example.sharity.entity;
+package com.example.sharity.payout;
 
 import com.example.sharity.service.NumberRounder;
 import lombok.Getter;

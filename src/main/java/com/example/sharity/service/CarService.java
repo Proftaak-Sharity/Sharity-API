@@ -1,13 +1,13 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.car.Car;
-import com.example.sharity.entity.car.Insurance;
-import com.example.sharity.entity.car.TotalCostOwnership;
-import com.example.sharity.entity.car.carTypes.ElectricCar;
-import com.example.sharity.entity.car.carTypes.FuelCar;
-import com.example.sharity.entity.car.carTypes.HydrogenCar;
-import com.example.sharity.entity.car.enums.FuelType;
-import com.example.sharity.entity.car.enums.Make;
+import com.example.sharity.car.Car;
+import com.example.sharity.car.Insurance;
+import com.example.sharity.car.TotalCostOwnership;
+import com.example.sharity.car.carTypes.ElectricCar;
+import com.example.sharity.car.carTypes.FuelCar;
+import com.example.sharity.car.carTypes.HydrogenCar;
+import com.example.sharity.car.enums.FuelType;
+import com.example.sharity.car.enums.Make;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.InsuranceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class CarService {
 
         if (pricePerDay != null) {
             if (pricePerDay <= 0.0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rent must be higher than zero");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "PricePerDay must be higher than zero");
             } else if (pricePerDay > 0.0) {
                 car.setPricePerDay(pricePerDay);
                 carRepository.save(car);

@@ -1,4 +1,4 @@
-package com.example.sharity.entity.customer;
+package com.example.sharity.customer;
 
 import lombok.*;
 

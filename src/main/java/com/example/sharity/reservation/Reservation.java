@@ -1,4 +1,4 @@
-package com.example.sharity.entity.reservation;
+package com.example.sharity.reservation;
 
 import com.example.sharity.service.NumberRounder;
 import com.fasterxml.jackson.annotation.JsonIgnore;

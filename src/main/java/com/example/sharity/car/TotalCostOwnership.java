@@ -1,6 +1,6 @@
-package com.example.sharity.entity.car;
+package com.example.sharity.car;
 
-import com.example.sharity.entity.car.enums.FuelType;
+import com.example.sharity.car.enums.FuelType;
 import com.example.sharity.service.NumberRounder;
 import org.springframework.stereotype.Component;
 

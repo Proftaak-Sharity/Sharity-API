@@ -1,4 +1,4 @@
-package com.example.sharity.entity.car.enums;
+package com.example.sharity.car.enums;
 
 public enum Make {
 

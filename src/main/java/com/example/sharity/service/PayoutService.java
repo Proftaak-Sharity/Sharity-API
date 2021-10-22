@@ -1,6 +1,6 @@
 package com.example.sharity.service;
 
-import com.example.sharity.entity.Payout;
+import com.example.sharity.payout.Payout;
 import com.example.sharity.repository.PayoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

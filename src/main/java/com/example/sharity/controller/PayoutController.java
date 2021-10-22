@@ -1,6 +1,6 @@
 package com.example.sharity.controller;
 
-import com.example.sharity.entity.Payout;
+import com.example.sharity.payout.Payout;
 import com.example.sharity.exception.DeleteNotAllowedException;
 import com.example.sharity.exception.InputNotAllowedException;
 import com.example.sharity.exception.NotFoundException;

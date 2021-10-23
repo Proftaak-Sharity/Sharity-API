@@ -1,5 +1,6 @@
 package com.example.sharity.service;
 
+import com.example.sharity.exception.CarNotAvailableException;
 import com.example.sharity.payout.Payout;
 import com.example.sharity.car.Car;
 import com.example.sharity.customer.Customer;
@@ -51,7 +52,7 @@ public class ReservationService {
 //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.getLicensePlate(), reservation.getStartDate(), reservation.getEndDate());
         if (reservationOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
+            throw new CarNotAvailableException(reservation.getStartDate(), reservation.getEndDate());
         }
 
 //        GETTERS TO FIND CARDATA

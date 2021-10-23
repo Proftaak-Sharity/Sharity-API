@@ -50,9 +50,8 @@ public class CarServiceTest
         sut.updateCar(car.getLicensePlate(), updatedPriceperDay);
 
         // Assert Equals
+        assert fuelCar != null;
         assertEquals(updatedPriceperDay, fuelCar.getPricePerDay());
     }
-
-
 }
 

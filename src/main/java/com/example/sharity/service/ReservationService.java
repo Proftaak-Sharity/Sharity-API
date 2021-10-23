@@ -112,7 +112,7 @@ public class ReservationService {
         //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.getLicensePlate(), startDate, endDate);
        if (reservationOptional.isPresent() && !Objects.equals(reservationNumber, reservationOptional.get().getReservationNumber())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car not available in this period");
+           throw new CarNotAvailableException(reservation.getStartDate(), reservation.getEndDate());
       }
 
         //        CHECK IF PAYMENT ALREADY HAD BEEN COMPLETED, SO NO DOUBLE DATA GOES INTO DATABASE

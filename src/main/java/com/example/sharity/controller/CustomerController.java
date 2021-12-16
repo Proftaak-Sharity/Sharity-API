@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -52,6 +53,20 @@ public class CustomerController {
                     Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
         return customerService.getCustomer(customerNumber);
+    }
+
+    @PostMapping(path = {"/login"})
+    public Long checkLogin(@RequestParam String email,
+                           @RequestParam String password) {
+
+        Customer customer = customerRepository
+                .findCustomerByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Email not found", email));
+
+        if((Objects.equals(email, customer.getEmail())) && (Objects.equals(password, customer.getPassword()))) {
+            return customer.getCustomerNumber();
+        }
+        throw new NotFoundException("cred. not found", email);
     }
 
 //    ADD CUSTOMERDATA TO DATABASE

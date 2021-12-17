@@ -48,8 +48,8 @@ public class PreDataConfig {
                 Customer customerOne = new Customer(
                         "Rob",
                         "van der Horst",
-                        "rpl.vanderhorst@student.avans.nl",
-                        "welkom01",
+                        "123",
+                        "123",
                         LocalDate.of(1983, Month.AUGUST, 29),
                         "Hoofdstraat",
                         "12",

@@ -1,16 +1,14 @@
 // The controller creates the API layer of our application. Basically it let us connect to localhost:8080/api/customer
 package com.example.sharity.controller;
 
-import com.example.sharity.customer.Bankaccount;
-import com.example.sharity.customer.CountryEnum;
-import com.example.sharity.customer.EmailValidator;
+import com.example.sharity.customer.*;
 import com.example.sharity.exception.*;
 import com.example.sharity.exception.car.DeletedException;
 import com.example.sharity.exception.UpdatedException;
 import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
+import com.example.sharity.repository.DriversLicenseRepository;
 import com.example.sharity.service.CustomerService;
-import com.example.sharity.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -31,13 +29,15 @@ public class CustomerController {
     private final CustomerRepository customerRepository;
     private final EmailValidator emailValidator;
     private final BankaccountRepository bankaccountRepository;
+    private final DriversLicenseRepository driversLicenseRepository;
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator,BankaccountRepository bankaccountRepository) {
+    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator,BankaccountRepository bankaccountRepository, DriversLicenseRepository driversLicenseRepository) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.emailValidator = emailValidator;
         this.bankaccountRepository = bankaccountRepository;
+        this.driversLicenseRepository = driversLicenseRepository;
     }
 
 //    GET ALL DATA FROM CUSTOMERTABLE
@@ -52,6 +52,13 @@ public class CustomerController {
                 @PathVariable("customerNumber") Long customerNumber) {
 
         return customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
+    }
+
+    @PostMapping(path = {"/license/{customerNumber}"})
+    public DriversLicense getDriversLicense(@PathVariable Long customerNumber) {
+
+        return driversLicenseRepository.getDriversLicensesByCustomerNumber(customerNumber)
+                .orElseThrow(()-> new NotFoundException("Customer not found", customerNumber));
     }
 
     @PostMapping(path = {"/login"})

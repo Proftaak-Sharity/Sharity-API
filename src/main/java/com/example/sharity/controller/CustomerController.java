@@ -62,7 +62,7 @@ public class CustomerController {
     }
 
     @PostMapping(path = {"/login"})
-    public Long checkLogin(@RequestParam String email,
+    public Customer checkLogin(@RequestParam String email,
                            @RequestParam String password) {
 
         Customer customer = customerRepository
@@ -70,7 +70,7 @@ public class CustomerController {
                 .orElseThrow(() -> new NotFoundException("Email not found", email));
 
         if((Objects.equals(email, customer.getEmail())) && (Objects.equals(password, customer.getPassword()))) {
-            return customer.getCustomerNumber();
+            return customer;
         }
         throw new NotFoundException("cred. not found", email);
     }

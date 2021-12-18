@@ -40,13 +40,14 @@ public class CustomerController {
         this.driversLicenseRepository = driversLicenseRepository;
     }
 
-//    GET ALL DATA FROM CUSTOMERTABLE
+//    ************** CUSTOMERS ***************
+
     @GetMapping
     public List<Customer> findCustomers() {
         return customerService.findCustomers();
     }
 
-//    GET SPECIFIC DATA FROM CUSTOMERTABLE (BY CUSTOMERNUMBER)
+
     @GetMapping(path = "{customerNumber}")
         public Customer getCustomer(
                 @PathVariable("customerNumber") Long customerNumber) {
@@ -54,16 +55,9 @@ public class CustomerController {
         return customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
     }
 
-    @PostMapping(path = {"/license/{customerNumber}"})
-    public DriversLicense getDriversLicense(@PathVariable Long customerNumber) {
-
-        return driversLicenseRepository.getDriversLicensesByCustomerNumber(customerNumber)
-                .orElseThrow(()-> new NotFoundException("Customer not found", customerNumber));
-    }
-
-    @PostMapping(path = {"/login"})
+    @GetMapping(path = {"/login"})
     public Customer checkLogin(@RequestParam String email,
-                           @RequestParam String password) {
+                               @RequestParam String password) {
 
         Customer customer = customerRepository
                 .findCustomerByEmail(email)
@@ -75,7 +69,6 @@ public class CustomerController {
         throw new NotFoundException("cred. not found", email);
     }
 
-//    ADD CUSTOMERDATA TO DATABASE
     @PostMapping
     public void addCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
 //        EXCEPTIONS
@@ -118,7 +111,7 @@ public class CustomerController {
         throw new CreatedException("Customer");
     }
 
-//    UPDATE SELECTED DATA FROM DATABASE
+    //    UPDATE SELECTED DATA FROM DATABASE
     @PutMapping(path = "{customerNumber}")
     public void updateCustomer(
             @PathVariable("customerNumber") Long customerNumber,
@@ -173,26 +166,39 @@ public class CustomerController {
         customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
         throw new UpdatedException("Customer");
     }
-
-    //  IF NO CUSTOMERNUMBER INSERTED
-    @PutMapping
-    public void updateAllCustomers(){
-        throw new CrudAllException("update", "customers");
-    }
-
+    
     @DeleteMapping(path = "{customerNumber}")
     public void deleteCustomer(
             @PathVariable("customerNumber") Long customerNumber) {
-                Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
+        Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
         customerService.deleteCustomer(customerNumber);
         throw new DeletedException("Customer");
     }
 
-    //  IF NO CUSTOMERNUMBER INSERTED
-    @DeleteMapping
-    public void deleteAllCustomers() {
-        throw new CrudAllException("delete", "customers");
+
+
+
+
+//    *************** DRIVERS LICENSE ***************
+
+    @GetMapping(path = {"/license/{customerNumber}"})
+    public DriversLicense getDriversLicense(@PathVariable Long customerNumber) {
+
+        return driversLicenseRepository.getDriversLicensesByCustomerNumber(customerNumber)
+                .orElseThrow(()-> new NotFoundException("Customer not found", customerNumber));
+    }
+
+
+
+
+
+
+//    ***************** BANK ACCOUNTS ****************
+
+    @GetMapping(path = "/bankaccounts/{customerNumber}")
+    public List<Bankaccount> getBankaccounts(@PathVariable Long customerNumber) {
+        return customerService.findBankaccounts(customerNumber);
     }
 
     @PostMapping(path = "/bankaccounts")
@@ -204,7 +210,7 @@ public class CustomerController {
         Optional<Bankaccount> bankaccountOptional = bankaccountRepository.findById(iban);
 
         if (bankaccountOptional.isPresent()) {
-                throw new NotUniqueException("Bankaccount");
+            throw new NotUniqueException("Bankaccount");
         } else {
             customerService.addBankaccount(customerNumber, iban, accountHolder);
             throw new CreatedException("Bankaccount");
@@ -219,6 +225,15 @@ public class CustomerController {
         customerService.deleteBankaccount(iban);
         throw new DeletedException("Bankaccount");
     }
+
+
+
+
+
+
+
+
+
 
 }
 

@@ -33,7 +33,8 @@ public class CustomGlobalExceptionHandeler extends ResponseEntityExceptionHandle
             EmailPatternException.class,
             AllNullException.class,
             FieldRequiredException.class,
-            BadRequestException.class })
+            BadRequestException.class,
+            CarNotAvailableException.class })
     public ResponseEntity<CustomErrorResponse> customHandlerBadRequest(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();

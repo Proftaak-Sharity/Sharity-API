@@ -39,7 +39,6 @@ public class CustomerService {
 
 
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
-        customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
         customerRepository.save(customer);
     }
 
@@ -54,7 +53,7 @@ public class CustomerService {
         } if (email != null) {
             customer.setEmail(email);
         } if (password != null) {
-            customer.setPassword(passwordGenerator.getSHA512Password(customer.getPassword(), passwordGenerator.getSalt()));
+            customer.setPassword(password);
         } if (dateOfBirth != null) {
             customer.setDateOfBirth(dateOfBirth);
         } if (address != null) {

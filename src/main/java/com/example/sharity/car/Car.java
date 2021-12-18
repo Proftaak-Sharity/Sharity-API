@@ -16,7 +16,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
-public class Car {
+public abstract class Car {
 
     @Id
     @Column(unique = true, length = 20)

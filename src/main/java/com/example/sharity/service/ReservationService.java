@@ -178,4 +178,17 @@ public class ReservationService {
         return reservationRepository.getById(reservationNumber);
     }
 
+    public List<Reservation> findReservationsByCustomerNumber(Long customerNumber) {
+        var reservations = reservationRepository.findReservationsByCustomerNumber(customerNumber);
+        if (reservations.isEmpty()){
+            throw new NotFoundException("Reservations");
+        }
+        return reservations;
+    }
+//    public Reservation findReservationsByCustomerNumber(Long customerNumber) {
+//        Reservation reservation = reservationRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer", customerNumber));
+//
+//        return reservationRepository.getById(customerNumber);
+//    }
+
 }

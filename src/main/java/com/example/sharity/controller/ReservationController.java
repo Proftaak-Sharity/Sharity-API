@@ -37,6 +37,12 @@ public class ReservationController {
         return reservationService.findReservation(reservationNumber);
     }
 
+    @GetMapping(path ={"/customer/{customerNumber}"})
+    public List<Reservation>findReservationsByCustomerNumber(
+            @PathVariable("customerNumber") Long customerNumber) {
+        return reservationService.findReservationsByCustomerNumber(customerNumber);
+    }
+
     @PostMapping
     public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
 //        EXCEPTIONS

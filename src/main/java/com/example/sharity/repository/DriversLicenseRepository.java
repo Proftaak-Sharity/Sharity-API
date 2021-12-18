@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface DriversLicenseRepository extends JpaRepository<DriversLicense, Long> {
 
-    @Query("SELECT d FROM DriversLicense d, Customer c WHERE c.customerNumber = 1 AND (c.driversLicense = d.licenseNumber)")
+    @Query("SELECT d FROM DriversLicense d, Customer c WHERE c.customerNumber = ?1 AND (c.driversLicense = d.licenseNumber)")
     Optional<DriversLicense>getDriversLicensesByCustomerNumber(Long customerNumber);
 
 

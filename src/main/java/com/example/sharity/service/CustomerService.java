@@ -37,6 +37,10 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    public List<Bankaccount> findBankaccounts(Long customerNumber) {
+        return bankaccountRepository.findAll(customerNumber);
+    }
+
 
     public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
         customerRepository.save(customer);

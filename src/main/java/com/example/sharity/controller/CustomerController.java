@@ -9,6 +9,7 @@ import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.DriversLicenseRepository;
 import com.example.sharity.service.CustomerService;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -166,7 +167,7 @@ public class CustomerController {
         customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
         throw new UpdatedException("Customer");
     }
-    
+
     @DeleteMapping(path = "{customerNumber}")
     public void deleteCustomer(
             @PathVariable("customerNumber") Long customerNumber) {
@@ -199,6 +200,12 @@ public class CustomerController {
     @GetMapping(path = "/bankaccounts/{customerNumber}")
     public List<Bankaccount> getBankaccounts(@PathVariable Long customerNumber) {
         return customerService.findBankaccounts(customerNumber);
+    }
+
+    @GetMapping(path = "/iban")
+    public Bankaccount getBankaccount(@RequestParam String iban) {
+
+        return bankaccountRepository.getBankaccountByIban(iban).orElseThrow(()-> new NotFoundException("Bankaccount", iban));
     }
 
     @PostMapping(path = "/bankaccounts")

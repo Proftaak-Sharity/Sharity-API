@@ -16,4 +16,7 @@ public interface BankaccountRepository extends JpaRepository<Bankaccount, String
 
     @Query("SELECT b FROM Bankaccount b where b.customerNumber = ?1")
     List<Bankaccount> findAll(Long customerNumber);
+
+    @Query("select b from Bankaccount b WHERE b.iban = ?1")
+    Optional<Bankaccount> getBankaccountByIban(String Iban);
 }

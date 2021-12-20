@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BankaccountRepository extends JpaRepository<Bankaccount, String> {
+public interface BankaccountRepository extends JpaRepository<Bankaccount, Long> {
 
     @Query("SELECT b.customerNumber FROM Bankaccount b WHERE b.iban = ?1")
     Optional<Bankaccount> checkCustomerByIban(String iban);
@@ -19,4 +19,5 @@ public interface BankaccountRepository extends JpaRepository<Bankaccount, String
 
     @Query("select b from Bankaccount b WHERE b.iban = ?1")
     Optional<Bankaccount> getBankaccountByIban(String Iban);
+
 }

@@ -9,7 +9,6 @@ import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.DriversLicenseRepository;
 import com.example.sharity.service.CustomerService;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -202,10 +201,10 @@ public class CustomerController {
         return customerService.findBankaccounts(customerNumber);
     }
 
-    @GetMapping(path = "/iban")
-    public Bankaccount getBankaccount(@RequestParam String iban) {
+    @GetMapping(path = "/bankaccounts/account/{id}")
+    public Optional<Bankaccount> getBankaccount(@PathVariable("id") Long id) {
 
-        return bankaccountRepository.getBankaccountByIban(iban).orElseThrow(()-> new NotFoundException("Bankaccount", iban));
+        return bankaccountRepository.findById(id);
     }
 
     @PostMapping(path = "/bankaccounts")
@@ -213,8 +212,7 @@ public class CustomerController {
                                @RequestParam String iban,
                                @RequestParam String accountHolder) {
 
-        Customer customer = customerRepository.findById(customerNumber).orElseThrow(()-> new NotFoundException("Customer number", customerNumber));
-        Optional<Bankaccount> bankaccountOptional = bankaccountRepository.findById(iban);
+        Optional<Bankaccount> bankaccountOptional = bankaccountRepository.getBankaccountByIban(iban);
 
         if (bankaccountOptional.isPresent()) {
             throw new NotUniqueException("Bankaccount");
@@ -224,24 +222,19 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping(path = "/bankaccounts/{iban}")
-    public void deleteBankaccount(
-            @PathVariable("iban") String iban) {
-
-        Bankaccount bankaccount = bankaccountRepository.findById(iban).orElseThrow(()-> new NotFoundException("Bank account"));
-        customerService.deleteBankaccount(iban);
-        throw new DeletedException("Bankaccount");
+    @PutMapping(path = "/bankaccounts/edit/{id}")
+    public void editBankaccount(@PathVariable("id") Long id,
+                                @RequestParam String iban,
+                                @RequestParam String accountHolder) {
+        customerService.editById(id, iban, accountHolder);
     }
 
+    @DeleteMapping(path = "/bankaccounts/delete/{id}")
+    public void deleteBankaccount(
+            @PathVariable("id") Long id) {
 
-
-
-
-
-
-
-
-
+        customerService.deleteBankaccount(id);
+    }
 }
 
 

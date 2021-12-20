@@ -11,7 +11,10 @@ import javax.persistence.*;
 public class Bankaccount {
 
     @Id
-    @Column(length = 20)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String iban;
 
     @Column(nullable = false)

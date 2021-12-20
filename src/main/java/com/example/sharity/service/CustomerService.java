@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -88,6 +89,16 @@ public class CustomerService {
         bankaccountRepository.save(newBankaccount);
     }
 
-    public void deleteBankaccount(String iban) { bankaccountRepository.deleteById(iban);}
+    public void deleteBankaccount(Long id) { bankaccountRepository.deleteById(id);}
 
+    public void editById(Long id, String iban, String accountHolder) {
+        Bankaccount bankaccount = bankaccountRepository.getById(id);
+
+        bankaccount.setIban(iban);
+
+        if (accountHolder != null) {
+            bankaccount.setAccountHolder(accountHolder);
+        }
+        bankaccountRepository.save(bankaccount);
+    }
 }

@@ -1,11 +1,9 @@
 package com.example.sharity.service;
 
-import com.example.sharity.customer.Bankaccount;
-import com.example.sharity.customer.CountryEnum;
-import com.example.sharity.customer.Customer;
+import com.example.sharity.customer.*;
 import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
-import com.example.sharity.customer.PasswordGenerator;
+import com.example.sharity.repository.DriversLicenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +18,14 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final PasswordGenerator passwordGenerator;
     private final BankaccountRepository bankaccountRepository;
+    private final DriversLicenseRepository driversLicenseRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, PasswordGenerator passwordGenerator, BankaccountRepository bankaccountRepository) {
+    public CustomerService(CustomerRepository customerRepository, PasswordGenerator passwordGenerator, BankaccountRepository bankaccountRepository, DriversLicenseRepository driversLicenseRepository) {
         this.customerRepository = customerRepository;
         this.passwordGenerator = passwordGenerator;
         this.bankaccountRepository = bankaccountRepository;
+        this.driversLicenseRepository = driversLicenseRepository;
     }
 
 
@@ -43,8 +43,22 @@ public class CustomerService {
     }
 
 
-    public void addCustomer(Customer customer) throws NoSuchAlgorithmException {
-        customerRepository.save(customer);
+    public void addCustomer (String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, String phoneNumber, CountryEnum country)  throws NoSuchAlgorithmException {
+
+        Customer newCustomer = new Customer();
+        newCustomer.setFirstName(firstName);
+        newCustomer.setLastName(lastName);
+        newCustomer.setEmail(email);
+        newCustomer.setPassword(password);
+        newCustomer.setDateOfBirth(dateOfBirth);
+        newCustomer.setAddress(address);
+        newCustomer.setHouseNumber(houseNumber);
+        newCustomer.setPostalCode(postalCode);
+        newCustomer.setCity(city);
+        newCustomer.setPhoneNumber(phoneNumber);
+        newCustomer.setCountry(country);;
+        customerRepository.save(newCustomer);
+
     }
 
 
@@ -101,4 +115,16 @@ public class CustomerService {
         }
         bankaccountRepository.save(bankaccount);
     }
+
+    public void addDriversLicense(Long customerNumber, String licenseNumber, CountryEnum country, LocalDate validUntil) {
+
+        DriversLicense driversLicense = new DriversLicense();
+
+        driversLicense.setCustomerNumber(customerNumber);
+        driversLicense.setLicenseNumber(licenseNumber);
+        driversLicense.setCountry(country);
+        driversLicense.setValidUntil(validUntil);
+        driversLicenseRepository.save(driversLicense);
+    }
+
 }

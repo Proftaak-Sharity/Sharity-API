@@ -14,5 +14,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("Select c from Customer c where c.email =?1")
     Optional<Customer>findCustomerByEmail(String email);
 
-
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Customer c where c.email = ?1")
+    Boolean checkEmail(String email);
 }

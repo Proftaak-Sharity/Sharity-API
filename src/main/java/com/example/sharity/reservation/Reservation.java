@@ -20,9 +20,10 @@ public class Reservation {
     @Column
     private Long reservationNumber;
 
-
+    @Column(name = "license_plate")
     private String licensePlate;
 
+    @Column(name = "customer_number")
     private Long customerNumber;
     private double rent;
     private int kmPackage;

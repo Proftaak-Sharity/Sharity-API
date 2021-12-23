@@ -2,6 +2,7 @@ package com.example.sharity.customer;
 
 import com.example.sharity.car.Car;
 import com.example.sharity.reservation.Reservation;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -13,11 +14,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "Customer")
+@Table(name = "customer")
 public class Customer extends PersonModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_number")
     private Long customerNumber;
 
     @Column(nullable = false)
@@ -36,6 +39,7 @@ public class Customer extends PersonModel{
     private String phoneNumber;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfBirth;
 
     private double balance;
@@ -45,22 +49,21 @@ public class Customer extends PersonModel{
     private CountryEnum country;
 
     @OneToMany(targetEntity = Car.class, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "customerNumber", referencedColumnName = "CustomerNumber")
+    @JoinColumn(name = "customer_number", referencedColumnName = "customer_number")
     @ToString.Exclude
     private List<Car> cars;
 
     @OneToMany(targetEntity = Bankaccount.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
+    @JoinColumn(name = "customer_number", referencedColumnName = "customer_number")
     @ToString.Exclude
     private List<Bankaccount> bankaccounts;
 
     @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "CustomerNumber", referencedColumnName = "CustomerNumber")
+    @JoinColumn(name = "customer_number", referencedColumnName = "customer_number")
     @ToString.Exclude
     private List<Reservation> reservations;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private DriversLicense driversLicense;
+
 
 
     public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber) throws NoSuchAlgorithmException {
@@ -74,7 +77,7 @@ public class Customer extends PersonModel{
         this.phoneNumber = phoneNumber;
     }
 
-    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, DriversLicense driversLicense) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -83,7 +86,6 @@ public class Customer extends PersonModel{
         this.city = city;
         this.country = country;
         this.bankaccounts = Collections.singletonList(bankaccount);
-        this.driversLicense = driversLicense;
         this.phoneNumber = phoneNumber;
 
     }
@@ -101,6 +103,8 @@ public class Customer extends PersonModel{
         this.phoneNumber = phoneNumber;
 
     }
+
+
     public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, Car car, DriversLicense driversLicense) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
@@ -111,7 +115,6 @@ public class Customer extends PersonModel{
         this.country = country;
         this.bankaccounts = Collections.singletonList(bankaccount);
         this.cars = Collections.singletonList(car);
-        this.driversLicense = driversLicense;
         this.phoneNumber = phoneNumber;
     }
 

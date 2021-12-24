@@ -64,7 +64,28 @@ public class Customer extends PersonModel{
     private List<Reservation> reservations;
 
 
+    public Customer(String firstName, String lastName, String email, String password, Long customerNumber, String address, String houseNumber, String postalCode, String city, String phoneNumber, LocalDate dateOfBirth, CountryEnum country) {
+        super(firstName, lastName);
+        this.customerNumber = customerNumber;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.country = country;
+    }
 
+    public Customer(Long customerNumber, String address, String houseNumber, String postalCode, String city, String phoneNumber, LocalDate dateOfBirth, CountryEnum country) {
+        this.customerNumber = customerNumber;
+        this.address = address;
+        this.houseNumber = houseNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.country = country;
+    }
 
     public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);

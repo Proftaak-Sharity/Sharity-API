@@ -62,33 +62,20 @@ public class CustomerService {
     }
 
 
-    public void updateCustomer(Long customerNumber, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum countryEnum, String phoneNumber) throws NoSuchAlgorithmException {
+    public void updateCustomer(Long customerNumber, String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum country, String phoneNumber) throws NoSuchAlgorithmException {
         Customer customer = customerRepository.getById(customerNumber);
 
-        if (firstName != null) {
             customer.setFirstName(firstName);
-        } if (lastName != null) {
             customer.setLastName(lastName);
-        } if (email != null) {
-            customer.setEmail(email);
-        } if (password != null) {
-            customer.setPassword(password);
-        } if (dateOfBirth != null) {
             customer.setDateOfBirth(dateOfBirth);
-        } if (address != null) {
             customer.setAddress(address);
-        } if (houseNumber != null) {
             customer.setHouseNumber(houseNumber);
-        }if (city != null) {
             customer.setCity(city);
-        } if (postalCode != null) {
             customer.setPostalCode(postalCode);
-        } if (countryEnum != null) {
-            customer.setCountry(countryEnum);
-        } if (phoneNumber != null) {
+            customer.setCountry(country);
             customer.setPhoneNumber(phoneNumber);
-        }
-        customerRepository.save(customer);
+
+            customerRepository.save(customer);
     }
 
     public void deleteCustomer(Long customerNumber){

@@ -186,14 +186,14 @@ public class ReservationService {
         return reservations;
     }
 
-//    public Optional<Reservation> checkAvailableCars(LocalDate startDate, LocalDate endDate) {
-//        // test
-//        var licences = reservationRepository.checkAvailableCars(startDate, endDate);
-//        if (licences.isEmpty()){
-//            throw new NotFoundException("Reservations");
-//        }
-//        return licences;
-//    }
+    public List<Reservation> checkRentedCars(LocalDate startDate, LocalDate endDate) {
+        // test
+        var licences = reservationRepository.checkRentedCars(startDate, endDate);
+        if (licences.isEmpty()){
+            throw new NotFoundException("Reservations");
+        } else {return licences;}
+
+    }
 
 
 }

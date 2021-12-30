@@ -38,12 +38,14 @@ public class ReservationController {
         return reservationService.findReservation(reservationNumber);
     }
 
-//    @GetMapping(path = "findAvailableCars")
-//    public Optional<Reservation> findAvailableCars(
-//             @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//            @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
-//        return reservationService.checkAvailableCars(startDate, endDate);
-//    }
+    @GetMapping(path = "/rentedLicences")
+    public List<Reservation> findRentedCars(
+             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
+        System.out.println("test");;
+        System.out.println(startDate);;
+        return reservationService.checkRentedCars(startDate, endDate);
+    }
 
     @GetMapping(path ={"/customer/{customerNumber}"})
     public List<Reservation>findReservationsByCustomerNumber(

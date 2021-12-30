@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/reservations")
@@ -36,6 +37,13 @@ public class ReservationController {
             @PathVariable("reservationNumber") Long reservationNumber) {
         return reservationService.findReservation(reservationNumber);
     }
+
+//    @GetMapping(path = "findAvailableCars")
+//    public Optional<Reservation> findAvailableCars(
+//             @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+//            @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
+//        return reservationService.checkAvailableCars(startDate, endDate);
+//    }
 
     @GetMapping(path ={"/customer/{customerNumber}"})
     public List<Reservation>findReservationsByCustomerNumber(

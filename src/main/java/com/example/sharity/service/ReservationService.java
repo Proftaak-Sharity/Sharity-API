@@ -185,10 +185,15 @@ public class ReservationService {
         }
         return reservations;
     }
-//    public Reservation findReservationsByCustomerNumber(Long customerNumber) {
-//        Reservation reservation = reservationRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer", customerNumber));
-//
-//        return reservationRepository.getById(customerNumber);
+
+//    public Optional<Reservation> checkAvailableCars(LocalDate startDate, LocalDate endDate) {
+//        // test
+//        var licences = reservationRepository.checkAvailableCars(startDate, endDate);
+//        if (licences.isEmpty()){
+//            throw new NotFoundException("Reservations");
+//        }
+//        return licences;
 //    }
+
 
 }

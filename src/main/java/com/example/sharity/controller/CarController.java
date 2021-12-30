@@ -1,7 +1,10 @@
 package com.example.sharity.controller;
 
 import com.example.sharity.car.Car;
+import com.example.sharity.car.carTypes.ElectricCar;
+import com.example.sharity.car.carTypes.FuelCar;
 import com.example.sharity.car.Insurance;
+import com.example.sharity.car.carTypes.HydrogenCar;
 import com.example.sharity.car.enums.Coverage;
 import com.example.sharity.car.enums.FuelType;
 import com.example.sharity.car.enums.Make;
@@ -39,6 +42,18 @@ public class CarController {
         return carService.getCars();
     }
 
+    @GetMapping(path = "/fuelcars")
+    public List<FuelCar> getFuelCars() { return carService.getFuelCars();
+    }
+
+    @GetMapping(path = "electriccars")
+    public List<ElectricCar> getElectricCars() { return carService.getElectricCars();
+    }
+
+    @GetMapping(path = "hydrogencars")
+    public List<HydrogenCar> getHydrogenCars() { return carService.getHydrogenCars();
+    }
+
     @GetMapping(path = "{licensePlate}")
     public Optional<Car> findCar(
             @PathVariable("licensePlate") String licensePlate) {
@@ -47,6 +62,7 @@ public class CarController {
 
         return carService.findCar(licensePlate);
     }
+
 
     @PutMapping(path = "{licensePlate}")
     public void updateCar(

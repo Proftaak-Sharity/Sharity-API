@@ -31,6 +31,11 @@ public abstract class PersonModel {
 		this.password = password;
 	}
 
+	public PersonModel(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	public PersonModel() {
 
 	}

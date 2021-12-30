@@ -47,6 +47,16 @@ public class CustomerController {
         return customerService.findCustomers();
     }
 
+    @GetMapping(path = "/emailcheck")
+    public Boolean checkEmail(@RequestParam String email) {
+
+        if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+            throw new EmailPatternException(email);
+        } else {
+            return customerRepository.checkEmail(email);
+        }
+    }
+
 
     @GetMapping(path = "{customerNumber}")
         public Customer getCustomer(
@@ -70,101 +80,42 @@ public class CustomerController {
     }
 
     @PostMapping
-    public void addCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
-//        EXCEPTIONS
-        if (customer.getCustomerNumber() != null) {
-            throw new InputNotAllowedException("customer number(" + customer.getCustomerNumber() + ")");
-        } else if (customer.getEmail() != null) {
-            Optional<Customer> customerOptional = customerRepository.findCustomerByEmail(customer.getEmail());
-            if (customerOptional.isPresent()) {
-                throw new NotUniqueException("Email");
-            } else if (emailValidator.patternMatches(customer.getEmail(), "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-                throw new EmailPatternException(customer.getEmail());
-            }
-        } else {
-            throw new FieldRequiredException("Email");
-        }
+    public Long addCustomer(
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam String email,
+            @RequestParam String password,
+            @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate dateOfBirth,
+            @RequestParam String address,
+            @RequestParam String houseNumber,
+            @RequestParam String postalCode,
+            @RequestParam String city,
+            @RequestParam String phoneNumber,
+            @RequestParam CountryEnum country) throws NoSuchAlgorithmException {
 
-        if (customer.getFirstName() == null) {
-            throw new FieldRequiredException("First name");
-        } else if (customer.getLastName() == null) {
-            throw new FieldRequiredException("Last name");
-        } else if (customer.getPassword() == null) {
-            throw new FieldRequiredException("Password");
-        } else if (customer.getAddress() == null) {
-            throw new FieldRequiredException("Address");
-        } else if (customer.getHouseNumber() == null) {
-            throw new FieldRequiredException("House number");
-        } else if (customer.getPostalCode() == null) {
-            throw new FieldRequiredException("Postal Code");
-        } else if (customer.getCity() == null) {
-            throw new FieldRequiredException("City");
-        } else if (customer.getDateOfBirth() == null) {
-            throw new FieldRequiredException("Date of birth");
-        } else if (customer.getCountry() == null) {
-            throw new FieldRequiredException("Country");
-        } else if (customer.getPhoneNumber() == null) {
-            throw new FieldRequiredException("Phone number");
-        }
+        customerService.addCustomer(firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, phoneNumber, country);
 
-        customerService.addCustomer(customer);
-        throw new CreatedException("Customer");
+        Customer customer = customerRepository.findCustomerByEmail(email).orElseThrow(()-> new NotFoundException("email", email));
+
+        return customer.getCustomerNumber();
     }
 
     //    UPDATE SELECTED DATA FROM DATABASE
-    @PutMapping(path = "{customerNumber}")
+    @PutMapping(path = "/update")
     public void updateCustomer(
-            @PathVariable("customerNumber") Long customerNumber,
+            @RequestParam Long customerNumber,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String password,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
             @RequestParam(required = false) String address,
             @RequestParam(required = false) String houseNumber,
             @RequestParam(required = false) String postalCode,
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) String phoneNumber,
-            @RequestParam(required = false) CountryEnum countryEnum) throws NoSuchAlgorithmException {
+            @RequestParam(required = false) CountryEnum country,
+            @RequestParam(required = false) @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate dateOfBirth,
+            @RequestParam(required = false) String phoneNumber) throws NoSuchAlgorithmException {
 
-        Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
 
-//            EXCEPTIONS
-        if (firstName == null && lastName == null && email == null && password == null && dateOfBirth == null && address == null && houseNumber == null && city == null && postalCode == null && countryEnum == null && phoneNumber == null) {
-            throw new AllNullException();
-        } else if (email != null) {
-            Optional<Customer> emailOptional = customerRepository.findCustomerByEmail(email);
-            if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-                throw new EmailPatternException(email);
-            } else if (emailOptional.isPresent()) {
-                throw new NotUniqueException(email);
-            } else if (email.length() == 0) {
-                throw new EmptyValueException("Email");
-            }
-        } else if (firstName != null && firstName.length() == 0) {
-            throw new EmptyValueException("First name");
-        } else if (lastName != null && lastName.length() == 0) {
-            throw new EmptyValueException("Last name");
-        } else if (password != null && password.length() == 0) {
-            throw new EmptyValueException("Password");
-        } else if (dateOfBirth != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date of birth cannot be empty");
-        } else if (address != null && address.length() == 0) {
-            throw new EmptyValueException("Address");
-        } else if (houseNumber != null && houseNumber.length() == 0) {
-            throw new EmptyValueException("House number");
-        } else if (city != null && city.length() == 0) {
-            throw new EmptyValueException("City");
-        } else if (postalCode != null && postalCode.length() == 0) {
-            throw new EmptyValueException("Postal code");
-        } else if (countryEnum != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Country cannot be empty");
-        } else if (phoneNumber != null && phoneNumber.length() == 0) {
-            throw new EmptyValueException("Phone number");
-        }
-
-        customerService.updateCustomer(customerNumber, firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, countryEnum, phoneNumber);
-        throw new UpdatedException("Customer");
+        customerService.updateCustomer(customerNumber, firstName, lastName, dateOfBirth, address, houseNumber, postalCode, city, country, phoneNumber);
     }
 
     @DeleteMapping(path = "{customerNumber}")
@@ -189,7 +140,19 @@ public class CustomerController {
                 .orElseThrow(()-> new NotFoundException("Customer not found", customerNumber));
     }
 
+    @GetMapping(path = "/driverslicense/check")
+    public Boolean checkLicense(@RequestParam String licenseNumber) {
 
+        return driversLicenseRepository.checkLicense(licenseNumber);
+    }
+
+    @PostMapping(path = "/driverslicense")
+    public void addDriversLicense(@RequestParam Long customerNumber,
+                                  @RequestParam String licenseNumber,
+                                  @RequestParam CountryEnum country,
+                                  @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy")LocalDate validUntil) {
+        customerService.addDriversLicense(customerNumber, licenseNumber, country, validUntil);
+    }
 
 
 
@@ -202,12 +165,13 @@ public class CustomerController {
     }
 
     @GetMapping(path = "/bankaccounts/account/{id}")
-    public Optional<Bankaccount> getBankaccount(@PathVariable("id") Long id) {
+    public Bankaccount getBankaccount(@PathVariable("id") Long id) {
 
-        return bankaccountRepository.findById(id);
+        return bankaccountRepository.getBankaccountById(id).orElseThrow(()-> new NotFoundException("Bankaccount", id));
     }
 
-    @PostMapping(path = "/bankaccounts")
+
+    @PostMapping(path = "/bankaccounts/add")
     public void addBankaccount(@RequestParam Long customerNumber,
                                @RequestParam String iban,
                                @RequestParam String accountHolder) {
@@ -235,6 +199,8 @@ public class CustomerController {
 
         customerService.deleteBankaccount(id);
     }
+
+
 }
 
 

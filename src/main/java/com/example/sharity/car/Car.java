@@ -19,9 +19,10 @@ import java.util.List;
 public abstract class Car {
 
     @Id
-    @Column(unique = true, length = 20)
+    @Column(unique = true, length = 20, name = "license_plate")
     private String licensePlate;
 
+    @Column(name = "customer_number")
     private Long customerNumber;
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +38,7 @@ public abstract class Car {
     private Insurance insurance;
 
     @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "licensePlate", referencedColumnName = "licensePlate")
+    @JoinColumn(name = "license_plate", referencedColumnName = "license_plate")
     @ToString.Exclude
     private List<Reservation> reservations;
 

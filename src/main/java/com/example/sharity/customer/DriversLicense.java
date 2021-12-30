@@ -7,12 +7,12 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
-@Entity
+@Table (name = "drivers_license")
+@Entity (name = "DriversLicense")
 public class DriversLicense {
 
     @Id
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String licenseNumber;
 
     @Enumerated(EnumType.STRING)
@@ -22,16 +22,23 @@ public class DriversLicense {
     @Column(nullable = false)
     private LocalDate validUntil;
 
-    @Column(name = "license_copy_url")
-    private String licenseCopyURL;
+    private Long customerNumber;
 
     public DriversLicense() {
     }
 
-    public DriversLicense(String licenseNumber, CountryEnum country, LocalDate validUntil, String licenseCopyURL) {
+    public DriversLicense(String licenseNumber, CountryEnum country, LocalDate validUntil) {
         this.licenseNumber = licenseNumber;
         this.country = country;
         this.validUntil = validUntil;
-        this.licenseCopyURL = licenseCopyURL;
     }
+
+    public DriversLicense(String licenseNumber, CountryEnum country, LocalDate validUntil, Long customerNumber) {
+        this.licenseNumber = licenseNumber;
+        this.country = country;
+        this.validUntil = validUntil;
+        this.customerNumber =  customerNumber;
+    }
+
+
 }

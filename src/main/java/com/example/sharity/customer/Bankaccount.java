@@ -20,6 +20,7 @@ public class Bankaccount {
     @Column(nullable = false)
     private String accountHolder;
 
+    @Column(name = "customer_number")
     private Long customerNumber;
 
 
@@ -37,6 +38,4 @@ public class Bankaccount {
     public Bankaccount() {
     }
 
-    public Bankaccount(String iban, Long customerNumber, String accountHolder) {
-    }
 }

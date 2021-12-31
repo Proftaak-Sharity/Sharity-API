@@ -103,15 +103,4 @@ public class CustomerService {
         bankaccountRepository.save(bankaccount);
     }
 
-    public void addDriversLicense(Long customerNumber, String licenseNumber, CountryEnum country, LocalDate validUntil) {
-
-        DriversLicense driversLicense = new DriversLicense();
-
-        driversLicense.setCustomerNumber(customerNumber);
-        driversLicense.setLicenseNumber(licenseNumber);
-        driversLicense.setCountry(country);
-        driversLicense.setValidUntil(validUntil);
-        driversLicenseRepository.save(driversLicense);
-    }
-
 }

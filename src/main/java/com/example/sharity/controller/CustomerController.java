@@ -80,7 +80,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Long addCustomer(
+    public void addCustomer(
             @RequestParam String firstName,
             @RequestParam String lastName,
             @RequestParam String email,
@@ -94,10 +94,6 @@ public class CustomerController {
             @RequestParam CountryEnum country) throws NoSuchAlgorithmException {
 
         customerService.addCustomer(firstName, lastName, email, password, dateOfBirth, address, houseNumber, postalCode, city, phoneNumber, country);
-
-        Customer customer = customerRepository.findCustomerByEmail(email).orElseThrow(()-> new NotFoundException("email", email));
-
-        return customer.getCustomerNumber();
     }
 
     //    UPDATE SELECTED DATA FROM DATABASE
@@ -151,7 +147,13 @@ public class CustomerController {
                                   @RequestParam String licenseNumber,
                                   @RequestParam CountryEnum country,
                                   @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy")LocalDate validUntil) {
-        customerService.addDriversLicense(customerNumber, licenseNumber, country, validUntil);
+        DriversLicense driversLicense = new DriversLicense();
+        driversLicense.setLicenseNumber(licenseNumber);
+        driversLicense.setCustomerNumber(customerNumber);
+        driversLicense.setValidUntil(validUntil);
+        driversLicense.setCountry(country);
+
+        driversLicenseRepository.save(driversLicense);
     }
 
 

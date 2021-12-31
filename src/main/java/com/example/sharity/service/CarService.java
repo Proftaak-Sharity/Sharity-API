@@ -35,6 +35,15 @@ public class CarService {
         return carRepository.findAll();
     }
 
+    public List<FuelCar> getFuelCars() { return carRepository.findAllFuelCars();
+    }
+
+    public List<ElectricCar> getElectricCars() { return carRepository.findAllElectricCars();
+    }
+
+    public List<HydrogenCar> getHydrogenCars() { return carRepository.findAllHydrogenCars();
+    }
+
     public double getRentFromCar(String licensePlate) {
         Car car = carRepository.findById(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with licenseplate " + licensePlate + " not known"));
         return car.getPricePerDay();
@@ -121,5 +130,8 @@ public class CarService {
             carRepository.save(car);
 
     }
+
+
+
 }
 

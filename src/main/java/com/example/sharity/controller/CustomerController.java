@@ -4,22 +4,16 @@ package com.example.sharity.controller;
 import com.example.sharity.customer.*;
 import com.example.sharity.exception.*;
 import com.example.sharity.exception.car.DeletedException;
-import com.example.sharity.exception.UpdatedException;
-import com.example.sharity.repository.BankaccountRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.DriversLicenseRepository;
 import com.example.sharity.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/customers")
@@ -28,15 +22,13 @@ public class CustomerController {
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
     private final EmailValidator emailValidator;
-    private final BankaccountRepository bankaccountRepository;
     private final DriversLicenseRepository driversLicenseRepository;
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator,BankaccountRepository bankaccountRepository, DriversLicenseRepository driversLicenseRepository) {
+    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator, DriversLicenseRepository driversLicenseRepository) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.emailValidator = emailValidator;
-        this.bankaccountRepository = bankaccountRepository;
         this.driversLicenseRepository = driversLicenseRepository;
     }
 
@@ -159,48 +151,6 @@ public class CustomerController {
 
 
 
-//    ***************** BANK ACCOUNTS ****************
-
-    @GetMapping(path = "/bankaccounts/{customerNumber}")
-    public List<Bankaccount> getBankaccounts(@PathVariable Long customerNumber) {
-        return customerService.findBankaccounts(customerNumber);
-    }
-
-    @GetMapping(path = "/bankaccounts/account/{id}")
-    public Bankaccount getBankaccount(@PathVariable("id") Long id) {
-
-        return bankaccountRepository.getBankaccountById(id).orElseThrow(()-> new NotFoundException("Bankaccount", id));
-    }
-
-
-    @PostMapping(path = "/bankaccounts/add")
-    public void addBankaccount(@RequestParam Long customerNumber,
-                               @RequestParam String iban,
-                               @RequestParam String accountHolder) {
-
-        Optional<Bankaccount> bankaccountOptional = bankaccountRepository.getBankaccountByIban(iban);
-
-        if (bankaccountOptional.isPresent()) {
-            throw new NotUniqueException("Bankaccount");
-        } else {
-            customerService.addBankaccount(customerNumber, iban, accountHolder);
-            throw new CreatedException("Bankaccount");
-        }
-    }
-
-    @PutMapping(path = "/bankaccounts/edit/{id}")
-    public void editBankaccount(@PathVariable("id") Long id,
-                                @RequestParam String iban,
-                                @RequestParam String accountHolder) {
-        customerService.editById(id, iban, accountHolder);
-    }
-
-    @DeleteMapping(path = "/bankaccounts/delete/{id}")
-    public void deleteBankaccount(
-            @PathVariable("id") Long id) {
-
-        customerService.deleteBankaccount(id);
-    }
 
 
 }

@@ -32,7 +32,6 @@ public class PreDataConfig {
                                          CustomerRepository customerRepository,
                                          CarService carService,
                                          ReservationController reservationController,
-                                         BankaccountRepository bankaccountRepository,
                                          PasswordGenerator passwordGenerator,
                                          TotalCostOwnership totalCostOwnership,
                                          DriversLicenseRepository driversLicenseRepository) {
@@ -58,7 +57,6 @@ public class PreDataConfig {
                         "Klundert",
                         CountryEnum.NETHERLANDS,
                         "+3165873614",
-                        new Bankaccount("NL12INGB122365432", "RPL VAN DER HORST"),
                         new FuelCar("KNTK01", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 99.33, totalCostOwnership.TotalCostOwnershipFuel(75, 12, FuelType.DIESEL),
                                 new Insurance("AHX0987R", "KNTK01", "AXA UK", Coverage.ALLRISK, LocalDate.of(2022, Month.JANUARY, 18)))
                 );
@@ -74,7 +72,6 @@ public class PreDataConfig {
                         "Made",
                         CountryEnum.NETHERLANDS,
                         "+31687961423",
-                        new Bankaccount("NL78RABO698745632", "D JANSEN"),
                         new HydrogenCar("XX567R", Make.LandRover, "Defender", 75, 10, 245.75, totalCostOwnership.TotalCostOwnerShipHydrogen(75, 10),
                                 new Insurance("JKP3698741PLX", "XX567R", "Lloyds", Coverage.WAPLUS, LocalDate.of(2022, Month.MAY, 9)))
 
@@ -91,7 +88,6 @@ public class PreDataConfig {
                         "Etten-Leur",
                         CountryEnum.NETHERLANDS,
                         "+31687142694",
-                        new Bankaccount("NL78RABO126874325", "B GROOTOONK"),
                         new ElectricCar("BG012X", Make.Tesla, "Model Y", 75, 10, 45, 199.99, totalCostOwnership.TotalCostOwnerShipElectric(75, 10),
                                 new Insurance("JHST718920PO", "BG012X", "MRL Insurance", Coverage.ALLRISK, LocalDate.of(2022, Month.JUNE, 14)))
                 );
@@ -107,7 +103,6 @@ public class PreDataConfig {
                         "Breda",
                         CountryEnum.NETHERLANDS,
                         "+31678163251",
-                        new Bankaccount("NL78SNSB098765428", "L HANEGRAAF"),
                         new FuelCar("LH099X", Make.Ford, "Mustang Convertible", FuelType.PETROL, 70, 8, 75.50, totalCostOwnership.TotalCostOwnershipFuel(70, 8, FuelType.PETROL),
                                 new Insurance("HDRA6192PO8", "LH099X", "Sainsbury’s Bank", Coverage.WA, LocalDate.of(2021, Month.NOVEMBER, 30)))
                 );
@@ -123,7 +118,6 @@ public class PreDataConfig {
                         "Antwerpen",
                         CountryEnum.BELGIUM,
                         "+329875144778514",
-                        new Bankaccount("NL78RABO985471239", "J JANSEN"),
                         new ElectricCar("JJ001J", Make.Cupra, "Leon", 55, 13, 25, 121.47, totalCostOwnership.TotalCostOwnerShipElectric(55, 13),
                                 new Insurance("JSHDA012PLK", "JJ001J", "Sheilas’ Wheels", Coverage.ALLRISK, LocalDate.of(2022, Month.FEBRUARY, 8)))
                 );
@@ -138,8 +132,7 @@ public class PreDataConfig {
                         "3425GH",
                         "Utrecht",
                         CountryEnum.NETHERLANDS,
-                        "+31625479987",
-                        new Bankaccount("NL56SNSB865209873", "L MESSI")
+                        "+31625479987"
                 );
                 customerRepository.saveAll(List.of(customerOne, customerTwo, customerThree, customerFour, customerFive, customerSix));
 
@@ -153,22 +146,6 @@ public class PreDataConfig {
                 DriversLicense driversLicenseSix = new DriversLicense("HTJL65214U", CountryEnum.NETHERLANDS, LocalDate.of(2027, Month.FEBRUARY, 8), 4L);
 
                 driversLicenseRepository.saveAll(List.of(driversLicenseOne,driversLicenseTwo, driversLicenseThree, driversLicenseFour, driversLicenseFive, driversLicenseSix));
-
-//          PRE BANKACCOUNTS
-                Bankaccount bankaccountOne = new Bankaccount(
-                        "NL54SNSB369478521",
-                        "L HANEGRAAF EO T VROUWKE",
-                        4L
-                );
-                Bankaccount bankaccountTwo = new Bankaccount(
-                        "NL63RABO658746952",
-                        "D JANSEN",
-                        2L);
-                Bankaccount bankaccountThree = new Bankaccount(
-                        "NL98ABNA987214669",
-                        "RPL VAN DER HORST",
-                        1L);
-                bankaccountRepository.saveAll(List.of(bankaccountOne, bankaccountTwo, bankaccountThree));
 
 //          PRE CARS
                 Car carOne =

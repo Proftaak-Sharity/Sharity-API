@@ -1,7 +1,5 @@
 package com.example.sharity.repository;
 
-import com.example.sharity.customer.Bankaccount;
-import com.example.sharity.customer.Customer;
 import com.example.sharity.customer.DriversLicense;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

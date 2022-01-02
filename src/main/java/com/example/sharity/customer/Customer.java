@@ -53,11 +53,6 @@ public class Customer extends PersonModel{
     @ToString.Exclude
     private List<Car> cars;
 
-    @OneToMany(targetEntity = Bankaccount.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_number", referencedColumnName = "customer_number")
-    @ToString.Exclude
-    private List<Bankaccount> bankaccounts;
-
     @OneToMany(targetEntity = Reservation.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_number", referencedColumnName = "customer_number")
     @ToString.Exclude
@@ -98,7 +93,7 @@ public class Customer extends PersonModel{
         this.phoneNumber = phoneNumber;
     }
 
-    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName,  String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Car car) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -106,27 +101,13 @@ public class Customer extends PersonModel{
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
-        this.bankaccounts = Collections.singletonList(bankaccount);
-        this.phoneNumber = phoneNumber;
-
-    }
-
-    public Customer(String firstName, String lastName,  String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, Car car) throws NoSuchAlgorithmException {
-        super(firstName, lastName, email, password);
-        this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.houseNumber = houseNumber;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
-        this.bankaccounts = Collections.singletonList(bankaccount);
         this.cars = Collections.singletonList(car);
         this.phoneNumber = phoneNumber;
 
     }
 
 
-    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Bankaccount bankaccount, Car car, DriversLicense driversLicense) throws NoSuchAlgorithmException {
+    public Customer(String firstName, String lastName, String email, String password, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber, Car car, DriversLicense driversLicense) throws NoSuchAlgorithmException {
         super(firstName, lastName, email, password);
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -134,7 +115,6 @@ public class Customer extends PersonModel{
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
-        this.bankaccounts = Collections.singletonList(bankaccount);
         this.cars = Collections.singletonList(car);
         this.phoneNumber = phoneNumber;
     }

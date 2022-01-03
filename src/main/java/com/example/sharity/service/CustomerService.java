@@ -54,7 +54,7 @@ public class CustomerService {
     }
 
 
-    public void updateCustomer(Long customerNumber, String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String city, String postalCode, CountryEnum country, String phoneNumber) throws NoSuchAlgorithmException {
+    public void updateCustomer(Long customerNumber, String firstName, String lastName, LocalDate dateOfBirth, String address, String houseNumber, String postalCode, String city, CountryEnum country, String phoneNumber) throws NoSuchAlgorithmException {
         Customer customer = customerRepository.getById(customerNumber);
 
             customer.setFirstName(firstName);

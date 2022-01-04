@@ -132,6 +132,8 @@ public class CarService {
     }
 
 
-
+    public Optional<List<Car>> getCarsFromCustomer(Long customerNumber) {
+        return carRepository.getCarsByCustomerNumber(customerNumber);
+    }
 }
 

@@ -69,17 +69,13 @@ public class CarController {
             @PathVariable("licensePlate") String licensePlate,
             @RequestParam(required = false) Double pricePerDay) {
 
-        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("Car", licensePlate));
         carService.updateCar(licensePlate, pricePerDay);
-        throw new UpdatedException("Car");
     }
 
     @DeleteMapping(path = "{licensePlate}")
     public void deleteCar(
             @PathVariable("licensePlate") String licensePlate) {
-        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("Car", licensePlate));
         carService.deleteCar(licensePlate);
-        throw new DeletedException("Car");
     }
 
     @PostMapping
@@ -114,7 +110,6 @@ public class CarController {
 
     }
 
-
     @PostMapping(path = "/insurance")
     public void addInsurance(
             @RequestParam String licensePlate,
@@ -132,6 +127,12 @@ public class CarController {
         Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
         carService.addInsurance(insurance);
         throw new CreatedException("Insurance");
+    }
+
+    @GetMapping(path = "/customer/{customerNumber}")
+    public Optional<List<Car>> getCarsFromCustomer(@PathVariable ("customerNumber") Long customerNumber) {
+
+        return carService.getCarsFromCustomer(customerNumber);
     }
 
 }

@@ -82,7 +82,7 @@ public class Customer extends PersonModel{
         this.phoneNumber = phoneNumber;
 
     }
-    
+
     public Customer() {
             super();
         }

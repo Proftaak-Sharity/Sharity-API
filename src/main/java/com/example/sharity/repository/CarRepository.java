@@ -27,5 +27,8 @@ public interface CarRepository extends JpaRepository<Car, String> {
 
     @Query("SELECT c FROM HydrogenCar c")
     List<HydrogenCar> findAllHydrogenCars();
+
+    @Query("SELECT c FROM Car c WHERE c.customerNumber = ?1")
+    Optional<List<Car>> getCarsByCustomerNumber(Long customerNumber);
 }
 

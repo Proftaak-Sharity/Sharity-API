@@ -88,7 +88,7 @@ public class PreDataConfig {
                         "Etten-Leur",
                         CountryEnum.NETHERLANDS,
                         "+31687142694",
-                        new ElectricCar("BG012X", Make.Tesla, "Model Y", 75, 10, 45, 199.99, totalCostOwnership.TotalCostOwnerShipElectric(75, 10),
+                        new ElectricCar("BG012X", Make.Tesla, "Model Y", 75, 10, 199.99, totalCostOwnership.TotalCostOwnerShipElectric(75, 10),
                                 new Insurance("JHST718920PO", "BG012X", "MRL Insurance", Coverage.ALLRISK, LocalDate.of(2022, Month.JUNE, 14)))
                 );
                 Customer customerFour = new Customer(
@@ -118,7 +118,7 @@ public class PreDataConfig {
                         "Antwerpen",
                         CountryEnum.BELGIUM,
                         "+329875144778514",
-                        new ElectricCar("JJ001J", Make.Cupra, "Leon", 55, 13, 25, 121.47, totalCostOwnership.TotalCostOwnerShipElectric(55, 13),
+                        new ElectricCar("JJ001J", Make.Cupra, "Leon", 55, 13,  121.47, totalCostOwnership.TotalCostOwnerShipElectric(55, 13),
                                 new Insurance("JSHDA012PLK", "JJ001J", "Sheilas’ Wheels", Coverage.ALLRISK, LocalDate.of(2022, Month.FEBRUARY, 8)))
                 );
                 Customer customerSix = new Customer(

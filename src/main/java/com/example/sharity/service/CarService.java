@@ -78,7 +78,7 @@ public class CarService {
         return fuelCar;
     }
 
-    public ElectricCar addElectricCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw, Integer fastChargingTime) {
+    public ElectricCar addElectricCar(String licensePlate, Long customerNumber, Make make, String model, Double pricePerDay, Integer batteryCapacity, Integer kmPerKw) {
         ElectricCar electricCar = new ElectricCar();
         electricCar.setLicensePlate(licensePlate);
         electricCar.setCustomerNumber(customerNumber);
@@ -87,7 +87,6 @@ public class CarService {
         electricCar.setPricePerDay(pricePerDay);
         electricCar.setBatteryCapacity(batteryCapacity);
         electricCar.setKmPerKw(kmPerKw);
-        electricCar.setFastChargingTime(fastChargingTime);
         electricCar.setPricePerKm(totalCostOwnership.TotalCostOwnerShipElectric(batteryCapacity, kmPerKw));
         carRepository.save(electricCar);
         return electricCar;

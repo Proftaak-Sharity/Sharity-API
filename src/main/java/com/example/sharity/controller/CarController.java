@@ -86,25 +86,24 @@ public class CarController {
                        @RequestParam Double pricePerDay,
                        @RequestParam (required = false) FuelType fuelType,
                        @RequestParam (required = false) Integer sizeFueltank,
-                       @RequestParam (required = false) Integer kmPerLiterFuel,
+                       @RequestParam (required = false) Integer kmPerLiter,
                        @RequestParam (required = false) Integer batteryCapacity,
                        @RequestParam (required = false) Integer kmPerKw,
-                       @RequestParam (required = false) Integer fastChargingTime,
-                       @RequestParam (required = false) Integer kmPerLiter) {
+                       @RequestParam (required = false) Integer kmPerKilo) {
 
                        Optional<Car> carOptional = carRepository.findCarByLicensePlate(licensePlate);
                        if (carOptional.isPresent()) {
                            throw new BadRequestException("Car");
                        }
 
-        if(fuelType == null && batteryCapacity == null && kmPerLiter == null) {
+        if(fuelType == null && batteryCapacity == null && kmPerKilo == null) {
             throw new BadRequestException();
         } else if (fuelType != null) {
-            carService.addFuelCar(licensePlate, customerNumber, make, model, pricePerDay, fuelType, sizeFueltank, kmPerLiterFuel);
+            carService.addFuelCar(licensePlate, customerNumber, make, model, pricePerDay, fuelType, sizeFueltank, kmPerLiter);
         } else if (batteryCapacity != null) {
-            carService.addElectricCar(licensePlate, customerNumber, make, model, pricePerDay, batteryCapacity, kmPerKw, fastChargingTime);
+            carService.addElectricCar(licensePlate, customerNumber, make, model, pricePerDay, batteryCapacity, kmPerKw);
         } else {
-            carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerLiter);
+            carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerKilo);
         }
         throw new CreatedException(make, model, licensePlate);
 

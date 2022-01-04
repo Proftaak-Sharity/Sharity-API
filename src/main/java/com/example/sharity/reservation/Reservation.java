@@ -58,6 +58,7 @@ public class Reservation {
     }
     public Reservation() {
     }
+
 @JsonIgnore
     public Period getPeriod() {
         return Period.between(startDate, endDate);

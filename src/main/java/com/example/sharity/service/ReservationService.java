@@ -16,8 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -196,4 +199,14 @@ public class ReservationService {
     }
 
 
+    public Reservation addReservationFromAPK(Long customerNumber, String licensePlate, Integer kmPackage, String startDate, String endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        System.out.println("Reservation Service");
+        LocalDate start = LocalDate.parse(startDate, formatter);
+        LocalDate end = LocalDate.parse(endDate, formatter);
+        Reservation newReservation =  new Reservation(customerNumber, licensePlate,  rent, kmPackage, packagePrice, start, end, paymentEnum );
+        Reservation reservation = addReservation(newReservation);
+        System.out.println(reservation.getLicensePlate());
+        return reservation;
+    }
 }

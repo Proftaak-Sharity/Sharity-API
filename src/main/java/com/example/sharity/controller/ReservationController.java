@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/reservations")
@@ -42,8 +41,6 @@ public class ReservationController {
     public List<Reservation> findRentedCars(
              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
-        System.out.println("test");;
-        System.out.println(startDate);;
         return reservationService.checkRentedCars(startDate, endDate);
     }
 
@@ -64,12 +61,29 @@ public class ReservationController {
         return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
     }
 
+    @PostMapping(path = {"/addReservation"})
+        public ResponseEntity<Long> addReservationFromAPK(@RequestParam Long customerNumber,
+                                                          @RequestParam String licensePlate,
+                                                          @RequestParam Integer kmPackage,
+                                                          @RequestParam String startDate,
+                                                          @RequestParam String endDate,
+                                                          @RequestParam Double rent,
+                                                          @RequestParam Double packagePrice,
+                                                          @RequestParam PaymentEnum paymentEnum
+                                                                 ) {
+
+        Reservation newReservation = reservationService.addReservationFromAPK(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum );
+        System.out.println(newReservation.getReservationNumber());
+        return ResponseEntity.created(URI.create("/api/reservations/")).body(newReservation.getReservationNumber());
+    }
+
     @PutMapping(path = "{reservationNumber}")
     public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) PaymentEnum paymentEnum) {
+        System.out.println("Reservation Controller");
         Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
     }

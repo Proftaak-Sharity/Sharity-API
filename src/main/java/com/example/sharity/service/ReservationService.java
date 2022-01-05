@@ -11,6 +11,7 @@ import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -191,4 +192,32 @@ public class ReservationService {
 //        return reservationRepository.getById(customerNumber);
 //    }
 
+<<<<<<< Updated upstream
+=======
+    public List<Reservation> checkRentedCars(LocalDate startDate, LocalDate endDate) {
+        // test
+        var licences = reservationRepository.checkRentedCars(startDate, endDate);
+        if (licences.isEmpty()){
+            throw new NotFoundException("Reservations");
+        } else {return licences;}
+
+    }
+
+
+    public Reservation addReservationFromAPK(Long customerNumber, String licensePlate, Integer kmPackage, LocalDate startDate, LocalDate endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerNumber(customerNumber);
+        reservation.setLicensePlate(licensePlate);
+        reservation.setKmPackage(kmPackage);
+        reservation.setStartDate(startDate);
+        reservation.setEndDate(endDate);
+        reservation.setRent(rent);
+        reservation.setPackagePrice(packagePrice);
+        reservation.setPaymentEnum(paymentEnum);
+        reservationRepository.save(reservation);
+
+        return reservation;
+    }
+>>>>>>> Stashed changes
 }

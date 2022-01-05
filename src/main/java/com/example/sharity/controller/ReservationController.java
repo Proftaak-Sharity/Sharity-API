@@ -54,6 +54,22 @@ public class ReservationController {
         return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
     }
 
+<<<<<<< Updated upstream
+=======
+    @PostMapping(path = {"/addReservation"})
+        public Reservation addReservationFromAPK( @RequestParam Long customerNumber,
+                                                  @RequestParam String licensePlate,
+                                                  @RequestParam Integer kmPackage,
+                                                  @RequestParam @DateTimeFormat (pattern = "dd.MM.yyyy") LocalDate startDate,
+                                                  @RequestParam @DateTimeFormat (pattern = "dd.MM.yyyy") LocalDate endDate,
+                                                  @RequestParam Double rent,
+                                                  @RequestParam Double packagePrice,
+                                                  @RequestParam PaymentEnum paymentEnum) {
+
+        return reservationService.addReservationFromAPK(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum );
+    }
+
+>>>>>>> Stashed changes
     @PutMapping(path = "{reservationNumber}")
     public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,

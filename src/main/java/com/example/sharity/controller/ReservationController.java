@@ -73,7 +73,6 @@ public class ReservationController {
                                                                  ) {
 
         Reservation newReservation = reservationService.addReservationFromAPK(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum );
-        System.out.println(newReservation.getReservationNumber());
         return ResponseEntity.created(URI.create("/api/reservations/")).body(newReservation.getReservationNumber());
     }
 
@@ -83,7 +82,6 @@ public class ReservationController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) PaymentEnum paymentEnum) {
-        System.out.println("Reservation Controller");
         Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
     }

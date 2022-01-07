@@ -1,6 +1,7 @@
 package com.example.sharity.controller;
 
 import com.example.sharity.car.Car;
+import com.example.sharity.car.CarImage;
 import com.example.sharity.car.carTypes.ElectricCar;
 import com.example.sharity.car.carTypes.FuelCar;
 import com.example.sharity.car.Insurance;
@@ -10,6 +11,7 @@ import com.example.sharity.car.enums.FuelType;
 import com.example.sharity.car.enums.Make;
 import com.example.sharity.exception.UpdatedException;
 import com.example.sharity.exception.car.*;
+import com.example.sharity.repository.CarImageRepository;
 import com.example.sharity.repository.CarRepository;
 import com.example.sharity.repository.InsuranceRepository;
 import com.example.sharity.service.CarService;
@@ -26,15 +28,17 @@ public class CarController {
 
     private final CarService carService;
     private final CarRepository carRepository;
-    private final InsuranceRepository insuranceRepository;
+    private final InsuranceRepository insuranceRepository
+    private final CarImageRepository carImageRepository;
 
 
     @Autowired
-    public CarController(CarService carService, CarRepository carRepository,InsuranceRepository insuranceRepository){
+    public CarController(CarService carService, CarRepository carRepository,InsuranceRepository insuranceRepository, CarImageRepository carImageRepository){
 
         this.carService = carService;
         this.carRepository = carRepository;
         this.insuranceRepository = insuranceRepository;
+        this.carImageRepository = carImageRepository;
     }
 
     @GetMapping
@@ -132,6 +136,24 @@ public class CarController {
     public Optional<List<Car>> getCarsFromCustomer(@PathVariable ("customerNumber") Long customerNumber) {
 
         return carService.getCarsFromCustomer(customerNumber);
+    }
+
+    @GetMapping(path = "image/{licensePlate}")
+    public CarImage getCarImage(@PathVariable String licensePlate) {
+
+        return carImageRepository.getById(licensePlate);
+    }
+
+    @PostMapping(path = "image")
+    public CarImage addCarImage(@RequestParam String licensePlate,
+                                @RequestParam String image) {
+
+        CarImage carImage = new CarImage();
+        carImage.setLicensePlate(licensePlate);
+        carImage.setImage(image);
+        carImageRepository.save(carImage);
+
+        return carImage;
     }
 
 }

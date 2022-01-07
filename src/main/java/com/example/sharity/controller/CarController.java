@@ -145,7 +145,7 @@ public class CarController {
     }
 
     @PostMapping(path = "image")
-    public CarImage addCarImage(@RequestParam String licensePlate,
+    public void addCarImage(@RequestParam String licensePlate,
                                 @RequestParam String image) {
 
         CarImage carImage = new CarImage();
@@ -153,7 +153,6 @@ public class CarController {
         carImage.setImage(image);
         carImageRepository.save(carImage);
 
-        return carImage;
     }
 
 }

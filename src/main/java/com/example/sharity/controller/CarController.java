@@ -28,7 +28,7 @@ public class CarController {
 
     private final CarService carService;
     private final CarRepository carRepository;
-    private final InsuranceRepository insuranceRepository
+    private final InsuranceRepository insuranceRepository;
     private final CarImageRepository carImageRepository;
 
 

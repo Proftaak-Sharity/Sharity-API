@@ -1,6 +1,7 @@
 package com.example.sharity.reservation;
 
 import com.example.sharity.service.NumberRounder;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,8 +29,14 @@ public class Reservation {
     private double rent;
     private int kmPackage;
     private Double packagePrice;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate reservationDate = LocalDate.now();
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)

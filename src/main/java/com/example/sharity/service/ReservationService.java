@@ -199,14 +199,25 @@ public class ReservationService {
     }
 
 
-    public Reservation addReservationFromAPK(Long customerNumber, String licensePlate, Integer kmPackage, String startDate, String endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        System.out.println("Reservation Service");
-        LocalDate start = LocalDate.parse(startDate, formatter);
-        LocalDate end = LocalDate.parse(endDate, formatter);
-        Reservation newReservation =  new Reservation(customerNumber, licensePlate,  rent, kmPackage, packagePrice, start, end, paymentEnum );
-        Reservation reservation = addReservation(newReservation);
-        System.out.println(reservation.getLicensePlate());
-        return reservation;
+    public Long addReservationFromAPK(Long customerNumber, String licensePlate, Integer kmPackage, LocalDate startDate, LocalDate endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
+
+        double daysRent = Period.between(startDate, endDate).getDays();
+
+        if (daysRent == 0) {
+            daysRent = 1;
+        }
+
+        Reservation newReservation = new Reservation();
+        newReservation.setCustomerNumber(customerNumber);
+        newReservation.setLicensePlate(licensePlate);
+        newReservation.setKmPackage(kmPackage);
+        newReservation.setStartDate(startDate);
+        newReservation.setEndDate(endDate);
+        newReservation.setRent((rent * daysRent) + packagePrice);
+        newReservation.setPackagePrice(packagePrice);
+        newReservation.setPaymentEnum(paymentEnum);
+
+        reservationRepository.save(newReservation);
+        return newReservation.getReservationNumber();
     }
 }

@@ -240,6 +240,7 @@ public class PreDataConfig {
                 carController.addCarImage("97ZNXT", "6");
                 carController.addCarImage("XS63VK", "7");
                 carController.addCarImage("16RDZJ", "8");
+                carController.addCarImage("K128VV", "9");
             };
 
 

@@ -62,19 +62,17 @@ public class ReservationController {
     }
 
     @PostMapping(path = {"/addReservation"})
-        public ResponseEntity<Long> addReservationFromAPK(@RequestParam Long customerNumber,
-                                                          @RequestParam String licensePlate,
-                                                          @RequestParam Integer kmPackage,
-                                                          @RequestParam String startDate,
-                                                          @RequestParam String endDate,
-                                                          @RequestParam Double rent,
-                                                          @RequestParam Double packagePrice,
-                                                          @RequestParam PaymentEnum paymentEnum
-                                                                 ) {
+        public Long addReservationFromAPK(@RequestParam Long customerNumber,
+                                          @RequestParam String licensePlate,
+                                          @RequestParam Integer kmPackage,
+                                          @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate startDate,
+                                          @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate endDate,
+                                          @RequestParam Double rent,
+                                          @RequestParam Double packagePrice,
+                                          @RequestParam PaymentEnum paymentEnum) {
 
-        Reservation newReservation = reservationService.addReservationFromAPK(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum );
-        System.out.println(newReservation.getReservationNumber());
-        return ResponseEntity.created(URI.create("/api/reservations/")).body(newReservation.getReservationNumber());
+        return reservationService.addReservationFromAPK(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum);
+
     }
 
     @PutMapping(path = "{reservationNumber}")

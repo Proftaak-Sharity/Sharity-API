@@ -117,8 +117,8 @@ public class PreDataConfig {
                         "+329875144778514",
                         new ElectricCar("K536DS", Make.Cupra, "Leon", 23, 13,  79, totalCostOwnership.TotalCostOwnerShipElectric(23, 13)));
                 Customer customerSix = new Customer(
-                        "Messi",
                         "Leo",
+                        "Messi",
                         "l.messi@voetbal.nl",
                         "welkom01",
                         LocalDate.of(1981, Month.MARCH, 11),

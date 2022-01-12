@@ -19,7 +19,7 @@ public interface ReservationRepository  extends JpaRepository<Reservation, Long>
 
     ///// find reservations by customerNumber
     @Query("SELECT r FROM Reservation r WHERE r.customerNumber =?1")
-    List<Reservation> findReservationsByCustomerNumber(Long customerNumber);
+    Optional<List<Reservation>> findReservationsByCustomerNumber(Long customerNumber);
 
     //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
     @Query("SELECT r FROM Reservation r WHERE r.licensePlate = ?1 AND (?2 BETWEEN r.startDate AND r.endDate OR ?3 between r.startDate AND r.endDate)")

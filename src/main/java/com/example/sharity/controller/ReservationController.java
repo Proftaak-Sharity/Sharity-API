@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/reservations")
@@ -45,8 +46,7 @@ public class ReservationController {
     }
 
     @GetMapping(path ={"/customer/{customerNumber}"})
-    public List<Reservation>findReservationsByCustomerNumber(
-            @PathVariable("customerNumber") Long customerNumber) {
+    public Optional<List<Reservation>> findReservationsByCustomerNumber(@PathVariable("customerNumber") Long customerNumber) {
         return reservationService.findReservationsByCustomerNumber(customerNumber);
     }
 

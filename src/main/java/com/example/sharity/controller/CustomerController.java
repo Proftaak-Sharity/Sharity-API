@@ -156,7 +156,7 @@ public class CustomerController {
     public CustomerImage getCustomerImage(@PathVariable Long customerNumber) {
 
         return customerImageRepository.findById(customerNumber).orElseThrow(()-> new NotFoundException("image", customerNumber));
-        
+
     }
 
 

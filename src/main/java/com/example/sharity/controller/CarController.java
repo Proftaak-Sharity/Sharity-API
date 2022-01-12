@@ -4,21 +4,15 @@ import com.example.sharity.car.Car;
 import com.example.sharity.car.CarImage;
 import com.example.sharity.car.carTypes.ElectricCar;
 import com.example.sharity.car.carTypes.FuelCar;
-import com.example.sharity.car.Insurance;
 import com.example.sharity.car.carTypes.HydrogenCar;
-import com.example.sharity.car.enums.Coverage;
 import com.example.sharity.car.enums.FuelType;
 import com.example.sharity.car.enums.Make;
-import com.example.sharity.exception.UpdatedException;
 import com.example.sharity.exception.car.*;
 import com.example.sharity.repository.CarImageRepository;
 import com.example.sharity.repository.CarRepository;
-import com.example.sharity.repository.InsuranceRepository;
 import com.example.sharity.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,16 +22,14 @@ public class CarController {
 
     private final CarService carService;
     private final CarRepository carRepository;
-    private final InsuranceRepository insuranceRepository;
     private final CarImageRepository carImageRepository;
 
 
     @Autowired
-    public CarController(CarService carService, CarRepository carRepository,InsuranceRepository insuranceRepository, CarImageRepository carImageRepository){
+    public CarController(CarService carService, CarRepository carRepository, CarImageRepository carImageRepository){
 
         this.carService = carService;
         this.carRepository = carRepository;
-        this.insuranceRepository = insuranceRepository;
         this.carImageRepository = carImageRepository;
     }
 
@@ -110,26 +102,6 @@ public class CarController {
             carService.addHydrogenCar(licensePlate, customerNumber, make, model, pricePerDay, sizeFueltank, kmPerKilo);
         }
         throw new CreatedException(make, model, licensePlate);
-
-    }
-
-    @PostMapping(path = "/insurance")
-    public void addInsurance(
-            @RequestParam String licensePlate,
-            @RequestParam String insuranceNumber,
-            @RequestParam String insuranceCompany,
-            @RequestParam Coverage coverage,
-            @RequestParam String validUntilString) {
-        LocalDate validUntil = LocalDate.parse(validUntilString);
-
-        Optional<Insurance> insuranceOptional = insuranceRepository.findInsuranceByInsuranceNumber(insuranceNumber);
-        if (insuranceOptional.isPresent()) {
-            throw new BadRequestException("Insurance");
-        }
-
-        Insurance insurance = new Insurance(insuranceNumber, licensePlate, insuranceCompany, coverage, validUntil);
-        carService.addInsurance(insurance);
-        throw new CreatedException("Insurance");
     }
 
     @GetMapping(path = "/customer/{customerNumber}")

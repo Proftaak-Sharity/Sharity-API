@@ -1,6 +1,7 @@
 package com.example.sharity;
 
 import com.example.sharity.controller.CarController;
+import com.example.sharity.controller.CustomerController;
 import com.example.sharity.controller.ReservationController;
 import com.example.sharity.car.*;
 import com.example.sharity.car.carTypes.ElectricCar;
@@ -38,7 +39,8 @@ public class PreDataConfig {
                                          PasswordGenerator passwordGenerator,
                                          TotalCostOwnership totalCostOwnership,
                                          DriversLicenseRepository driversLicenseRepository,
-                                         CarController carController) {
+                                         CarController carController,
+                                         CustomerController customerController) {
 
         Optional<Customer> customer = customerRepository.findById(1L);
 
@@ -61,9 +63,7 @@ public class PreDataConfig {
                         "Klundert",
                         CountryEnum.NETHERLANDS,
                         "+3165873614",
-                        new FuelCar("ZK658B", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 60, totalCostOwnership.TotalCostOwnershipFuel(52, 12, FuelType.DIESEL),
-                                new Insurance("AHX0987R", "ZK658B", "AXA UK", Coverage.ALLRISK, LocalDate.of(2022, Month.JANUARY, 18)))
-                );
+                        new FuelCar("ZK658B", Make.Volvo, "XC90", FuelType.DIESEL, 52, 12, 60, totalCostOwnership.TotalCostOwnershipFuel(52, 12, FuelType.DIESEL)));
                 Customer customerTwo = new Customer(
                         "Daniël",
                         "Jansen",
@@ -76,10 +76,7 @@ public class PreDataConfig {
                         "Made",
                         CountryEnum.NETHERLANDS,
                         "+31687961423",
-                        new FuelCar("VLT74G", Make.LandRover, "Defender", FuelType.DIESEL, 90, 8, 75, totalCostOwnership.TotalCostOwnershipFuel(90, 8, FuelType.DIESEL),
-                                new Insurance("JKP3698741PLX", "VLT74G", "Lloyds", Coverage.WA, LocalDate.of(2022, Month.MAY, 9)))
-
-                );
+                        new FuelCar("VLT74G", Make.LandRover, "Defender", FuelType.DIESEL, 90, 8, 75, totalCostOwnership.TotalCostOwnershipFuel(90, 8, FuelType.DIESEL)));
                 Customer customerThree = new Customer(
                         "Bart",
                         "Grootoonk",
@@ -92,9 +89,7 @@ public class PreDataConfig {
                         "Etten-Leur",
                         CountryEnum.NETHERLANDS,
                         "+31687142694",
-                        new ElectricCar("ZL948B", Make.Tesla, "Model 3", 20, 10, 80, totalCostOwnership.TotalCostOwnerShipElectric(20, 10),
-                                new Insurance("JHST718920PO", "ZL948B", "MRL Insurance", Coverage.ALLRISK, LocalDate.of(2022, Month.JUNE, 14)))
-                );
+                        new ElectricCar("ZL948B", Make.Tesla, "Model 3", 20, 10, 80, totalCostOwnership.TotalCostOwnerShipElectric(20, 10)));
                 Customer customerFour = new Customer(
                         "Lars",
                         "Hanegraaf",
@@ -107,9 +102,7 @@ public class PreDataConfig {
                         "Breda",
                         CountryEnum.NETHERLANDS,
                         "+31678163251",
-                        new FuelCar("PM0373", Make.Ford, "Mustang Convertible", FuelType.PETROL, 70, 8, 150, totalCostOwnership.TotalCostOwnershipFuel(70, 8, FuelType.PETROL),
-                                new Insurance("HDRA6192PO8", "PM0373", "Sainsbury’s Bank", Coverage.ALLRISK, LocalDate.of(2021, Month.NOVEMBER, 30)))
-                );
+                        new FuelCar("PM0373", Make.Ford, "Mustang Convertible", FuelType.PETROL, 70, 8, 150, totalCostOwnership.TotalCostOwnershipFuel(70, 8, FuelType.PETROL)));
                 Customer customerFive = new Customer(
                         "Joris",
                         "Jansen",
@@ -122,9 +115,7 @@ public class PreDataConfig {
                         "Antwerpen",
                         CountryEnum.BELGIUM,
                         "+329875144778514",
-                        new ElectricCar("K536DS", Make.Cupra, "Leon", 23, 13,  79, totalCostOwnership.TotalCostOwnerShipElectric(23, 13),
-                                new Insurance("JSHDA012PLK", "K536DS", "Sheilas’ Wheels", Coverage.ALLRISK, LocalDate.of(2022, Month.FEBRUARY, 8)))
-                );
+                        new ElectricCar("K536DS", Make.Cupra, "Leon", 23, 13,  79, totalCostOwnership.TotalCostOwnerShipElectric(23, 13)));
                 Customer customerSix = new Customer(
                         "Messi",
                         "Leo",
@@ -153,20 +144,12 @@ public class PreDataConfig {
 
 //          PRE CARS
                 Car carOne =
-                        new FuelCar("97ZNXT", Make.MercedesBenz, "R350L (AMG)", FuelType.DIESEL, 65, 9, 3L, 35, totalCostOwnership.TotalCostOwnershipFuel(65, 9, FuelType.DIESEL),
-                                new Insurance("SDSDA8SD90", "97ZNXT", "Sky Insurance", Coverage.WAPLUS, LocalDate.of(2022, Month.JANUARY, 31))
-
-                        );
+                        new FuelCar("97ZNXT", Make.MercedesBenz, "R350L (AMG)", FuelType.DIESEL, 65, 9, 3L, 35, totalCostOwnership.TotalCostOwnershipFuel(65, 9, FuelType.DIESEL));
                 Car carTwo =
-                        new FuelCar("XS63VK", Make.Ferrari, "Testarossa", FuelType.PETROL, 80, 5, 5L, 249, totalCostOwnership.TotalCostOwnershipFuel(80, 5, FuelType.PETROL),
-                                new Insurance("MHSD985PP0", "XS63VK", "Start Rescue", Coverage.ALLRISK, LocalDate.of(2021, Month.DECEMBER, 7))
-                        );
+                        new FuelCar("XS63VK", Make.Ferrari, "Testarossa", FuelType.PETROL, 80, 5, 5L, 249, totalCostOwnership.TotalCostOwnershipFuel(80, 5, FuelType.PETROL));
                 Car carThree =
-                        new FuelCar("16RDZJ", Make.Opel, "Vectra", FuelType.LPG, 55, 10, 1L, 24.50, totalCostOwnership.TotalCostOwnershipFuel(55, 10, FuelType.LPG),
-                                new Insurance("SDAS67DD990S", "16RDZJ", "Tesco Bank", Coverage.WAPLUS, LocalDate.of(2022, Month.MARCH, 28))
-                        );
-                Car carFour = new HydrogenCar("K128VV", Make.Toyota, "Mirai", 2L, 35, 13, 68.50, totalCostOwnership.TotalCostOwnerShipHydrogen(35, 13),
-                        new Insurance("SADSDA232454DD", "K128VV", "ZLM Verzekeringen", Coverage.ALLRISK, LocalDate.of(2022, Month.APRIL, 29)));
+                        new FuelCar("16RDZJ", Make.Opel, "Vectra", FuelType.LPG, 55, 10, 1L, 24.50, totalCostOwnership.TotalCostOwnershipFuel(55, 10, FuelType.LPG));
+                Car carFour = new HydrogenCar("K128VV", Make.Toyota, "Mirai", 2L, 35, 13, 68.50, totalCostOwnership.TotalCostOwnerShipHydrogen(35, 13));
                 carRepository.saveAll(List.of(carOne, carTwo, carThree, carFour));
 
 //          PRE RESERVATIONS
@@ -232,6 +215,7 @@ public class PreDataConfig {
                 reservationController.updateReservation(5L, null, null, PaymentEnum.PAID);
 
 //            INPUT FAKE IMAGES
+//                CARS
                 carController.addCarImage("ZK658B", "1");
                 carController.addCarImage("VLT74G", "2");
                 carController.addCarImage("ZL948B", "3");
@@ -241,6 +225,15 @@ public class PreDataConfig {
                 carController.addCarImage("XS63VK", "7");
                 carController.addCarImage("16RDZJ", "8");
                 carController.addCarImage("K128VV", "9");
+//                CUSTOMERS
+                customerController.addCustomerImage(1L, "1");
+                customerController.addCustomerImage(2L, "2");
+                customerController.addCustomerImage(3L, "3");
+                customerController.addCustomerImage(4L, "4");
+                customerController.addCustomerImage(5L, "5");
+                customerController.addCustomerImage(6L, "6");
+
+
             };
 
 

@@ -1,9 +1,11 @@
 // The controller creates the API layer of our application. Basically it let us connect to localhost:8080/api/customer
 package com.example.sharity.controller;
 
+import com.example.sharity.car.CarImage;
 import com.example.sharity.customer.*;
 import com.example.sharity.exception.*;
 import com.example.sharity.exception.car.DeletedException;
+import com.example.sharity.repository.CustomerImageRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.DriversLicenseRepository;
 import com.example.sharity.service.CustomerService;
@@ -23,13 +25,15 @@ public class CustomerController {
     private final CustomerRepository customerRepository;
     private final EmailValidator emailValidator;
     private final DriversLicenseRepository driversLicenseRepository;
+    private final CustomerImageRepository customerImageRepository;
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator, DriversLicenseRepository driversLicenseRepository) {
+    public CustomerController(CustomerService customerService, CustomerRepository customerRepository, EmailValidator emailValidator, DriversLicenseRepository driversLicenseRepository, CustomerImageRepository customerImageRepository) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.emailValidator = emailValidator;
         this.driversLicenseRepository = driversLicenseRepository;
+        this.customerImageRepository = customerImageRepository;
     }
 
 //    ************** CUSTOMERS ***************
@@ -148,7 +152,25 @@ public class CustomerController {
         driversLicenseRepository.save(driversLicense);
     }
 
+    @GetMapping(path = "image/{customerNumber}")
+    public CustomerImage getCustomerImage(@PathVariable Long customerNumber) {
 
+        return customerImageRepository.findById(customerNumber).orElseThrow(()-> new NotFoundException("image", customerNumber));
+        
+    }
+
+
+
+    @PostMapping(path = "image")
+    public void addCustomerImage(@RequestParam Long customerNumber,
+                                 @RequestParam String image) {
+
+        CustomerImage customerImage = new CustomerImage();
+        customerImage.setCustomerNumber(customerNumber);
+        customerImage.setImage(image);
+        customerImageRepository.save(customerImage);
+
+    }
 
 
 

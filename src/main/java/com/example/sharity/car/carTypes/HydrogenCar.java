@@ -2,7 +2,6 @@ package com.example.sharity.car.carTypes;
 
 import com.example.sharity.car.Car;
 import com.example.sharity.car.enums.Make;
-import com.example.sharity.car.Insurance;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,16 +22,16 @@ public class HydrogenCar extends Car {
     private double pricePerKm;
 
 
-    public HydrogenCar(String licensePlate, Make make, String model, int sizeFueltank, int kmPerKilo, double pricePerDay, double pricePerKm, Insurance insurance) {
-        super(licensePlate, make, model, insurance);
+    public HydrogenCar(String licensePlate, Make make, String model, int sizeFueltank, int kmPerKilo, double pricePerDay, double pricePerKm) {
+        super(licensePlate, make, model);
         this.sizeFueltank = sizeFueltank;
         this.kmPerKilo = kmPerKilo;
         this.pricePerDay = pricePerDay;
         this.pricePerKm = pricePerKm;
     }
 
-    public HydrogenCar(String licensePlate, Make make, String model, Long customerNumber, int sizeFueltank, int kmPerKilo, double pricePerDay, double pricePerKm, Insurance insurance) {
-        super(licensePlate, make, model, customerNumber, insurance);
+    public HydrogenCar(String licensePlate, Make make, String model, Long customerNumber, int sizeFueltank, int kmPerKilo, double pricePerDay, double pricePerKm) {
+        super(licensePlate, make, model, customerNumber);
         this.sizeFueltank = sizeFueltank;
         this.kmPerKilo = kmPerKilo;
         this.pricePerDay = pricePerDay;

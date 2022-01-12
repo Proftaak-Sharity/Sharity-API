@@ -24,7 +24,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping(path ={"/customer/{customerNumber}"})
+    @GetMapping(path = "/customer/{customerNumber}")
     public Optional<List<Reservation>> getReservations(@PathVariable("customerNumber") Long customerNumber) {
         return reservationService.getReservations(customerNumber);
     }

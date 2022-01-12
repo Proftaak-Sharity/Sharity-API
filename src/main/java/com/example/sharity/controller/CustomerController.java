@@ -79,7 +79,7 @@ public class CustomerController {
     }
 
     @GetMapping(path = {"/login"})
-    public Customer checkLogin(@RequestParam String email,
+    public Customer getUser(@RequestParam String email,
                                @RequestParam String password) {
 
         Customer customer = customerRepository

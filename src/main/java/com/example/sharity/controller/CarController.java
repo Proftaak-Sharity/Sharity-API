@@ -38,39 +38,37 @@ public class CarController {
         return carService.getCars();
     }
 
-    @GetMapping(path = "/fuelcars")
-    public List<FuelCar> getFuelCars() { return carService.getFuelCars();
+    @GetMapping(path = "{licensePlate}")
+    public Optional<Car> getCar(@PathVariable("licensePlate") String licensePlate) {
+
+        return carService.getCar(licensePlate);
     }
+
+    @GetMapping(path = "/fuelcars")
+    public List<FuelCar> getFuelCars() { return carService.getFuelCars();}
 
     @GetMapping(path = "electriccars")
-    public List<ElectricCar> getElectricCars() { return carService.getElectricCars();
-    }
+    public List<ElectricCar> getElectricCars() { return carService.getElectricCars();}
 
     @GetMapping(path = "hydrogencars")
-    public List<HydrogenCar> getHydrogenCars() { return carService.getHydrogenCars();
+    public List<HydrogenCar> getHydrogenCars() { return carService.getHydrogenCars();}
+
+    @GetMapping(path = "/customer/{customerNumber}")
+    public Optional<List<Car>> getCarsFromCustomer(@PathVariable ("customerNumber") Long customerNumber) {
+
+        return carService.getCarsFromCustomer(customerNumber);
     }
-
-    @GetMapping(path = "{licensePlate}")
-    public Optional<Car> findCar(
-            @PathVariable("licensePlate") String licensePlate) {
-
-        Car car = carRepository.findById(licensePlate).orElseThrow(() -> new NotFoundException("Car ", licensePlate));
-
-        return carService.findCar(licensePlate);
-    }
-
 
     @PutMapping(path = "{licensePlate}")
-    public void updateCar(
-            @PathVariable("licensePlate") String licensePlate,
-            @RequestParam(required = false) Double pricePerDay) {
+    public void updateCar(@PathVariable("licensePlate") String licensePlate,
+                          @RequestParam(required = false) Double pricePerDay) {
 
         carService.updateCar(licensePlate, pricePerDay);
     }
 
     @DeleteMapping(path = "{licensePlate}")
-    public void deleteCar(
-            @PathVariable("licensePlate") String licensePlate) {
+    public void deleteCar(@PathVariable("licensePlate") String licensePlate) {
+
         carService.deleteCar(licensePlate);
     }
 
@@ -104,27 +102,18 @@ public class CarController {
         throw new CreatedException(make, model, licensePlate);
     }
 
-    @GetMapping(path = "/customer/{customerNumber}")
-    public Optional<List<Car>> getCarsFromCustomer(@PathVariable ("customerNumber") Long customerNumber) {
-
-        return carService.getCarsFromCustomer(customerNumber);
-    }
-
-    @GetMapping(path = "image/{licensePlate}")
-    public CarImage getCarImage(@PathVariable String licensePlate) {
-
-        return carImageRepository.getById(licensePlate);
-    }
-
     @PostMapping(path = "image")
     public void addCarImage(@RequestParam String licensePlate,
-                                @RequestParam String image) {
+                            @RequestParam String image) {
 
         CarImage carImage = new CarImage();
         carImage.setLicensePlate(licensePlate);
         carImage.setImage(image);
         carImageRepository.save(carImage);
-
     }
 
+    @GetMapping(path = "image/{licensePlate}")
+    public CarImage getCarImage(@PathVariable String licensePlate) {
+        return carImageRepository.findById(licensePlate).orElseThrow(()-> new com.example.sharity.exception.NotFoundException("Car", licensePlate));
+    }
 }

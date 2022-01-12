@@ -175,28 +175,24 @@ public class ReservationService {
     }
 
 
-    public Reservation findReservation(Long reservationNumber) {
-        Reservation reservation = reservationRepository.findById(reservationNumber).orElseThrow(() -> new NotFoundException("Reservation", reservationNumber));
-
-        return reservationRepository.getById(reservationNumber);
+    public Reservation getReservation(Long reservationNumber) {
+        return reservationRepository.findById(reservationNumber).orElseThrow(()-> new NotFoundException("reservation", reservationNumber ));
     }
 
-    public Optional<List<Reservation>> findReservationsByCustomerNumber(Long customerNumber) {
-        return reservationRepository.findReservationsByCustomerNumber(customerNumber);
+    public Optional<List<Reservation>> getReservations(Long customerNumber) {
+        return reservationRepository.getReservations(customerNumber);
     }
 
 
-    public List<Reservation> checkRentedCars(LocalDate startDate, LocalDate endDate) {
-        // test
-        var licences = reservationRepository.checkRentedCars(startDate, endDate);
-        if (licences.isEmpty()){
+    public Optional<List<Reservation>> getRentedCars(LocalDate startDate, LocalDate endDate) {
+        Optional<List<Reservation>> licenses = reservationRepository.getRentedCars(startDate, endDate);
+        if (licenses.isEmpty()){
             throw new NotFoundException("Reservations");
-        } else {return licences;}
-
+        } else {return licenses;}
     }
 
 
-    public Long addReservationFromAPK(Long customerNumber, String licensePlate, Integer kmPackage, LocalDate startDate, LocalDate endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
+    public Long addReservation(Long customerNumber, String licensePlate, Integer kmPackage, LocalDate startDate, LocalDate endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
 
         double daysRent = Period.between(startDate, endDate).getDays();
 

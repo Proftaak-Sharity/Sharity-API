@@ -19,7 +19,7 @@ public interface ReservationRepository  extends JpaRepository<Reservation, Long>
 
     ///// find reservations by customerNumber
     @Query("SELECT r FROM Reservation r WHERE r.customerNumber =?1")
-    Optional<List<Reservation>> findReservationsByCustomerNumber(Long customerNumber);
+    Optional<List<Reservation>> getReservations(Long customerNumber);
 
     //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
     @Query("SELECT r FROM Reservation r WHERE r.licensePlate = ?1 AND (?2 BETWEEN r.startDate AND r.endDate OR ?3 between r.startDate AND r.endDate)")
@@ -27,5 +27,5 @@ public interface ReservationRepository  extends JpaRepository<Reservation, Long>
 
     //        CHECK what cars are available
     @Query("SELECT distinct r FROM Reservation r WHERE (?1 BETWEEN r.startDate AND r.endDate OR ?2 BETWEEN r.startDate AND r.endDate)")
-    List<Reservation> checkRentedCars(LocalDate startDate, LocalDate endDate);
+    Optional<List<Reservation>> getRentedCars(LocalDate startDate, LocalDate endDate);
 }

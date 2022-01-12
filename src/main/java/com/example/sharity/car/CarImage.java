@@ -8,7 +8,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Getter
 @Setter
 @ToString

@@ -2,9 +2,6 @@ package com.example.sharity.controller;
 
 import com.example.sharity.reservation.PaymentEnum;
 import com.example.sharity.reservation.Reservation;
-import com.example.sharity.exception.CrudAllException;
-import com.example.sharity.exception.InputNotAllowedException;
-import com.example.sharity.exception.car.DeletedException;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,42 +24,25 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping
-    public List<Reservation> findReservations() {
-        return reservationService.findReservations();
+    @GetMapping(path ={"/customer/{customerNumber}"})
+    public Optional<List<Reservation>> getReservations(@PathVariable("customerNumber") Long customerNumber) {
+        return reservationService.getReservations(customerNumber);
     }
 
     @GetMapping(path = "{reservationNumber}")
-    public Reservation findReservation(
-            @PathVariable("reservationNumber") Long reservationNumber) {
-        return reservationService.findReservation(reservationNumber);
+    public Reservation getReservation(@PathVariable("reservationNumber") Long reservationNumber) {
+        return reservationService.getReservation(reservationNumber);
     }
 
-    @GetMapping(path = "/rentedLicences")
-    public List<Reservation> findRentedCars(
+    @GetMapping(path = "/rentedLicensePlates")
+    public Optional<List<Reservation>> getRentedCars(
              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
-        return reservationService.checkRentedCars(startDate, endDate);
-    }
-
-    @GetMapping(path ={"/customer/{customerNumber}"})
-    public Optional<List<Reservation>> findReservationsByCustomerNumber(@PathVariable("customerNumber") Long customerNumber) {
-        return reservationService.findReservationsByCustomerNumber(customerNumber);
-    }
-
-    @PostMapping
-    public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
-//        EXCEPTIONS
-        if (reservation.getReservationNumber() != null) {
-            throw new InputNotAllowedException("reservation number(" + reservation.getReservationNumber() + ")");
-        }
-
-        Reservation newReservation = reservationService.addReservation(reservation);
-        return ResponseEntity.created(URI.create("/api/reservations/" + newReservation.getReservationNumber())).body(newReservation);
+        return reservationService.getRentedCars(startDate, endDate);
     }
 
     @PostMapping(path = {"/addReservation"})
-        public Long addReservationFromAPK(@RequestParam Long customerNumber,
+        public Long addReservation(@RequestParam Long customerNumber,
                                           @RequestParam String licensePlate,
                                           @RequestParam Integer kmPackage,
                                           @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate startDate,
@@ -71,10 +51,10 @@ public class ReservationController {
                                           @RequestParam Double packagePrice,
                                           @RequestParam PaymentEnum paymentEnum) {
 
-        return reservationService.addReservationFromAPK(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum);
-
+        return reservationService.addReservation(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum);
     }
 
+//    Only for getting the balance of the preDataConfig customers in database (not being used in APK)
     @PutMapping(path = "{reservationNumber}")
     public ResponseEntity<Reservation> updateReservation(
             @PathVariable("reservationNumber") Long reservationNumber,
@@ -84,23 +64,5 @@ public class ReservationController {
         System.out.println("Reservation Controller");
         Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
-    }
-
-    @DeleteMapping(path = "{reservationNumber}")
-    public void deleteReservation(
-            @PathVariable("reservationNumber") Long reservationNumber) {
-        reservationService.deleteReservation(reservationNumber);
-        throw new DeletedException("Reservation");
-    }
-
-    //  IF NO RESERVATIONNUMBER INSERTED
-    @DeleteMapping
-    public void deleteAllReservations() {
-        throw new CrudAllException("delete", "reservations");
-    }
-
-    @PutMapping
-    public void updateAllReservations() {
-        throw new CrudAllException("update", "reservations");
     }
 }

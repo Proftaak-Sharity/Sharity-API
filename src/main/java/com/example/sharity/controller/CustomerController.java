@@ -38,41 +38,10 @@ public class CustomerController {
 
 //    ************** CUSTOMERS ***************
 
-    @GetMapping
-    public List<Customer> findCustomers() {
-        return customerService.findCustomers();
-    }
-
-    @GetMapping(path = "/emailcheck")
-    public Boolean checkEmail(@RequestParam String email) {
-
-        if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
-            throw new EmailPatternException(email);
-        } else {
-            return customerRepository.checkEmail(email);
-        }
-    }
-
-
     @GetMapping(path = "{customerNumber}")
-        public Customer getCustomer(
-                @PathVariable("customerNumber") Long customerNumber) {
+    public Customer getCustomer(@PathVariable("customerNumber") Long customerNumber) {
 
         return customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
-    }
-
-    @GetMapping(path = {"/login"})
-    public Customer checkLogin(@RequestParam String email,
-                               @RequestParam String password) {
-
-        Customer customer = customerRepository
-                .findCustomerByEmail(email)
-                .orElseThrow(() -> new NotFoundException("Email not found", email));
-
-        if((Objects.equals(email, customer.getEmail())) && (Objects.equals(password, customer.getPassword()))) {
-            return customer;
-        }
-        throw new NotFoundException("cred. not found", email);
     }
 
     @PostMapping
@@ -106,37 +75,51 @@ public class CustomerController {
             @RequestParam(required = false) @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate dateOfBirth,
             @RequestParam(required = false) String phoneNumber) throws NoSuchAlgorithmException {
 
-
         customerService.updateCustomer(customerNumber, firstName, lastName, dateOfBirth, address, houseNumber, postalCode, city, country, phoneNumber);
     }
 
-    @DeleteMapping(path = "{customerNumber}")
-    public void deleteCustomer(
-            @PathVariable("customerNumber") Long customerNumber) {
-        Customer customer = customerRepository.findById(customerNumber).orElseThrow(() -> new NotFoundException("Customer number", customerNumber));
+    @GetMapping(path = {"/login"})
+    public Customer checkLogin(@RequestParam String email,
+                               @RequestParam String password) {
 
-        customerService.deleteCustomer(customerNumber);
-        throw new DeletedException("Customer");
+        Customer customer = customerRepository
+                .findCustomerByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Email not found", email));
+
+        if((Objects.equals(email, customer.getEmail())) && (Objects.equals(password, customer.getPassword()))) {
+            return customer;
+        }
+        throw new NotFoundException("cred. not found", email);
     }
 
+    @GetMapping(path = "/emailcheck")
+    public Boolean checkEmail(@RequestParam String email) {
 
+        if (emailValidator.patternMatches(email, "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+            throw new EmailPatternException(email);
+        } else {
+            return customerRepository.checkEmail(email);
+        }
+    }
 
+    @PostMapping(path = "image")
+    public void addCustomerImage(@RequestParam Long customerNumber,
+                                 @RequestParam String image) {
+
+        CustomerImage customerImage = new CustomerImage();
+        customerImage.setCustomerNumber(customerNumber);
+        customerImage.setImage(image);
+        customerImageRepository.save(customerImage);
+    }
+
+    @GetMapping(path = "image/{customerNumber}")
+    public CustomerImage getCustomerImage(@PathVariable Long customerNumber) {
+
+        return customerImageRepository.findById(customerNumber).orElseThrow(()-> new NotFoundException("image", customerNumber));
+    }
 
 
 //    *************** DRIVERS LICENSE ***************
-
-    @GetMapping(path = {"/license/{customerNumber}"})
-    public DriversLicense getDriversLicense(@PathVariable Long customerNumber) {
-
-        return driversLicenseRepository.getDriversLicensesByCustomerNumber(customerNumber)
-                .orElseThrow(()-> new NotFoundException("Customer not found", customerNumber));
-    }
-
-    @GetMapping(path = "/driverslicense/check")
-    public Boolean checkLicense(@RequestParam String licenseNumber) {
-
-        return driversLicenseRepository.checkLicense(licenseNumber);
-    }
 
     @PostMapping(path = "/driverslicense")
     public void addDriversLicense(@RequestParam Long customerNumber,
@@ -152,30 +135,28 @@ public class CustomerController {
         driversLicenseRepository.save(driversLicense);
     }
 
-    @GetMapping(path = "image/{customerNumber}")
-    public CustomerImage getCustomerImage(@PathVariable Long customerNumber) {
+    @GetMapping(path = "/driverslicense/check")
+    public Boolean checkLicense(@RequestParam String licenseNumber) {
 
-        return customerImageRepository.findById(customerNumber).orElseThrow(()-> new NotFoundException("image", customerNumber));
+        return driversLicenseRepository.checkLicense(licenseNumber);
+    }
 
+    @GetMapping(path = {"/license/{customerNumber}"})
+    public DriversLicense getDriversLicense(@PathVariable Long customerNumber) {
+
+        return driversLicenseRepository.getDriversLicensesByCustomerNumber(customerNumber)
+                .orElseThrow(()-> new NotFoundException("Customer not found", customerNumber));
     }
 
 
 
-    @PostMapping(path = "image")
-    public void addCustomerImage(@RequestParam Long customerNumber,
-                                 @RequestParam String image) {
-
-        CustomerImage customerImage = new CustomerImage();
-        customerImage.setCustomerNumber(customerNumber);
-        customerImage.setImage(image);
-        customerImageRepository.save(customerImage);
-
-    }
 
 
 
 
 }
+
+
 
 
 

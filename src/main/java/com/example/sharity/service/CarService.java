@@ -108,12 +108,7 @@ public class CarService {
     }
 
 
-    public Optional<Car> findCar(String licensePlate) {
-        Optional<Car> customerOptional = carRepository.findById(licensePlate);
-
-        if (customerOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with  licensePlate " + licensePlate + " is unknown");
-        }
+    public Optional<Car> getCar(String licensePlate) {
         return carRepository.findById(licensePlate);
     }
 

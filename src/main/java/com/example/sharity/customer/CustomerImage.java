@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Getter
 @Setter
 @ToString

@@ -52,20 +52,20 @@ public class ReservationController {
                                           @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate endDate,
                                           @RequestParam Double rent,
                                           @RequestParam Double packagePrice,
-                                          @RequestParam PaymentEnum paymentEnum) {
+                                          @RequestParam PaymentEnum payment) {
 
-        return reservationService.addReservation(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum);
+        return reservationService.addReservation(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, payment);
     }
 
     @PutMapping(path = "/payment/{reservationNumber}")
     public PaymentEnum updatePayment(@PathVariable("reservationNumber") Long reservationNumber,
-                                @RequestParam PaymentEnum paymentEnum) {
+                                @RequestParam PaymentEnum payment) {
 
         Reservation reservation = reservationRepository.getById(reservationNumber);
-        reservation.setPaymentEnum(paymentEnum);
+        reservation.setPayment(payment);
         reservationRepository.save(reservation);
-        
-        return reservationRepository.getById(reservationNumber).getPaymentEnum();
+
+        return reservationRepository.getById(reservationNumber).getPayment();
     }
 
 //    Only for getting the balance of the preDataConfig customers in database (not being used in APK)
@@ -74,9 +74,9 @@ public class ReservationController {
             @PathVariable("reservationNumber") Long reservationNumber,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam(required = false) PaymentEnum paymentEnum) {
+            @RequestParam(required = false) PaymentEnum payment) {
         System.out.println("Reservation Controller");
-        Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
+        Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, payment);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
     }
 

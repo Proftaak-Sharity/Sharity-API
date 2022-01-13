@@ -3,7 +3,6 @@ package com.example.sharity.reservation;
 import com.example.sharity.service.NumberRounder;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,7 +41,7 @@ public class Reservation implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment")
-    private PaymentEnum paymentEnum = PaymentEnum.OPEN;
+    private PaymentEnum payment = PaymentEnum.OPEN;
 
     public Reservation(Long customerNumber, String licensePlate, double rent, int kmPackage, Double packagePrice, LocalDate startDate, LocalDate endDate) {
         this.customerNumber = customerNumber;
@@ -54,13 +53,13 @@ public class Reservation implements Serializable {
         this.packagePrice = NumberRounder.roundDouble(packagePrice, 2);
     }
 
-    public Reservation(Long customerNumber, String licensePlate, double rent, int kmPackage, Double packagePrice, LocalDate startDate, LocalDate endDate, PaymentEnum paymentEnum) {
+    public Reservation(Long customerNumber, String licensePlate, double rent, int kmPackage, Double packagePrice, LocalDate startDate, LocalDate endDate, PaymentEnum payment) {
         this.customerNumber = customerNumber;
         this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
         this.rent = NumberRounder.roundDouble((rent + packagePrice), 2);
-        this.paymentEnum = paymentEnum;
+        this.payment = payment;
         this.kmPackage = kmPackage;
         this.packagePrice = NumberRounder.roundDouble(packagePrice, 2);
     }

@@ -7,7 +7,6 @@ import com.example.sharity.car.*;
 import com.example.sharity.car.carTypes.ElectricCar;
 import com.example.sharity.car.carTypes.FuelCar;
 import com.example.sharity.car.carTypes.HydrogenCar;
-import com.example.sharity.car.enums.Coverage;
 import com.example.sharity.car.enums.FuelType;
 import com.example.sharity.car.enums.Make;
 import com.example.sharity.customer.*;
@@ -18,9 +17,6 @@ import com.example.sharity.service.CarService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.Column;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;

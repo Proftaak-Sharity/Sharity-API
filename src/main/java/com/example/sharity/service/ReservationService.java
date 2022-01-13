@@ -16,11 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,7 +76,7 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
 //        IF RESERVATION IS PAID DIRECTLY AT RESERVATIONMOMENT
-        if (reservation.getPaymentEnum() == PaymentEnum.PAID) {
+        if (reservation.getPayment() == PaymentEnum.PAID) {
 //            GETTERS TO GET OWNER OF THE CAR
             Long customerNumber = car.getCustomerNumber();
             Customer customer = customerRepository.findById(customerNumber).
@@ -141,7 +138,7 @@ public class ReservationService {
 
 //            CHECK IF PAYMENTENUM IS SET TO UPDATE, IF ALREADY PAID, IT CAN'T RE-OPEN BECAUSE A PAYMENT CAN BE DONE TWICE
             if (paymentEnum == PaymentEnum.PAID) {
-                reservation.setPaymentEnum(paymentEnum);
+                reservation.setPayment(paymentEnum);
 
                 //          GETTER FOR UPDATING PAYMENT TABLE
                 Customer customer = customerRepository.findById(car.getCustomerNumber()).orElseThrow(() -> new NotFoundException("Customer", car.getCustomerNumber()));
@@ -208,7 +205,7 @@ public class ReservationService {
         newReservation.setEndDate(endDate);
         newReservation.setRent((rent * daysRent) + packagePrice);
         newReservation.setPackagePrice(packagePrice);
-        newReservation.setPaymentEnum(paymentEnum);
+        newReservation.setPayment(paymentEnum);
 
         reservationRepository.save(newReservation);
         return newReservation.getReservationNumber();

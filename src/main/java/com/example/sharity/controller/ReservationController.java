@@ -1,5 +1,6 @@
 package com.example.sharity.controller;
 
+import com.example.sharity.repository.ReservationRepository;
 import com.example.sharity.reservation.PaymentEnum;
 import com.example.sharity.reservation.Reservation;
 import com.example.sharity.service.ReservationService;
@@ -18,10 +19,12 @@ import java.util.Optional;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final ReservationRepository reservationRepository;
 
     @Autowired
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
+        this.reservationRepository = reservationRepository;
     }
 
     @GetMapping(path = "/customer/{customerNumber}")
@@ -54,6 +57,17 @@ public class ReservationController {
         return reservationService.addReservation(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, paymentEnum);
     }
 
+    @PutMapping(path = "/payment/{reservationNumber}")
+    public PaymentEnum updatePayment(@PathVariable("reservationNumber") Long reservationNumber,
+                                @RequestParam PaymentEnum paymentEnum) {
+
+        Reservation reservation = reservationRepository.getById(reservationNumber);
+        reservation.setPaymentEnum(paymentEnum);
+        reservationRepository.save(reservation);
+        
+        return reservationRepository.getById(reservationNumber).getPaymentEnum();
+    }
+
 //    Only for getting the balance of the preDataConfig customers in database (not being used in APK)
     @PutMapping(path = "{reservationNumber}")
     public ResponseEntity<Reservation> updateReservation(
@@ -65,4 +79,6 @@ public class ReservationController {
         Reservation updateReservation = reservationService.updateReservation(reservationNumber, startDate, endDate, paymentEnum);
         return ResponseEntity.created(URI.create("/api/reservations/" + updateReservation.getReservationNumber())).body(updateReservation);
     }
+
+
 }

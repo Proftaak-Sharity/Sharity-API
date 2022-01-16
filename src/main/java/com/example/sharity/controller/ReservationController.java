@@ -37,17 +37,17 @@ public class ReservationController {
         return reservationService.getReservation(reservationNumber);
     }
 
-    @GetMapping(path = "/rentedLicensePlates")
+    @GetMapping(path = "/rentedlicenseplates")
     public Optional<List<Reservation>> getRentedCars(
              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
         return reservationService.getRentedCars(startDate, endDate);
     }
 
-    @PostMapping(path = {"/addReservation"})
+    @PostMapping(path = {"/addreservation"})
         public Long addReservation(@RequestParam Long customerNumber,
                                           @RequestParam String licensePlate,
-                                          @RequestParam Integer kmPackage,
+                                          @RequestParam (required = false) Integer kmPackage,
                                           @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate startDate,
                                           @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate endDate,
                                           @RequestParam Double rent,

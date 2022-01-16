@@ -1,10 +1,8 @@
 // The controller creates the API layer of our application. Basically it let us connect to localhost:8080/api/customer
 package com.example.sharity.controller;
 
-import com.example.sharity.car.CarImage;
 import com.example.sharity.customer.*;
 import com.example.sharity.exception.*;
-import com.example.sharity.exception.car.DeletedException;
 import com.example.sharity.repository.CustomerImageRepository;
 import com.example.sharity.repository.CustomerRepository;
 import com.example.sharity.repository.DriversLicenseRepository;
@@ -14,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 @RestController

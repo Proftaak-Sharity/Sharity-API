@@ -48,7 +48,7 @@ public class ReservationService {
         return reservations;
     }
 
-    public Reservation addReservation(Reservation reservation) {
+    public void addReservation(Reservation reservation) {
 //        CHECK IF CAR IS AVAILABLE IN THE PERIOD OF RENTAL
         Optional<Reservation> reservationOptional = reservationRepository.checkCarAvailability(reservation.getLicensePlate(), reservation.getStartDate(), reservation.getEndDate());
         if (reservationOptional.isPresent()) {
@@ -98,7 +98,6 @@ public class ReservationService {
             customerRepository.save(customer);
 
         }
-        return reservation;
     }
 
 
@@ -189,7 +188,7 @@ public class ReservationService {
     }
 
 
-    public Long addReservation(Long customerNumber, String licensePlate, Integer kmPackage, LocalDate startDate, LocalDate endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
+    public Long addNewReservation(Long customerNumber, String licensePlate, Integer kmPackage, LocalDate startDate, LocalDate endDate, Double rent, double packagePrice, PaymentEnum paymentEnum) {
 
         double daysRent = Period.between(startDate, endDate).getDays();
 
@@ -208,6 +207,26 @@ public class ReservationService {
         newReservation.setPayment(paymentEnum);
 
         reservationRepository.save(newReservation);
+
+        if (newReservation.getPayment() == PaymentEnum.PAID) {
+            Car car = carRepository.findCarByLicensePlate(newReservation.getLicensePlate()).orElseThrow(() -> new NotFoundException("Reservation", newReservation.getReservationNumber()));
+            Customer customer = customerRepository.getById(car.getCustomerNumber());
+
+            double sharityProfit = NumberRounder.roundDouble((newReservation.getRent() * 0.1), 2);
+            double tax = NumberRounder.roundDouble((newReservation.getRent() * 0.21), 2);
+            double payoutAmount = NumberRounder.roundDouble((newReservation.getRent() - sharityProfit - tax), 2);
+
+            //        SETTERS TO SET THE PAYOUT AND WRITE ON BALANCE OF OWNER
+            Payout payout = new Payout(newReservation.getReservationNumber(), sharityProfit, payoutAmount, tax, customer.getCustomerNumber());
+            payout.setPayoutAmount(payoutAmount);
+            payout.setSharityProfit(sharityProfit);
+            payout.setTax(tax);
+            payoutRepository.save(payout);
+
+            customer.setBalance(customer.getBalance() + payoutAmount);
+            customerRepository.save(customer);
+        }
         return newReservation.getReservationNumber();
+
     }
 }

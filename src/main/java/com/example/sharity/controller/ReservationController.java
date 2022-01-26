@@ -1,8 +1,16 @@
 package com.example.sharity.controller;
 
+import com.example.sharity.car.Car;
+import com.example.sharity.customer.Customer;
+import com.example.sharity.exception.NotFoundException;
+import com.example.sharity.payout.Payout;
+import com.example.sharity.repository.CarRepository;
+import com.example.sharity.repository.CustomerRepository;
+import com.example.sharity.repository.PayoutRepository;
 import com.example.sharity.repository.ReservationRepository;
 import com.example.sharity.reservation.PaymentEnum;
 import com.example.sharity.reservation.Reservation;
+import com.example.sharity.service.NumberRounder;
 import com.example.sharity.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,11 +28,17 @@ public class ReservationController {
 
     private final ReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    private final CarRepository carRepository;
+    private final PayoutRepository payoutRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository) {
+    public ReservationController(ReservationService reservationService, ReservationRepository reservationRepository, CarRepository carRepository, PayoutRepository payoutRepository, CustomerRepository customerRepository) {
         this.reservationService = reservationService;
         this.reservationRepository = reservationRepository;
+        this.carRepository = carRepository;
+        this.payoutRepository = payoutRepository;
+        this.customerRepository = customerRepository;
     }
 
     @GetMapping(path = "/customer/{customerNumber}")
@@ -45,7 +59,7 @@ public class ReservationController {
     }
 
     @PostMapping(path = {"/addreservation"})
-        public Long addReservation(@RequestParam Long customerNumber,
+        public Long addNewReservation(@RequestParam Long customerNumber,
                                           @RequestParam String licensePlate,
                                           @RequestParam (required = false) Integer kmPackage,
                                           @RequestParam @DateTimeFormat (pattern = "dd-MM-yyyy") LocalDate startDate,
@@ -54,7 +68,7 @@ public class ReservationController {
                                           @RequestParam Double packagePrice,
                                           @RequestParam PaymentEnum payment) {
 
-        return reservationService.addReservation(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, payment);
+        return reservationService.addNewReservation(customerNumber, licensePlate, kmPackage, startDate, endDate, rent, packagePrice, payment);
     }
 
     @PutMapping(path = "/payment/{reservationNumber}")
@@ -62,8 +76,21 @@ public class ReservationController {
                                 @RequestParam PaymentEnum payment) {
 
         Reservation reservation = reservationRepository.getById(reservationNumber);
-        reservation.setPayment(payment);
-        reservationRepository.save(reservation);
+        Car car = carRepository.findCarByLicensePlate(reservation.getLicensePlate()).orElseThrow(() -> new NotFoundException("Reservation", reservationNumber));
+        Customer customer = customerRepository.getById(car.getCustomerNumber());
+
+        double sharityProfit = NumberRounder.roundDouble((reservation.getRent() * 0.1), 2);
+        double tax = NumberRounder.roundDouble((reservation.getRent() * 0.21), 2);
+        double payoutAmount = NumberRounder.roundDouble((reservation.getRent() - sharityProfit - tax), 2);
+
+        Payout payout = new Payout(reservationNumber, sharityProfit, payoutAmount, tax, customer.getCustomerNumber());
+        payout.setPayoutAmount(payoutAmount);
+        payout.setSharityProfit(sharityProfit);
+        payout.setTax(tax);
+        payoutRepository.save(payout);
+
+        customer.setBalance(customer.getBalance() + payoutAmount);
+        customerRepository.save(customer);
 
         return reservationRepository.getById(reservationNumber).getPayment();
     }

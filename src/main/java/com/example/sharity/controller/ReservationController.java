@@ -91,6 +91,8 @@ public class ReservationController {
 
         customer.setBalance(customer.getBalance() + payoutAmount);
         customerRepository.save(customer);
+        reservation.setPayment(PaymentEnum.PAID);
+        reservationRepository.save(reservation);
 
         return reservationRepository.getById(reservationNumber).getPayment();
     }
